@@ -1,0 +1,1173 @@
+eeschema
+// Animated-CAD digital logic library.
+// Combinational logic with ideal switching and configurable electrical voltage levels.
+//
+// Supply configuration is entered in the component value field, for example:
+//   vpos=5.0 vneg=0.0
+// The default levels are vpos=5.0 V and vneg=0.0 V.
+// The switching threshold is (vpos + vneg) / 2. An input above the threshold is HIGH;
+// an input at or below the threshold is LOW. Outputs are driven to vpos or vneg.
+//
+// These gates are ideal and have no propagation delay, hysteresis, input current,
+// or internal power-supply pins. Sequential components are
+// intentionally not included until their transient/state behavior can be validated.
+
+// output resistance is 1.0 Ohm by default.
+<Component>
+	<Description>
+		Inverter: output Y is HIGH when input A is LOW.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NOT
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+	<Spice>
+	    // ---- parameters: ----
+		// -- vpos --
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN  DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		// -- vneg --
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN  DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		// -- threshold voltage vth = (vpos + vneg) / 2.0 --
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		// -- output resistances --
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		
+		// ---- model: ----
+		.subckt mdl_inverter_[individual] inA out
+		    // power supply
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			
+			// logic processing (1=high, 0=low) 
+			B_logic logic 0 V=(V(inA) > [vth] ? 0 : 1)
+
+			// output connecting to power sources (vpos=high, vneg=low) 
+            .model mdl_swpos_[individual] sw  ron=[ron] roff=[roff] vt=0.5 // positive supply - positive logic
+            .model mdl_swneg_[individual] sw  ron=[roff] roff=[ron] vt=0.5 // negative supply - negative logic
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+            S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+        .ends	
+		// ---- component: ---- 
+		X_[individual] [A] [Y] mdl_inverter_[individual]
+	</Spice>
+	<eeschema_symbol>
+		// body: 
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// horizontal line creates a minus - sybmol
+		 (polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		 // two lines create a plus + symbol
+		(polyline 
+		(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
+		// pins :
+		
+		(pin input line (at -7.62 0.00 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "NOT" (at 0 0 0) (effects (font (size 2.54 2.54 ))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line up to +, symbol for connection out  vpos
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0>  // red + symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0>// red + symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle 
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line down to -, symbol for connection out  vneg
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0>// blue - symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Non-inverting buffer.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:BUFFER
+	</eeschema_sch>
+    <Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_buffer_[individual] inA out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inA) > [vth]) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component ----
+		X_[individual] [A] [Y] mdl_buffer_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 0.00 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "BUF" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Two-input AND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:AND
+	</eeschema_sch>
+    <Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_and_[individual] inA inB out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inA) > [vth]) && (V(inB) > [vth]) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [Y] mdl_and_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "AND" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Two-input OR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:OR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_or_[individual] inA inB out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inA) > [vth]) || (V(inB) > [vth]) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [Y] mdl_or_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "OR" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Two-input NAND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NAND
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_nand_[individual] inA inB out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=(!((V(inA) > [vth]) && (V(inB) > [vth])) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [Y] mdl_nand_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "NAND" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Two-input NOR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NOR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_nor_[individual] inA inB out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=(!((V(inA) > [vth]) || (V(inB) > [vth])) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [Y] mdl_nor_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "NOR" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Two-input exclusive OR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:XOR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_xor_[individual] inA inB out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=(((V(inA) > [vth]) != (V(inB) > [vth])) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [Y] mdl_xor_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "XOR" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Two-input exclusive NOR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:XNOR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_xnor_[individual] inA inB out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=(((V(inA) > [vth]) == (V(inB) > [vth])) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [Y] mdl_xnor_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "XNOR" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Three-input AND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:AND3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_and3_[individual] inA inB inC out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inA) > [vth]) && (V(inB) > [vth]) && (V(inC) > [vth]) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [C] [Y] mdl_and3_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 3.81 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 0.00 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -3.81 0) (length 1.27)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "AND3" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Three-input OR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:OR3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_or3_[individual] inA inB inC out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inA) > [vth]) || (V(inB) > [vth]) || (V(inC) > [vth]) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [C] [Y] mdl_or3_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 3.81 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 0.00 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -3.81 0) (length 1.27)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "OR3" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Three-input NAND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NAND3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_nand3_[individual] inA inB inC out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=(!((V(inA) > [vth]) && (V(inB) > [vth]) && (V(inC) > [vth])) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [C] [Y] mdl_nand3_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 3.81 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 0.00 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -3.81 0) (length 1.27)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "NAND3" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Three-input NOR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NOR3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW = 0 Volt  , so Vth = 1,65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH = 5 Volt, LOW = -5 Volt , so Vth = 0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // default voltages, but modified output resistances between power supply and output. 
+	</Default_Values>
+
+	<Spice>
+		// ---- parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- model ----
+		.subckt mdl_nor3_[individual] inA inB inC out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=(!((V(inA) > [vth]) || (V(inB) > [vth]) || (V(inC) > [vth])) ? 1 : 0)
+
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+
+		// ---- component -----
+		X_[individual] [A] [B] [C] [Y] mdl_nor3_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -7.62 3.81 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 0.00 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -7.62 -3.81 0) (length 1.27)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 7.62 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "NOR3" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
