@@ -190,6 +190,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 0.00 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -208,9 +225,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -280,6 +299,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 2.54 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -302,9 +338,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -374,6 +412,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 2.54 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -396,9 +451,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -468,6 +525,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 2.54 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -490,9 +564,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -562,6 +638,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 2.54 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -584,9 +677,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -656,6 +751,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 2.54 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -678,9 +790,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -750,6 +864,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 2.54 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -772,9 +903,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -844,6 +977,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 3.81 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -870,9 +1020,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -942,6 +1094,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 3.81 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -968,9 +1137,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -1040,6 +1211,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 3.81 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -1066,9 +1254,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
@@ -1138,6 +1328,23 @@ eeschema
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
+		// two lines create a plus + symbol
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+		)
 		(pin input line (at -7.62 3.81 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -1164,9 +1371,11 @@ eeschema
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
 		ENDIF
 	</animation>
