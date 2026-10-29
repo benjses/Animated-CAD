@@ -1380,3 +1380,227 @@ eeschema
 		ENDIF
 	</animation>
 </Component>
+
+// ---- Multiplexers ----
+<Component>
+	<Description>
+		Two-input multiplexer. Select input S chooses A when S is LOW and B when S is HIGH.
+		Each input is interpreted as HIGH when its voltage is strictly above the threshold
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay digital component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:MUX2
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW=0 Volt, so Vth=1.65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH=5 Volt, LOW=-5 Volt, so Vth=0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // modified output resistances between supply rails and output
+	</Default_Values>
+	<Spice>
+		// ---- supply and threshold parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		// ---- model ----
+		.subckt mdl_mux2_[individual] inA inB inS out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inS) > [vth]) ? ((V(inB) > [vth]) ? 1 : 0) : ((V(inA) > [vth]) ? 1 : 0))
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+		// ---- component ----
+		X_[individual] [A] [B] [S] mdl_mux2_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -8.89 7.62) (end 8.89 -7.62)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts (xy -0.51 -6.35)(xy 0.51 -6.35))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// two lines create a plus + symbol
+		(polyline (pts (xy -0.51 6.35)(xy 0.51 6.35))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts (xy 0 5.84)(xy 0 6.86))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 3.81 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 1.27 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -3.81 0) (length 1.27)
+			(name "S" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "MUX2" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
+<Component>
+	<Description>
+		Four-input multiplexer. Select inputs S1 and S0 choose A (00), B (01), C (10), or D (11).
+		Each input is interpreted as HIGH when its voltage is strictly above the threshold
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay digital component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:MUX4
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW=0 Volt, so Vth=1.65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH=5 Volt, LOW=-5 Volt, so Vth=0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // modified output resistances between supply rails and output
+	</Default_Values>
+	<Spice>
+		// ---- supply and threshold parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		// ---- model ----
+		.subckt mdl_mux4_[individual] inA inB inC inD inS0 inS1 out
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			// Logic state: 1=HIGH, 0=LOW
+			B_logic logic 0 V=((V(inS1) > [vth]) ? (((V(inS0) > [vth]) ? ((V(inD) > [vth]) ? 1 : 0) : ((V(inC) > [vth]) ? 1 : 0))) : ((V(inS0) > [vth]) ? ((V(inB) > [vth]) ? 1 : 0) : ((V(inA) > [vth]) ? 1 : 0)))
+			// Output switches connect Y to the positive or negative supply.
+			.model mdl_swpos_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos pwr_pos out logic 0 mdl_swpos_[individual]
+			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
+		.ends
+		// ---- component ----
+		X_[individual] [A] [B] [C] [D] [S0] [S1] mdl_mux4_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -8.89 7.62) (end 8.89 -7.62)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts (xy -0.51 -6.35)(xy 0.51 -6.35))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// two lines create a plus + symbol
+		(polyline (pts (xy -0.51 6.35)(xy 0.51 6.35))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts (xy 0 5.84)(xy 0 6.86))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 6.35 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 3.81 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 1.27 0) (length 1.27)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -1.27 0) (length 1.27)
+			(name "D" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -3.81 0) (length 1.27)
+			(name "S0" (effects (font (size 1.27 1.27))))
+			(number "5" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -6.35 0) (length 1.27)
+			(name "S1" (effects (font (size 1.27 1.27))))
+			(number "6" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 1.27)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "7" (effects (font (size 1.27 1.27))))
+		)
+		(text "MUX4" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [vout] V[Y]
+		DEFINE [vout] AS_NUMBER OF: [vout]
+		IF [vout] THEN
+			IF [vout] HIGHER_THAN [vth] THEN
+				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
+			ELSE
+				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
