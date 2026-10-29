@@ -1,57 +1,159 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <title>AniCAD | libraries</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="utf-8">
-  </head>
-  <body>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | ALIB libraries</title>
+</head>
+<body>
     <div id="wrapper">
         <header>
-            <img src="logos/logo_en.png" alt="logo">
+            <img src="logos/logo_en.png" alt="AniCAD logo">
         </header>
         <nav>
             <ul_vertical class="selectable">
-                <li><a href = "https://www.cirnavsys.com">Home</a></li>
-                <li><a href = "overview.html">Overview</a></li>
-                <li><a href = "../documentation/">Content list</a></li>
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="../documentation/">Content list</a></li>
             </ul_vertical>
         </nav>
     </div>
-    <div>
+
+    <main>
         <section>
-            <h2>What is an ".alib"-file? </h2>
-            .alib stands for "<a href="alib_logic.html">advanced</a> library". It is a file which describes the different types of electric circuit components.
-            <br> The ".alib" files are needed by the AniCAD to find the components' types for each schematic.
-            <h2 id="howto_add_library">How can I add a library to AniCAD?</h2>
-            The easiest way to add a library is to copy that ".alib" file into the "libraries" folder under the AniCAD program path. <!-- TODO describe how to find that path -->
-            <h2>How can I create an ".alib"-file?</h2>
-            You can write an ".alib"-file with a text editor. The language used in ".alib" is an 
-            <a href="https://en.wikipedia.org/wiki/XML">Extensible Markup Language</a>. 
-            We have a documentation, which explains <a href="alib_creating.html">how to create Components in ".alib"-files</a>. But if you are a programmer, then it might be easier for you to simply read the the <a href="../libraries/components.alib"> standard component library</a> with a text editor. If you know some XML or HTML and understand some NGspice format and the KiCad component format, then this will be easy for you. If you know parts of that, maybe you will understand the rest by the examples in that library.
-            
+            <h1>ALIB component libraries</h1>
+            <p>This page introduces the <code>.alib</code> file format used by Animated-CAD (AniCAD). It explains what these files contain, how AniCAD uses them, how to install or create a library, and what to consider when sharing one.</p>
+
+            <h2>What is an <code>.alib</code> file?</h2>
+            <p><code>.alib</code> stands for <em>advanced library</em>. An ALIB file is a text-based component library description. It tells AniCAD how to recognise a component imported from a schematic editor, how to draw its symbol, which parameters it has, and how to represent its electrical behaviour in a simulation.</p>
+            <p>An ALIB file is not itself a circuit schematic. A schematic contains instances of components and the connections between them; the ALIB library provides the definitions needed to interpret those instances. A single ALIB file can contain multiple component definitions, each enclosed in a <code>&lt;Component&gt; ... &lt;/Component&gt;</code> block.</p>
+            <p>The format uses XML-like tags, but it is not simply an ordinary XML document. In addition to tags, ALIB supports its own variable substitution, conditional logic, and section-specific conventions. The file is therefore best edited with a text editor and with reference to the examples and rules described below.</p>
+
+            <h2>What does AniCAD use an ALIB definition for?</h2>
+            <ul_vertical>
+                <li><strong>Recognition:</strong> matches a component type in a schematic file to the appropriate definition.</li>
+                <li><strong>Parameters:</strong> declares or interprets values such as resistance, capacitance, model name, source waveform, or other component settings.</li>
+                <li><strong>Symbol and pins:</strong> describes the graphical symbol and the names and positions of its electrical connections.</li>
+                <li><strong>Simulation:</strong> provides SPICE netlist text, normally for the ngspice simulator, to describe the component's electrical behaviour.</li>
+                <li><strong>Animation:</strong> some definitions include an <code>&lt;animation&gt;</code> section that displays values or states calculated during simulation.</li>
+                <li><strong>Help and links:</strong> may include a user-facing description, examples, licensing notes, or purchase/datasheet links.</li>
+            </ul_vertical>
+            <p>These parts are related: pin names used in the drawing need to match the connections referenced by the SPICE text. A symbol can look correct and still simulate incorrectly if its pin mapping or model text is wrong.</p>
         </section>
+
         <section>
-            <h2>Under which license are the ".alib"-files distributed?<br>
-            And under which license may I distribute an ".alib"-file?</h2>
-            The AniCAD team distributes some ".alib"-files, and we try to distribute them as freely as possible. That means, we like to give you the <a href="https://en.wikipedia.org/wiki/Free_software#Definition_and_the_Four_Freedoms"> four Freedoms</a> for our distributed component, as far as possible.<br>
-            <br>
-            But sometimes when creating components in ".alib"-files, we need to use texts, which are not distributed this freely.
-            Usually these textparts are Spice-texts of some components, for example if a company produces some OpAmps and provides Spicetext for their components, then they usually use a license that limits modifiactions of that spicetext. In this case, we like to use their spicetext, but of course we can not allow you to modify that text, since it would violate their original license.<br>
-            <br>
-            Because of that, the license of each component may be different. So it is good practise to add some license information into the Description of every component.<br>
-            <br>
-            We encourage you to also distribute ".alib"-files as freely as possible, but of course you should also pay attention if you are using some texts which are not free.<br>
-            <br>
-            Also we are not experts for all types of electric components. Even though we try our best to create and test realistic models for all the components, we can not guarantee that they are flawless. So we present our components AS IS and we disclaim liability for any consequences resulting from using our components.<br>
-            When you create a component which you are not absolutely sure about, then you might also present your components the same way. And if you find an error in one of our ".alib"-files, please contact us.
+            <h2>How are ALIB files organised?</h2>
+            <p>The main unit is a <code>&lt;Component&gt;</code> block. The sections inside it are not all mandatory, but a usable definition normally needs at least a schematic declaration and simulation text. Common sections include:</p>
+            <ul_vertical>
+                <li><code>&lt;Description&gt;</code> — explanatory text for users and, ideally, licence and model limitations.</li>
+                <li><code>&lt;qucs_sch&gt;</code> — declaration format for components in Qucs schematics.</li>
+                <li><code>&lt;eeschema_sch&gt;</code> — declaration format for components in KiCad Eeschema schematics.</li>
+                <li><code>&lt;Default_Values&gt;</code> — suggested values or parameter strings shown as examples when choosing a component.</li>
+                <li><code>&lt;qucs_symbol&gt;</code> — drawing instructions for the Qucs-style symbol.</li>
+                <li><code>&lt;eeschema_symbol&gt;</code> — drawing instructions for a KiCad-style symbol.</li>
+                <li><code>&lt;Spice&gt;</code> — SPICE/ngspice netlist text used to simulate the component.</li>
+                <li><code>&lt;animation&gt;</code> — optional instructions for visualising simulated values or component states.</li>
+                <li><code>&lt;purchase&gt;</code> — optional links, titles and details associated with a component.</li>
+            </ul_vertical>
+            <p>The precise set of sections depends on the component and the schematic editor it supports. For example, some definitions target KiCad only and therefore omit Qucs sections. Some older or specialised definitions may also contain helper sections or named blocks that are used by other parts of the same file.</p>
+            <p>For a detailed authoring reference, see <a href="alib_creating.html">Creating components in ALIB files</a>.</p>
         </section>
-        <footer class="framed">
-            <ul_horizontal> 
-                <li><a href="https://www.cirnavsys.com">Home</a></li>
-                <li><a href="about_us.html">About us</a></li>
-                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
-            </ul_horizontal>
-        </footer>
-    <div>
-  </body>
+
+        <section>
+            <h2>Schematic declarations and component names</h2>
+            <p>A schematic declaration tells AniCAD which component identifiers in an imported schematic correspond to this definition and how the schematic's fields map to ALIB variables.</p>
+            <p>In a Qucs declaration, the first token identifies the component type. The common positional fields include the component name, active state, position, text position, mirroring and rotation; further fields represent component properties. Qucs property values are commonly represented in pairs, such as <code>[value]</code> and <code>[value_v]</code>. The second field in a pair records visibility in Qucs and may be retained for file-format compatibility even if AniCAD does not currently use it.</p>
+            <p>In a KiCad Eeschema declaration, the library identifier follows the <code>L</code> marker, and fields such as <code>F 0</code>, <code>F 1</code>, and so on map schematic fields to variables. The exact field layout depends on the KiCad symbol and schematic format. Inspecting a real schematic created by the target editor is often the safest way to establish the correct mapping.</p>
+            <p>A component can have declarations for both Qucs and KiCad. It can also have more than one declaration for the same editor when different library symbols use different geometry or field layouts.</p>
+
+            <h3>Aliases and multiple declarations</h3>
+            <p>There are three common ways to reuse a component definition:</p>
+            <ul_vertical>
+                <li><strong>Support multiple editors:</strong> include both Qucs and KiCad schematic sections in the same component.</li>
+                <li><strong>Use <code>ALIAS</code>:</strong> after a schematic identifier, an uppercase <code>ALIAS</code> line can list other component identifiers that should use the same definition. This is suitable when the variants share the same symbol geometry, pin positions and electrical model.</li>
+                <li><strong>Use multiple schematic sections:</strong> provide separate declarations when variants need different fields, pin coordinates, symbol sizes, or other editor-specific details. This avoids incorrectly treating one variant as geometrically identical to another.</li>
+            </ul_vertical>
+            <p>For example, several logic-gate families may share a common model and pin arrangement and can therefore be aliases. Resistor symbols in different KiCad libraries may have different dimensions and pin positions, so separate declarations can be necessary. See <a href="alib_double_use.html">Using one description for multiple component types</a>.</p>
+        </section>
+
+        <section>
+            <h2>Symbols and electrical pins</h2>
+            <p>The symbol section defines the drawing elements and the locations and names of the electrical pins. The format can use AniCAD's default drawing notation or, for KiCad-oriented symbols, a KiCad-style drawing block delimited by <code>DRAW</code> and <code>ENDDRAW</code>.</p>
+            <p>In the default notation, drawing elements include lines, rectangles, polygons, ellipses, text and port symbols. A port symbol such as <code>&lt;.PortSym x y [pin_name] angle&gt;</code> defines a named connection at a particular position. In KiCad-style notation, pins are represented by <code>X</code> lines and drawing primitives use KiCad's symbol-library conventions.</p>
+            <p>The coordinate systems differ between the two drawing formats: KiCad-style coordinates use a downward-positive Y direction and are generally scaled differently from the default/Qucs-style coordinates. Copying coordinates from one format to the other without adapting them can make the symbol the wrong size or place pins incorrectly.</p>
+            <p>For multi-terminal semiconductor devices, the pin captions can be significant to the simulator. For direct ngspice transistor models, use the recognised pin names: MOSFETs use Drain, Gate, Source and Bulk (commonly <code>[D]</code>, <code>[G]</code>, <code>[S]</code>, <code>[B]</code>); BJTs use Collector, Base, Emitter and Substrate (commonly <code>[C]</code>, <code>[B]</code>, <code>[E]</code>, <code>[S]</code>). Case may be accepted, but arbitrary names may not be. Wrapping the device in a subcircuit allows custom external names, at the cost of additional model text.</p>
+        </section>
+
+        <section>
+            <h2>SPICE text and simulation behaviour</h2>
+            <p>The <code>&lt;Spice&gt;</code> section describes how the component participates in the electrical simulation. It usually contains ngspice-compatible netlist lines: passive elements, sources, models, subcircuits, and the instance line that connects the component's pins to the model.</p>
+            <p>Variables declared or supplied by the schematic can be inserted into this text. Conditional logic can select different models or construct different netlist fragments depending on a component's value or parameters. This is how one definition can support, for example, several source waveforms, N-channel and P-channel variants, optional series resistance, or different transistor models.</p>
+            <p>SPICE syntax and electrical modelling rules still apply. ALIB makes it easier to generate the required text; it does not make an invalid ngspice model valid, nor does it guarantee that a model accurately represents a physical component. Check the model documentation and test important circuits against appropriate reference data.</p>
+            <p>For the full component-authoring details, including pin mapping and SPICE examples, see <a href="alib_creating.html#spice">the SPICE section of the creation guide</a>.</p>
+        </section>
+
+        <section>
+            <h2>Variables and conditional logic</h2>
+            <p>One of the main differences between ALIB and simpler component-library formats is that ALIB supports variable declarations and conditional logic. Variables are written in square brackets, for example <code>[name]</code>, <code>[value]</code>, or a custom name such as <code>[resistance]</code>.</p>
+            <p>Common predefined variables include the component name, model identifier, position and rotation, the user-entered value, and transient-simulation timing values. Pin names defined in the symbol can also be referenced in the SPICE section.</p>
+            <p>A basic definition uses the form <code>DEFINE [variable] value</code>. The format also provides <code>AS_...</code> functions for operations such as changing letter case, extracting or replacing text, parsing numbers, performing calculations, formatting numbers, and setting a parameter's default visibility. Some functions read actual simulation values for animation.</p>
+            <p>Conditional blocks use uppercase keywords <code>IF</code>, <code>THEN</code>, optional <code>ELSE</code>, and <code>ENDIF</code>. Conditions can test whether a variable exists, compare text, check whether text starts or ends with a string, match a regular expression, or compare numeric values. This logic can be used in descriptions, drawing sections, SPICE text and other supported areas.</p>
+            <p>Variable availability can depend on the section in which it is used. For example, a pin variable may be defined by the drawing section and then be available to the SPICE section, while a schematic-specific property may exist only for one editor's declaration. Test each conditional path and do not assume a variable exists for every schematic format.</p>
+            <p>See <a href="alib_variables.html">ALIB variables</a> and <a href="alib_logic.html">ALIB logic statements</a> for the available operations and syntax details.</p>
+        </section>
+
+        <section>
+            <h2>Distant connections</h2>
+            <p>ALIB also supports so-called distant connections. These are additional, usually invisible connections that let one component connect to a pin on another component without drawing a normal wire between them in the schematic.</p>
+            <p>This is useful for shared supply connections. For example, a logic IC can obtain its VCC and GND connections from a separate supply component. The library definition declares a named connection with <code>SET_CONNECTION</code> and refers to it from another component with <code>GET_CONNECTION</code>. The resulting local connection can then be included in the component's SPICE instance line like any other pin.</p>
+            <p>If a component reports that a distant connection has no source, the circuit may be missing the supply unit or the relevant connection. See <a href="alib_DistantConnection.html">Distant connections in ALIB files</a> for both authoring details and a troubleshooting example.</p>
+        </section>
+
+        <section>
+            <h2>Animation and displayed simulation values</h2>
+            <p>Some ALIB definitions include an <code>&lt;animation&gt;</code> section. It can use values calculated during the transient simulation to show the current state of a component or display a measured quantity. For example, a transistor may indicate whether it is off, conducting, or in its linear region; other components can show a current, voltage difference, or an internal model value.</p>
+            <p>Pin currents and voltages can be accessed using the animation language's supported expressions. Internal quantities generally need to be saved by the SPICE model first and can then be read by the animation section. These values are evaluated at simulation timesteps when component animation is enabled. A component's animation therefore depends on both a suitable SPICE model and correctly defined animation instructions.</p>
+            <p>Animation is an optional presentation layer: it does not replace the underlying circuit model, and a visually informative animation is only as reliable as the simulated quantities from which it is derived.</p>
+        </section>
+
+        <section>
+            <h2>How can I add a library to AniCAD?</h2>
+            <p>The usual method is to copy the <code>.alib</code> file into the <code>libraries</code> directory under the AniCAD installation directory. Some libraries are organised in subdirectories, for example libraries intended specifically for KiCad Eeschema. Keep related files together and follow the directory structure expected by your installation.</p>
+            <p>If you are not sure where AniCAD is installed, check the shortcut or the installation directory selected during setup. After adding a library, restart or reload the relevant circuit/library view if AniCAD does not immediately recognise the new components.</p>
+            <p>For KiCad symbol libraries, AniCAD also documents a workflow to combine existing ALIB definitions with symbols from <code>.kicad_sym</code> files. This can help add missing symbol drawings while preserving the existing simulation definitions. See <a href="alib_harmonize_internal.html">Harmonising an internal ALIB library with KiCad symbols</a>.</p>
+        </section>
+
+        <section>
+            <h2>How can I create or modify an ALIB file?</h2>
+            <p>ALIB files are plain text and can be edited in a text editor. The quickest way to learn the format is to start with a similar component in one of the shipped libraries and adapt it carefully. The numbered libraries include basic components, semiconductors, three-phase components, magnetic components, mathematics, flags and measurement components; other files contain specialised or legacy definitions.</p>
+            <p>When creating a component, work through the following checks:</p>
+            <ol>
+                <li>Identify the exact component identifier and fields used by the schematic editor.</li>
+                <li>Define the parameters and provide clear default-value examples where appropriate.</li>
+                <li>Draw the symbol and verify that every pin has the correct name and position.</li>
+                <li>Write the SPICE model and ensure its node order matches the symbol's pin mapping and the simulator's requirements.</li>
+                <li>Add conditional logic only where needed, and test all relevant parameter variants.</li>
+                <li>If animation is provided, verify that the displayed values correspond to the intended simulated quantities.</li>
+                <li>Document assumptions, model limitations, sources and licence conditions.</li>
+                <li>Test the component in a small circuit before relying on it in a larger design.</li>
+            </ol>
+            <p>Start with <a href="alib_creating.html">Creating components in ALIB files</a>, then consult the focused pages on <a href="alib_variables.html">variables</a>, <a href="alib_logic.html">logic</a>, <a href="alib_double_use.html">aliases and multiple declarations</a>, and <a href="alib_DistantConnection.html">distant connections</a>.</p>
+        </section>
+
+        <section>
+            <h2>Licensing, redistribution and reliability</h2>
+            <p>There is no single licence that automatically applies to every component in every ALIB file. A library may contain original definitions, adapted models, or SPICE text supplied by a manufacturer or another project. The applicable licence can therefore differ from component to component.</p>
+            <p>The AniCAD libraries aim to be as freely usable and redistributable as possible, but some embedded model text may have restrictions on modification or redistribution. Read the component's description and any referenced licence before copying, modifying or publishing it. When creating your own component, include clear information about its source and licence, and preserve notices required by the original licence.</p>
+            <p>Component models are provided for their stated purpose and may be simplified, incomplete or inaccurate. They are not guaranteed to be error-free or suitable for safety-critical, production, or compliance decisions. Validate models against datasheets, measurements and the intended operating conditions. If you discover an error in a supplied library, please contact the AniCAD maintainers.</p>
+        </section>
+    </main>
+
+    <footer class="framed">
+        <ul_horizontal>
+            <li><a href="https://www.cirnavsys.com">Home</a></li>
+            <li><a href="about_us.html">About us</a></li>
+            <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+        </ul_horizontal>
+    </footer>
+</body>
 </html>
