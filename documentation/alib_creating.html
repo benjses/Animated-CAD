@@ -1,0 +1,277 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | library creation</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            The following text is for developers, who want to write new ".alib"-files or want to add Components to existing ones.
+            If you have general questions about the ".alib"-files, then check out the <a href="alib_library.html">overview about alib-libraries</a>
+            <h2>How to create Components in ".alib"-files</h2>
+        
+            <h4>Sections of the ".alib"-file</h4>
+            A component in ".alib"-files has the following sections: (example <a href="../libraries/components.alib">here</a>, open with text editor)
+            <ul_vertical>
+            <li>Description : Some informations for the user</li>
+            <li>Schematic : Declares the component and its variables</li>
+            <li>Symbol : Describes the connections and the drawing elements of the component</li>
+            <li>Spicetext : Describes how the component shall be simulated in 
+            <a href="https://en.wikipedia.org/wiki/Ngspice">Ngspice</a></li>
+            </ul_vertical>
+            <br>
+            The Symbol and the Spicetext sections support <a href="alib_logic.html">logic statements</a>,<br>
+            also, it supports <a href="alib_DistantConnection.html"> connecting to the pins of other components with distant connections</a>
+            
+            <h3>Description</h3>
+            The <b>Description</b> is optional, however we recommend to describe each component properly.
+            Also the description should contain some license information.<br>
+            
+            <h3 id="schematic">Schematic</h3>
+            The <b>Schematic</b> is mandatory, since it is needed to describe and to identify the component. Also the Schematic contains the variables, for example the ohmic value of a resistor.<br>
+            There may be a Schematic section for <a href="https://en.wikipedia.org/wiki/Quite_Universal_Cirquit_Simulator">Q.U.C.S.</a> and / or for <a href="https://en.wikipedia.org/wiki/KiCad">KiCad Eeschema</a>. The Schematic sections for these schematic creation programs are different since they are adapted to the schematic files (".sch"-files) format of each program. To see how these sections are adapted to the schematic format of Q.U.C.S or of Eeschema, you can compare these schematic files to Example 1 below:<br>
+            <br>
+            The schematic sections may contain ALIAS lines. This is a line that starts with the word "ALIAS " (written in uppercase, without the apostrophes). After this buzzword, you can list up all the names this component may have - see in Example 2, below. Also, you may write multiple schematic sections in one component, see in the <a href="alib_double_use.html"> description of how to use a component description multiple times</a>
+            <br>
+            As in qucs-schematics, the identification of the component is the first word of that section, which in Example 1 is <code>R</code><br>The variables in qucs are simply listed one after another, separated by a space: after the identifier, there are always the same eight variables which are:<br>
+            <code>[name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate]</code> , and after that there usually are some additional variables, for example <code>[value]</code> and <code>[value_v]</code>. <br>
+            The easiest way to find out which additional variables a component needs, is to open that component in Q.U.C.S and check out the Dialog "Edit Component Properties" <a href="alib_creating_qucs_args_list.png"> (see this screenshot made from Q.U.C.S. component showing the properties of a Resistor)</a>. You need a pair of additional variables for each property listed in that dialog, for example <code>[X]</code> and <code>[X_v]</code>. Because the second one of this pair, the one  with the additional "<code>_v</code>", is a boolean value which states whether the first one of this pair is visible in Q.U.C.S. (however it is not relevant for AniCAD at the moment. Still needed for compatibility)<br>
+            <br>
+            As in Eeschema-schematics, the identification of the component is the word after the <code>L</code>, which is in Example 1 <code>pspice:R</code>.<br>
+            The variables are listed with identifiers "F 0","F 1","F 2"... and for each variable/identifier, a new line is needed.
+            Here you can find out in a similar way, to open the component in eeschema, and writing down the variables stated in the dialog window. However, to find out the format of text you can easily look up the text in a schematic file which was created with eeschema. There you may find text similar to this one: (The parts in <strike>strikethrough</strike> are not needed for the library. The parts marked in <font color="blue"><b>blue</b></font> are the variables' parameters and need to be replaced by the variable:<br>
+            <code>
+                <strike>$Comp</strike><br>
+                L pspice:R <strike>R2</strike><br>
+                <strike>U 1 1 5D46EFFA</strike><br>
+                <strike>P 2400 2150</strike><br>
+                F 0 <font color="blue"><b>"R2"</b></font><strike> V 2195 2150 50  0000 C CNN</strike><br>
+                F 1 <font color="blue"><b>"10"</b></font><strike> V 2286 2150 50  0000 C CNN</strike><br>
+                F 2 <font color="blue"><b>""</b></font><strike> H 2400 2150 50  0001 C CNN</strike><br>
+                F 3 <font color="blue"><b>"~"</b></font><strike> H 2400 2150 50  0001 C CNN<br>
+                    1    2400 2150<br>
+                    -1   0    0    1  <br> 
+                $EndComp</strike>
+            </code>
+            <h3> Symbol</h3>
+            The <b>Symbol</b> is mandatory for qucs, and is optional for Eeschema. That is because usually eeschema creates a "cache.lib"-file for each schematic in the same directory and that "cache.lib" file contains drawing information for each component of the schematic. However, in most cases it is better to create a Symbol section for Eeschema, because first, you can individualize the drawing, second the "cache.lib" file can get lost and third and most important, you can control the names and positions of the connections of the component if you specify a symbol.<br>
+            
+            The symbol section may be written in one of two available formats, which will be called default-format and eeschema-format:<br>
+            We made the eeschema-format available so that you can easily implement your own adaptions to eeschema drawings. Under <a href="https://www.compuphase.com/electronics/LibraryFileFormats.pdf">this external link</a>, is a documentation "LibraryFileFormats.pdf" for KiCad, which contains a section called "Drawing section", where the drawing elements of the eeschema-format are explained, too.
+            The default-format is an XML-style drawing description, and the eeschema-format has one drawing element per line.
+            The default-format can be used for all kinds of Symbol sections, the eeschema-format can only be used for eeschema_sch sections.<br>
+            The following table shows the usual drawing elements in the two different formats. The parts in <strike>strikethrough</strike> are needed, but ignored yet.
+            
+            </section>
+            <section>
+            <table border="1">
+            <tr><th>drawing element</th><th>eeschema-format</th><th>default-format</th></tr>
+            <tr><td>Port</td><td><code>X name ctr x -y length orientation ts_name <strike>ts_ctr unit convert etype</strike><br>
+                                       </code>Example:<code> X D 1 100 250 100 D 50 <strike>50 1 1 P</strike></code>
+            </td><td><code>&lt;.PortSym x y caption <strike>angle</strike>&gt;<br>
+                        </code>Example:<code>&lt;.PortSym 10 -25 [D] <strike>90</strike>&gt;</code></td></tr>
+            <tr><td>Rectangle</td><td><code>S startx -starty endx -endy <strike>unit convert thickness</strike> cc </code><br>
+                    </code>Example:<code>S -40 150 40 -150 <strike>0 1 0</strike> N</code></td><td><code>&lt;Rectangle startx starty dx dy pencolor <strike>pendwidth penstyle brushcolor brushstyle</strike> filled&gt;</code> <br>
+                    Example:<code>&lt;Rectangle -4 -15 8 15 #000080 <strike>2 1 #000080 1</strike> 0&gt;</code></td></tr>
+            <tr><td>Line</td><td>(use a polygon with nb=2)<br>
+            Example:<code> P 2 <strike>0 1 0</strike>-180 0 -150 90 N</code></td><td><code>&lt;Line startx starty dx dy color <strike>pendwidth penstyle
+            </strike>&gt;</code><br>
+            Example:<code>&lt;Line -18 0 3 -9 #000080 <strike>2 1</strike>&gt;</code></td></tr>
+            <tr><td>Polygon </td><td><code>P nb <strike>parts convert thickness</strike> x_1 -y_1 x_2 -y_2</code> ... <code>x_nb -y_nb cc</code><br>
+            Example:<code> P 3 <strike>0 1 0</strike> -50 0 50 0 0 -100 F</code></td><td><code>&lt;Polygon_nb x_1 y_1 x_2 y_2</code>...<code>x_nb y_nb pencolor <strike>penwidth penstyle brushcolor brushstyle</strike> filled&gt;</code>
+            <br>Example:<code>&lt;Polygon_3 -5 0 5 0 0 10 #000080 <strike>2 1 #000080 2</strike> 1&gt;</code></td></tr>
+            <tr>
+                <td>Circle/Ellipse</td>
+                <td><code>C xmid ymid radius <strike>unit convert thickness</strike> cc</code>
+                    <br>Example:<code>C 0 0 50 <strike>1 0 10</strike> N</code></td>
+                <td><code>&lt;Ellipse startx starty dx dy pencolor <strike>penwidth penstyle brushcolor brushstyle</strike>  filled&gt;</code>
+                    <br>Example:<code>&lt;Ellipse -50 -50 100 100 #000080 <strike> 1 1 #000080 2</strike> 0&gt;</code></td>
+            
+            <tr></tr>
+                <td>Arc</td>
+                <td><code>A xmid ymid radius startangle endangle <strike>part convert thickness</strike> cc sX sY eX eY</code>
+                    <br>Example:<code></code></td>
+                <td><code></code>
+                    <br>Example:<code></code></td>
+            -->
+            <tr></tr>
+                    <td>Text</td>
+                <td><code>T <strike>orientation</strike> x y <strike>dimension unit convert</strike> Text</code>
+                    <br>Example:<code>T <strike>1</strike> 50 -10 <strike>1 0 0</strike> Hello World</code></td>
+                <td><code>&lt;Text x -y size color <strike>angle</strike> "Text"&gt;</code>
+                    <br>Example:<code>&lt;Text 5 1 12 #000080 <strike>90</strike> "Hello World"&gt;</code></td>
+            </tr>
+            </table>
+        </section><section>
+            If you want to use the eeschema-format, you need to start your Symbol section with the line <code>DRAW</code> and end that section with the line <code>ENDDRAW</code>, as shown in Example 1 below.
+            <br>Otherwise the default-format is used.<br>
+            <br>
+            In eeschema-format, the filling of a rectangle, polygon, circle or arc is determined by the variable "cc": If that variable's value is F, then it is filled; if it is N then it is not filled. In default format, the variable "filled" determines the filling of the form; if it is "1" then it is filled, if it is "0" then it is not filled.<br>
+            <br>
+            For ports, "caption" and "name" both are the identifier for that port. But "caption" in default-format needs the brackets "[" and "]", whereas the "name" in eeschema-format shall not have the brackets.<br>
+            Also, the port-name in eeschema-format is printed on the schematic automatically, whereas the port-caption is not.<br>
+            <br>
+            
+            Note that the y-coordinates in eeschema-format are negative in that table. That is because the coordinate system in eeschema-format is adapted to the coordinate system for declaration of components in KiCad Eeschema, where the positive Y-Direction is Downwards, whereas in default-format the positive Y-Direction is upwards.<br>
+            Also the coordinate numbers are 10 times larger in eeschema-format, because a circuit with the same coordinates would be drawn about ten times smaller in KiCad-Eeschema than in Q.U.C.S.<br>
+            <br>
+            The default-format supports <a href="alib_logic.html">logic statements</a>
+        </section><section>
+             <h3 id="spice">Spicetext</h3>
+             The spicetext is mandatory, since it is needed to describe the component's electric caracteristic. Generally the spicetext-section contains the netlist information for NGSpice, which is described in detail in <a href="http://www.ngspice.sourceforge.net/docs/ngspice-manual.pdf"> this very detailed Ngspice user manual</a><br>
+             <br>
+             The spice section supports <a href="alib_logic.html">logic statements</a>. In the spice section you should also use the variables which were declared in the Schematic section above. Also you should use the connections' identifiers which were declared in the symbol section above.<br>
+             <br>
+             Please be aware that components with more than two connections, such as Transistors need specific names, in order to be simulated correctly by ngspice. These specific names are the same as the ones which are used in ngspice.<br>
+             -> for MOSFETs, the Drain Gate Source and Bulk connections must use the captions [D] [G] [S] and [B], lower case is also acceptable, but no other caption.<br>
+             -> for BJTs, the Collector Base Emitter and Substrate connections must use the captions [C] [B] [E] and [S], lower case is also acceptable, but no other caption.<br>
+             <br>
+             If you are not aware about the correct names, you may search in the Ngspice user manual, or you can put your device into a subcircuit. In case of subcircuit, you can give out names of connections as you like and the currents through that pin are still simulated. But this option is a bit more to write and a bit slower than directly using the correct pin names.
+             
+        </section><section>
+            <h3>Example 1</h3>
+            A component may be described like this example: <br>
+            (This example describes a resistor. It is a shortened version of
+            the resistor from the components.alib file in the <a href="../libraries/components.alib">standard library</a>)<br>
+            <code>
+                &lt;Component&gt;<font color="#00A000"> // start of component</font><br>
+                <br>
+                &emsp;&emsp;&lt;Description&gt;<font color="#00A000"> // start of description section</font><br>
+                &emsp;&emsp;&emsp;Example component, resistor. <font color="#00A000"> // Information about component itself</font><br>
+                &emsp;&emsp;&emsp;This component is public domain. <font color="#00A000"> // Information about license</font><br>
+                &emsp;&emsp;&lt;/Description&gt;<font color="#00A000"> // end of description section</font><br>
+                <br>
+                &emsp;&emsp;&lt;qucs_sch&gt;<font color="#00A000"> // start of Schematic for </font><a href="https://en.wikipedia.org/wiki/Quite_Universal_Cirquit_Simulator">Q.U.C.S.</a></font><br>
+                &emsp;&emsp;&emsp; R [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [value] [value_v] ... <font color="#00A000"> // declaration of that component, but shortened, for schematics in Q.U.C.S.</font><br>
+                &emsp;&emsp;&emsp;<font color="#00A000"> // qucs-identificator of this component is R, because that declaration's first word is R </font><br>
+                &emsp;&emsp;&lt;/qucs_sch&gt;<font color="#00A000"> // end of Schematic for Q.U.C.S.</font><br>
+                <br>
+                &emsp;&emsp;&lt;qucs_symbol&gt;<font color="#00A000"> // start of Symbol for Q.U.C.S.</font><br>
+                &emsp;&emsp;&emsp;&lt;Rectangle -18 -9 36 18 #000080 2 1 #000080 1 0&gt;<font color="#00A000"> // Drawing of a rectangle with starting point (-18 | -9), dx=36, dy=18, so ending point is (18 | 9)</font><br>
+                &emsp;&emsp;&emsp;&lt;.PortSym -30 0 [pin1] 0&gt;<font color="#00A000"> // first connection at (-30 | 0). Here we give it the name "pin1"</font><br>
+                &emsp;&emsp;&emsp;&lt;.PortSym 30 0 [pin2] 0&gt;<font color="#00A000"> // second connection at (30 | 0). Here we give it the name "pin2"</font><br>
+                &emsp;&emsp;&emsp;&lt;Line -30 0 12 0 #000080 2 1&gt;<font color="#00A000"> // drawing of a line beween the rectangle and "pin1"</font><br>
+                &emsp;&emsp;&emsp;&lt;Line 30 0 -12 0 #000080 2 1&gt;<font color="#00A000"> // drawing of a line beween the rectangle and "pin2"</font><br>
+                &emsp;&emsp;&lt;/qucs_symbol&gt;<font color="#00A000"> // end of Symbol for Q.U.C.S.</font><br>
+                <br>
+                &emsp;&emsp;&lt;eeschema_sch&gt;<font color="#00A000"> // start of Schematic for </font><a href="https://en.wikipedia.org/wiki/KiCad">KiCad Eeschema</a></font><br>
+                &emsp;&emsp;&emsp; L pspice:R <font color="#00A000"> // eeschema-identificator of this component is pspice:R , because that is what is followed by the L</font><br>
+                &emsp;&emsp;&emsp; F 0 "[name]" <font color="#00A000"> // identification of variable [name] to the line starting with F 0 </font><br>
+                &emsp;&emsp;&emsp; F 1 "[value]" <font color="#00A000"> // identification of variable [value] to the line starting with F 1 </font><br>
+                &emsp;&emsp;&emsp; F 2 "[footprint]" <font color="#00A000"> // identification of variable [footprint] to the line starting with F 2 </font><br>
+                &emsp;&emsp;&emsp; F 3 "[datasheet]" <font color="#00A000"> // identification of variable [datasheet] to the line starting with F 3 </font><br>
+                &emsp;&emsp;&emsp; <font color="#00A000"> // F0 to F3 are nearly always the same. Therefor these are set by default, and can be omitted as in Example 2 below. </font><br>
+                &emsp;&emsp;&lt;/eeschema_sch&gt;<font color="#00A000"> // end of Schematic for Eeschema</font><br>
+                <br>
+                &emsp;&emsp;&lt;eeschema_symbol&gt;<font color="#00A000"> // start of Symbol for Eeschema</font><br>
+                &emsp;&emsp;&emsp; DRAW <font color="#00A000"> // start marker for EESCHEMA-style drawing notation </font><br>
+                &emsp;&emsp;&emsp; S -40 150 40 -150 0 1 0 N <font color="#00A000"> // drawing of a rectangle with starting point (-40 | 150) and ending point (40 | -150) </font><br>
+                &emsp;&emsp;&emsp; X ~ 1 0 250 100 D 50 50 1 1 P <font color="#00A000"> // first connection at (0 | 250). Includes a connection line with length 100 Downwards to the rectangle.</font><br>
+                &emsp;&emsp;&emsp; X ~ 2 0 -250 100 U 50 50 1 1 P <font color="#00A000">// second connection at (0 | -250). Includes a connection line with length 100 Upwards to the rectangle. </font><br>
+                &emsp;&emsp;&emsp;<font color="#00A000">// The name of these connections are not specified expicitely but just marked as empty by a "~". <br>
+                &emsp;&emsp;&emsp;// In these cases, the names of the connections are automatically created by AniCAD to start with "pin" and end with the connection number.
+                <br>
+                &emsp;&emsp;&emsp;// Here that is "pin1" and "pin2",<br>
+                //That is also why the pins in the Symbol for Q.U.C.S were given the same names: So that these two pinnames can be used in the spice section below </font><br>
+                &emsp;&emsp;&emsp; ENDDRAW <font color="#00A000"> // end marker for EESCHEMA-style drawing notation </font><br>
+                &emsp;&emsp;&lt;/eeschema_symbol&gt;<font color="#00A000"> // end of Symbol for Eeschema</font><br>
+                <br>
+                &emsp;&emsp;&lt;Spice&gt;<font color="#00A000"> // start of description section</font><br>
+                &emsp;&emsp;&emsp;R_[name] [pin1] [pin2] [value] <font color="#00A000"> // Spice simulation line of the component.<br>
+                &emsp;&emsp;&emsp;// Uses the name and the value declared in the schematic and the connections declared in the symbol</font><br>
+                &emsp;&emsp;&lt;/Spice&gt;<font color="#00A000"> // end of description section</font><br>
+                <br>
+                &lt;/Component&gt;<font color="#00A000"> // end of component</font><br>
+            </code>
+        </section>
+        <section>
+         <h3 id="definitions">definitions</h3>
+         The AniCAD allows definitions of constants in seperate lines, which have the form:<br>
+         <code>DEFINE [cname] K1 <font color="#00A000">//defines the constant [cname] to the value K1</font></code><br> 
+        the definitions can be used in:
+         <ul_vertical class="selectable">
+                <li>The declaration, see above</li>
+                <li>The drawing section, see above</li>
+                <li>The spice section, see above and</li>
+                <li>The parameter-definitions-section,called "param"-section", which has the sole purpose to define constant parameters:
+            </ul_vertical>
+        <h3>Example 2</h3>
+            The following example shows the use of define-lines <br>
+            Define-lines are also intensively used in the <a href="../libraries/eeschema_only/Relay.alib">library for relays</a>), but let's start with this example:<br>
+            <code>
+              &lt;Component&gt;<br>
+                &emsp;&emsp;&lt;eeschema_sch&gt;<br>
+                &emsp;&emsp;&emsp; DEFINE [producer] A<font color="#00A000">//Definitions for the three components below</font><br>
+                &emsp;&emsp;&emsp; L Relay:ProducerA_ModelA5_5V<br> 
+                &emsp;&emsp;&emsp; L Relay:ProducerA_ModelA12_12V<br>
+                &emsp;&emsp;&emsp; L Relay:ProducerA_ModelAERR_error<br>
+                &emsp;&emsp;&lt;/eeschema_sch&gt;<br>
+                <font color="#00A000"> // there can be multiple definitions sections:</font><br>
+                &emsp;&emsp;&lt;eeschema_sch&gt;<br>
+                &emsp;&emsp;&emsp; L Relay:ProducerB_ModelA5_5V<br> 
+                &emsp;&emsp;&emsp; L Relay:ProducerB_ModelA12_12V<br>
+                &emsp;&emsp;&emsp; DEFINE [producer] B<font color="#00A000">//Definitions for the two components above</font><br> 
+                &emsp;&emsp;&lt;/eeschema_sch&gt;<br>
+                <br>
+                &emsp;&emsp;&lt;param&gt;<br>
+                &emsp;&emsp;&emsp; IF [model] ENDS_WITH 5V THEN <br> 
+                &emsp;&emsp;&emsp;&emsp; DEFINE [nominal_voltage] 5<br>
+                &emsp;&emsp;&emsp; ELSEIF [model] ENDS_WITH 12V THEN<br>
+                &emsp;&emsp;&emsp;&emsp; DEFINE [nominal_voltage] 12<br>
+                &emsp;&emsp;&emsp; ELSE&lt;ERROR&gt;Unknown nominal voltage&lt;/ERROR&gt;<font color="#00A000"> // gives out an error message if the component is of model ProducerA_ModelAERR_error</font><br>
+                &emsp;&emsp;&emsp; END END <font color="#00A000"> // Close the two IF-Statements</font><br>
+                &emsp;&emsp;&lt;/param&gt;<br>
+                <br>
+                &emsp;&emsp;&lt;eeschema_symbol&gt;<br>
+                &emsp;&emsp;&emsp; DRAW <font color="#00A000"> </font><br>
+                &emsp;&emsp;&emsp; IF [producer] EQUAL_TO A THEN <font color="#00A000"> </font><br>
+                &emsp;&emsp;&emsp;  <font color="#00A000"> //drawing of the component in the same style as producer A does in his datasheet </font><br>
+                &emsp;&emsp;&emsp; ELSEIF [producer] EQUAL_TO B THEN <br>
+                &emsp;&emsp;&emsp; <font color="#00A000">//drawing of the component in the same style as producer B does in his datasheet</font><br>
+                &emsp;&emsp;&emsp;  ENDEND<font color="#00A000"> // Close the two IF-Statements</font><br>
+                &emsp;&emsp;&emsp; ENDDRAW <br>
+                &emsp;&emsp;&lt;/eeschema_symbol&gt;<br>
+                <br>
+                &emsp;&emsp;&lt;Spice&gt;<br>
+                &emsp;&emsp;&emsp; IF [nominal_voltage] EQUAL_OR_HIGHER_THAN 12 THEN <font color="#00A000"> </font><br>
+                &emsp;&emsp;&emsp;  <font color="#00A000"> //some model for relays with nominal voltage U_n&gt;=12V </font><br>
+                &emsp;&emsp;&emsp; ELSEIF [nominal_voltage] LOWER_THAN 5 THEN <br>
+                &emsp;&emsp;&emsp; <font color="#00A000">//some model for relays with U_n&lt;5V</font><br>
+                &emsp;&emsp;&emsp; ELSE <br>
+                &emsp;&emsp;&emsp; <font color="#00A000">//some model for relays with U_n between 5V and 12V</font><br>
+                &emsp;&emsp;&emsp;  ENDEND<font color="#00A000"> </font><br>
+                &emsp;&emsp;&lt;/Spice&gt;<br>
+                <br>
+                &lt;/Component&gt;<font color="#00A000"><br>
+            </code>
+       
+       
+       </section>
+        <section>
+            <h2>Under which license are the ".alib"-files distributed?<br>
+            And under which license may I distribute an ".alib"-file?</h2>
+            These questions are discussed in the <a href="alib_library.html">overview about alib-libraries</a>
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Curve editing</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Curves</h2>
+            <h4>Intro</h4>
+            The Animated CAD allows the user to add curves over the time line below the schematic.<br>
+            For example, the following image shows some current waves in light blue, and a loading curve which starts at 0V and ends at ca.9.3V in green:<br> 
+            
+            <img src="curve_loading.png" alt="image of a loading curve" title="image of a loading curve(green) and a wave-formed current(blue)">
+            
+        </section>
+        <section>   
+            <h4>How to add curves</h4>
+            You can add graphs AFTER  <a href="analysis_chooser.html">making an analysis</a>. Because to show some curves, the AniCAD needs values. And these values are calculated or measured in the analysis.<br>
+            <br>
+            <u>To add a voltage curve</u>:<br>
+            1:Click on a wire in the schematic.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Then <a href="main_window.html#right">the panel at the right side of the main window</a> expands and shows you some information about the wire. There are also some buttons in that panel. <br>
+            2: Click on the button named "add/remove graph".<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; Then the curve which represents the voltage at that wire(1) is added.<br>
+            <br>
+            <u>To add a current curve</u>:<br>
+            1: Click on a component in the schematic.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; Then <a href="main_window.html#right">the panel at the right side of the main window</a> expands and shows you some information about the component. <br>
+            2: Click on the button named "[pinname] add/remove graph". <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Then the curve which represents the current through that component's pin is added.<br>
+            <br>
+            
+            <h4>The edit dialog</h4>
+            In order to open the edit dialog:<br>
+            1: Open the edit-dialog. You can find it on the <a href="main_window.html#right">left side of the main window</a><br>
+            2: select the "curves"-tab. You now should see a window as this:<br>
+            <img src="curve_editing_dialog.png"
+            alt="dialog to edit windows"
+            title=
+"Dialog to edit curves, matches the curves shown above. Here you can...
+    ... open this help-document,
+    ... see which curves are added at the moment,
+    ... set their form and parameters, as described below 
+    ... remove a curve
+In the background is the panel and the button which are used to open that dialog.">
+        </section>
+        <section>
+            <h4>How to edit a curve</h4>
+            You can edit the form of a curve by:<br>
+            1: change the text in the field shown above. Therefor you should use one of the functions below.<br>
+            2: click the set-button.<br>
+            <br>
+            <h4 id="functions">Functions</h4>
+            Functions are used in the textfields to specify the curves, and for editing <a href="drawing_functions.html">drawing parameters</a>. They must be of one of the following forms:<br>
+            <ul_vertical>
+            <li><code>range min max</code>, where min and max are values, shows the value which are between [min] and [max]. This form is chosen by default for new curves, as shown in the image above.</li>
+            <li><code>poly c<sub>0</sub> c<sub>1</sub> c<sub>2</sub> ... c<sub>n</sub>   </code> where c<sub>0</sub> to c<sub>n</sub>  are values, shows a polynomial form of the function: The y-value is the distance of the curve to the zero-line in pixels. It depends of the x-value, which is the voltage or current value in Volt or Ampere: y=f(x)=c<sub>0</sub>+c<sub>1</sub>&middot;x+c<sub>2</sub>&middot;x<sup>2</sup>+...+c<sub>n</sub>&middot;x<sup>n</sup><br>
+            You can choose as many parameters as you like, so you can choose n. But the most used form of poly is n=1, which is a linear function. For example, <code>poly 0.0 0.5</code> shows 0.5 pixel per volt or per ampere. (So the first visible increase is at 1 pixel, which is the equivalent of 2volt or 2ampere.)</li>
+            <li><code>step x<sub>0</sub> y<sub>0</sub> x<sub>1</sub>  y<sub>1</sub> x<sub>2</sub>  y<sub>2</sub> ... x<sub>n</sub>  y<sub>n</sub> </code> makes a step function with the steps specified by the pairs x<sub>i</sub> y<sub>i</sub> i={0;1;2;...;n}. Can be used to make discrete functions, e.g. for digital electonics. Also, the pairs  x<sub>i</sub> y<sub>i</sub> can be combined in brackets. For example, 
+            <code>step (1|-20) (3|-10) (5|0) (7|10) (9|20)</code> is accepted too, and will modify the green curve above as in the following image: 
+            </li>
+            <img src="curve_loading_discrete_step.png" alt="image of the loading curve above, but as a discret function, modified by step-command"
+title="image of the same green loading curve as above, but made as a discrete function with the command:
+step (1|-20) (3|-10) (5|0) (7|10) (9|20)
+So in this image, the voltages, which start at 0V and end at ca.9,3V are put into six categories:
+0V - 0,999 V at 25 pixel below the zero line (-25 pixel is the lowest value, because here it is the lower end of the window)
+1V - 2,999 V at 20 pixel below the zero line
+3V - 4,999 V at 10 pixel below the zero line
+5V - 6,999 V on the zero line
+7V - 8,999 V at 10 pixel above the zero line
+9V - infinity V at 20pixel above the zero line">
+            </ul_vertical>
+        </section>
+        <section>    
+            <ul_vertical>
+            <li><code>lin x<sub>0</sub> y<sub>0</sub> x<sub>1</sub>  y<sub>1</sub> x<sub>2</sub>  y<sub>2</sub> ... x<sub>n</sub>  y<sub>n</sub></code> similar to step, but makes a linear interpolation between the given points</li>
+            <li><code>log (base) (factor) (offset)</code> where (base) (factor) and (offset) are optional parameters, specifies the y- distance to the zero-line as y=f(x)=factor&middot;log<sub>base</sub>(x)+offset.<br>
+            If base is not given, then it is set to 10 by default. (2)<br>
+            If factor is not given, then it is set to 1 by default.<br>
+            If offset is not given, then it is set to 0 by default.
+            </li>
+            <li><code>ln (factor) (offset)</code> similar to log, but the base is the euler-constant e=ca.2,718.</li>
+            <li><code>const n</code> where n is a value, returns a constant value y=n, which is independent from x.
+            </ul_vertical>
+        </section>
+        <section>
+           <h4>Footnotes</h4>
+           (1) To be more precise: The voltage of the node, which contains that wire, is displayed. The voltage is the difference between that node's electric potential and the ground potential in Volt. That's why you can not make a curve of the voltage of a wire, which is connected to the ground connection: By definition, that curve would be a horizontal line at the value zero.<br>
+           <br>
+           (2) Using a base other than 10 or euler in this log-function relies on the division of two logarithms, and therefor is less precise than these two standard base functions when calculated by a computer.
+            
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

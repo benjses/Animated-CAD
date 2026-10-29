@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | How repair the video creation</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>How repair the video creation</h2>
+            <h4>Content</h4>
+            Chapter 1: <a href="#find">find the correct file</a><br>
+            Chapter 2: <a href="#set">set the correct path</a><br>
+            Chapter 3: <a href="#linux">settings for Unix/Linux-Users</a><br>
+            
+            <h4 id="find">Chapter 1: find the correct file</h4>
+            The video creation is based on the external tool FFmpeg. In order to create videos, you need to install and link FFmpeg. (See also the <a href="getting_started/external_programs.html#linking"> this</a> introduction.)<br>
+            That's why you need to find the ffmpeg file, called <code>ffmpeg.exe</code><br> You can either search it in your program folder, or you can download the file from <a href="https://www.ffmpeg.org">ffmpeg.org</a> <br>
+            <br>
+            It should be in the folder, where you have downloaded the Animated CAD as shown in the following two images: (click to increase, hover to see description):<br>
+            <a href="video_repair_find_file01.png"><img src="video_repair_find_file01.png" height=200 width=400 title="The extracted folder" ></a>
+            <a href="video_repair_find_file01.png"><img src="video_repair_find_file02.png" height=200 width=400 title="subfolder with ffmpeg.exe"></a>
+        </section><section>
+            The first image shows the folder of the Animated CAD. The second image shows the subfolder with the ffmpeg file. You should find the file on your computer as well, but if you don't find it, then you can download it from ffmpeg.org
+            
+        </section><section>
+            <h4 id="set">Chapter 2: set the correct path</h4>
+            You can set the path in the "dependencies"-dialog. You can open that dialog from the settings menu, as shown in the following image:
+            
+        </section><section>
+            After you have opened the dialog, it should look like this image:<br>
+            <a href="video_repair_no_problem.png"><img src="video_repair_no_problem.png" title="That is what the dialog should look like. Bright green status." alt="You should see a bright green status field telling you that the external programs (NGspice and FFmpeg) are found and will be used."></a>
+        </section><section>
+            But if something is wrong, it might look like one of these. Hover the mouse over each image to see a description of the image:<br>
+            <a href="video_repair_problem_file_not_existing.png"><img src="video_repair_problem_file_not_existing.png" height=200 width=400 
+title="If the file that is linked does not exist, the dialog looks like this. In this case you need to find or download the file, then set the path correctly and then click on the save-button."></a>
+<a href="video_repair_problem_whitespaces.png"><img src="video_repair_problem_whitespaces.png" height=200 width=400 
+title="If the path of the file contains whitespace, the programs might fail to run. In that case, you can move the folder of the external_programs into an other folder, which does not contain any whitespace. Then set the new path and click on the save-button."></a>
+<a href="video_repair_problem_wrong_names.png"><img src="video_repair_problem_wrong_names.png" height=200 width=400 
+title="The given filenames  are not the expected filenames. That means, that you either renamed the exe files (in that case no problem) or you have a wrong file (that would be a problem, and you should select the correct file instead). You can hover over the status field to find out the expected filename."></a>
+        </section><section>
+            <h4 id="linux">Chapter 3: Settings for Unix/Linux-Users</h4>
+            The infos above were for windows computers. The correct settings for Unix are similar:
+            You also need to open the dialog for the dependencies. But instead of linking to a windows executable file like <code>ffmpeg.exe</code>, you need to download ffmeg for unix via the shell command: <code style="background-color:#444444"><font color="white">sudo apt-get install ffmpeg</font></code> or  alternatively: <code style="background-color:#444444"><font color="white">sudo apt install ffmpeg</font></code>  (see also at<a href="getting_started/setup.html"> setup documentation</a>). Alternatively you might download ffmpeg from your Ubuntu-Software-Center or similar graphical program.<br>
+            <br>
+            After you have installed ffmpeg, remove all text from the text field and click on the save button:<br>
+<a href="video_repair_no_problem_linux.png"><img src="video_repair_no_problem_linux.png" height=200 width=400 
+title="The dialog for unix computers should look like this. (Here a screenshot from Kubuntu Linux)
+As shown here for ngspice, you can remove all text and then click on save. Then the AniCAD should find the external program, because the external program is found by the operating system. So after clicking the save button, the status field should turn to green."></a>
+        </section><section>            
+		</section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Analysis dialogs</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Dialogs for creating analyses</h2>
+                <p>There are two ways, how an electric circuit can be analyzed: Either by simulation or by measuring.<br>
+                So AniCAD contains two types of dialogs for starting an analysis:
+                First for simulation, second for loading measured data. Both types are described in an own section below:
+                </p>
+            <h3 id="csv">Dialogs for loading data</h3><!--TODO diesen Abschnitt besser beschreiben!-->
+                <p>In this window the user can load a csv-file into the program. 
+                The csv-file shall describe the voltages and the currents of the previously loaded circuit</p>
+        
+            <h3 id="simulation"> The dialog for creating a simulation</h3>
+                <p>In this window the user can choose the parameters of a simulation:
+                The time settings, the parameters on how to draw currents and <a href="drawing_voltages.html">to draw voltages</a>, and where to save files of that analysis (if needed)
+                </p>
+                
+                <img src=analysis_chooser.png align="left" hspace="10" vspace="1">
+                
+                <h4>Time settings section</h4>
+                <p>In this first section, you can specify the parameters of the analysis: the maximal(*) timesteps and the end of the simulation.</p><p>
+                
+                These time parameters are specified in seconds. You can write a little s at the end, but you can also skip it.<br> 
+                You can use m for milli, u for micro, n for nano, p for pico, k for kilo etc: For example<br>
+                <code>2u</code> means two microseconds, and<br>
+                <code>3.45ms</code> means three point four five milliseconds.<br>
+                You can also use the En, where n is a whole number to say "times ten to the power of n"; For example<br> <code>2E-6</code> means two times ten to the power of -3 seconds, which is two microseconds, and<br> <code>34.5E-4</code> means thirty-four point five times ten to the power of -4 seconds which is equal to three point four five milliseconds.
+                 </p>
+                <p> Out of these parameters, a resulting spicetext is created, wich will be used to create an analysis of the circuit.
+                </p>
+                <p>(*) if the option "linearize Timesteps" is NOT chosen, then the timesteps may be shorter than the given timesteps.
+                This is due to the fact that AniCAD uses ngspice to simulate circuits, and ngspice may choose shorter timesteps, see at 
+                <a href="http://ngspice.sourceforge.net/docs/ngspice-manual.pdf">the ngspice user manual</a>, chapters "1.2.3 Transient Analysis" and
+                "15.3.9 .TRAN: Transient Analysis"
+                </p>
+                
+                <h4>Parameter drawing section</h4>
+                <p>In this second section, you can specify how currents and voltages shall be drawn:<br>
+                You can define how many significant digits(*) of the parameter-texts shall be shown. If that value is zero, then
+                the parameter texts will not be shown at all.<br>
+                You can select one several modes how arrows which symbolize currents shall be drawn via a button for each option.
+                For further information about each option, select the dialog and hover the mouse over the button of that option.
+                </p>
+                <p>(*) a significant digit is any digit, except for leading zeros.<br>
+                For example if the current of a component is equal to 0.0123456789 Ampere and you have specified the number of significant digits
+                to be 3, then the shown text will be "0.0123 A"</p>
+                
+                <h4>File settings section</h4>
+                <p>
+                    In this section you can select where the raw-file and the netlist-file of the analysis shall be saved.
+                    You can do so, if you would like to keep these files.
+                </p>
+                <p>
+                    But in the most cases, these files are not interesting for the user, and this section may be skipped. In these cases, the raw-file and the netlist-file are just created for this analysis and will be erased automatically when they are not needed anymore.
+                </p>
+                <h4>Which wires are drawn?</h4>
+                If you select no wires drawn, then no wires will be drawn.<br>
+                If you select some wires, then the program will draw the wires at some components.<br>
+                If you select all, then the program will try to draw all currents. But there are some cases, where the program can not draw some currents.<br>
+                For example, if you have multiple paralell wires, then the sum of the current through these wires might be known, but it's not clear, how much of that current flows through each one.<br>
+                An other example is if you have connected a wire to flags instead of components. The program does not measure a flag's current (since it is not an electric component, but a helping element for constructing a model on a computer).<br>
+                If you want to measure a current through a wire where currents are missing, then you should add a digital <a href="https://en.wikipedia.org/wiki/Shunt_(electrical)">shunt resistor</a><br>
+                
+                <h4>What to do when the analysis fails to run?</h4>
+                In that case, you might want to read <a href="ngspice_fail.html">this document</a>.
+                
+            </section>
+                
+                
+            
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | distantConnection</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+       <section>
+            <h4>What to do, when a source has a missing distant connection?</h4>
+            You might be looking at this help, because you got an error message like this one:
+            <br>
+        </section>
+        <section>
+            <img src="missing_distconn.png" alt="image of a dialog, stating that a distant connection has no potential sources">
+        </section>
+        <section>
+            <br>
+            This happens, because one of the components in your circuit needs a connection that it does not have. Usually, the missing connection(s) are the power supply connections. These connections often come from a different block of the same type. So the easiest way to solve this is to:<br>
+            <ul_vertical>
+            <li>copy that component, and place the copy at a free space in the circuit.</li>
+            <li>select the copy, and open the "edit-properties" window in eeschema, see image below.</li>
+            <li>select the unit. Usually the supply block is the last one in the list of available units, as in the image below.</li>
+            <li>press okay. The copied component should change its form, and only have the power supply pins.</li>
+            <li>connect these pins.</li>
+            <li>save the changed circuit in eeschema, and reload the circuit in the AniCAD</li>
+            </ul_vertical>
+            <img src="missing_distconn_edit.png" alt="eeschema window, edit properties. select unit c.">
+            
+       </section>
+       <section>
+            <h2>Distant connections in ".alib"-files</h2>
+             The following text is for developers, who want to write new ".alib"-files or want to add Components to existing ones.
+            If you have general questions about the ".alib"-files, then check out the <a href="alib_library.html">overview about alib-libraries</a>. If you want to know how to write ".alib"-files, then you might want to read <a href=alib_creating.html"> this manual</a>
+            <h4>What are distant connections?</h4>
+            Distant Connections (short "distconns") are connections, which do connect directly to an other component, without having to connect them in the schematic file.
+            
+            For example in this image, there there are three logical components:<br>
+            The one on the left, marked as "74 Source" and <br>
+            The two on the right, the "NOR" and "NAND" components, marked as "74HC02" and as "74HC00".<br>
+            Here the Source supplies the VCC and GND pin for the other two components.<br>
+            <br>
+            The Source component provides the supply voltage at its connection "VCC" and the ground connection "GND" to the other two components. Therefor the source component has two invisible connections - one for VCC and one for GND - and each of the two logical components also have two invisible connections each, which are connected to VCC and to GND.<br>
+            This way, the two logical components "know" which is their supply voltage and can calculate their correct output voltage. Without these two distant connections, the logical components could not adress their source, or they would need more "normal" connections.
+        </section>
+        <section>    
+            
+            <img src="alib_DistantConnection.png" alt="example image of Distant Connection"><br>
+        </section>
+        <section>
+            
+        </section>
+        
+        <section>
+            <h4>How are distant connections written in the libraries?</h4>
+            In the ".alib"-library, you can create a new distconn with a SET_CONNECTION statement.<br>
+            The <u> standard-style</u> to do write this statement in the drawing section is:
+            <code>
+                &lt;SET_CONNECTION [conn74_vcc] 0 -500&gt; <font color="green">//creates distant connection named "[conn74_vcc]" at position (x=0 y=-500)</font><br>
+                &lt;SET_CONNECTION [conn74_gnd] 0 500&gt; <font color="green">// creates distant connection named "[conn74_gnd]" at position (x=0 y=500)</font><br>
+            </code><br>
+            These distconns can be accessed by an other component with a GET_CONNECTION statement:<br>
+            <code>
+			&lt;.PortSym GET_CONNECTION [conn74_vcc]&gt; <font color="green">// uses "[conn74_vcc]" </font><br>
+			&lt;.PortSym GET_CONNECTION [conn74_gnd]&gt; <font color="green">// uses "[conn74_gnd]" </font><br>
+            </code>
+            The local, invisible connections can be used in the <a href="alib_creating.html#spice">spice section</a> the same way as any other connection:
+            <code>
+			X_[name] [pinA] [pinB] <font color="blue">[conn74_vcc] [conn74_gnd]</font> [pout] 74HC02&gt; <font color="green">// Spice-text of a component of type 74HC00 or 74HC02</font><br>
+            </code><br>
+        </section>
+        <section>
+            Within the DRAW - ENDDRAW statements in the symbol section, you also can write the distant connections in the <u>eeschema-style</u>:<br>
+            <code>SET_CONNECTION [connm4] 0 -400<font color="green"> //creates a distant connection named [connm4]</font></code><br>
+            <code>X GET_CONNECTION [connm4]<font color="green"> //uses that distant connection.</font></code><br>
+            
+        </section>
+        <section>
+        <h4>Source </h4>
+                These examples in standard-style can be found in <a href="../libraries/logic.alib"> the logic library "logic.alib"</a>, the examples in eeschema-style are from the <a href="../libraries/eeschema_only/flipflops.alib"> eeschema-flipflops-libray</a>
+        </section>
+        
+        
+        
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

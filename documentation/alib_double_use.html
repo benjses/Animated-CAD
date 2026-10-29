@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | library creation</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            The following text is for developers, who want to write new ".alib"-files or want to add Components to existing ones. Also this is a special topic within the <a href="alib_creating.html">creation of .alib-files</a>
+            <br>
+            <h2>How to use one description for multiple components</h2>
+            There are three ways to use one component description in an alib-file for multiple kinds of components:<br>
+            The first, most common way is to create <a href="alib_creating.html#schematic">schematic section</a> for qucs and one for eeschema. This way this description describes component type both plattforms. See Example 1 below.<br>
+            The second way is to add ALIAS lines.This is a line that starts with the word "ALIAS " (written in uppercase, without the apostrophes). After this buzzword, you can list up all the names this component may have - see in Example 2, below.<br>
+            The third way is to create multiple schematic sections, See in Example 3.<br>
+            <br>
+            The difference between the second and third way is, that when you use the ALIAS line, then the component will be written as if it would be the original, non-alias component. So the only effect of the ALIAS-line is, that the component type will also be found as this type of component. <br>
+            But when you use another schematic section within a component description, then the component will be the one described in its own schematic section. So it can have different variables, and therefor the behaviour or the look of the component may be different. An example for this is the standard resistor, in the <a href="../libraries/components.alib">components library called components.alib</a>. This resistor has two eeschema-schematic-sections, where one is called  <code>pspice:R</code> and the other one is called <code>Device:R</code>.<br>
+            This is necessary, because the resistor in the "pspice"-library is drawn larger in the .sch-file than the resistor in the "Device"-library. So the two resistor types have their connections at different positions, see at <a href="alib_double_use_resistors.png">this screenshot from kicad eeschema</a>.<br>
+            So here we need the third way: By creating multiple schematic sections, the component type does NOT have a default type, and the positions of the connections are calculated correctly. If we would have created an ALIAS-line in this case, then there would be a default component type, and the other component type would behave as the default type - which means it would also use the coordinates of the other type. Those components would be drawn in the same size and connections would not match.<br>
+            <br>
+            Having a default type can be useful in other examples, as you may find many ALIAS-lines in the <a href="../libraries/logic.alib">library for logic-components, logic.alib</a>:<br>
+            Here we simply can define a default type, for example the <code>74HC00</code> AND-Gate, and the we can set the derivatives, which have the same coordinates and the same spice-model to the default type. This means that the derivatives, for example components of the type <code>74LS00</code> will be drawn and will behave in a simulation exactly the same as the default type.<br>
+            Also when you use an ALIAS-line, you can place many derivative components in that line, and you can use as many
+            ALIAS-lines as you like. This way is the shortest way to create multiple components.
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

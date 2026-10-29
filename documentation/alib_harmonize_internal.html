@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | libraries</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+			<h2>What does this dialog do? </h2>
+			This dialog takes an internal library (a folder of .alib files) and a matching external library (a folder of kicad_sym files)
+			and creates a new internal library, which combines the information of both libraries.
+			
+			It fills the alib files in the output folder with all the information of the internal library and adds symbol sections of the external
+			library where no symbol exists yet.
+			
+			<h2>How to do this </h2>
+			
+			Enter the folders of the kicad symbols and the output folder into their fields. 
+			It should look like this:
+		</section>
+			<img src="alib_harmonize_internal.png" alt="A screenshot showing what to enter where in the internal harmonisation dialog">
+			<section>
+            <h2>What is an ".alib"-file? </h2>
+            ".alib" stands for "<a href="alib_logic.html">advanced</a> library".
+			It is a file which describes the different types of electric circuit components in the Animated CAD.
+			
+			<h2>What is a ".kicad_sym" file? </h2>
+			".kicad_sym" stands for "KiCad symbol". It is a file which describes  the symbols of electric circuit components in KiCad.
+			
+			<h2>Where do I find the ".alib" file folder? </h2>
+			To create an alib file folder, you can use any empty folder. As shown above, the output folder is "New Folder"
+			<br>
+			<br>
+			If you also want to move the output into the internal alib file folder of the Animated CAD: 
+			Usually you find it in the folder where you have installed the Animated CAD, in the sub-folder called libraries
+			<br>
+			In most cases, you need the <li><a href = "../libraries/eeschema_only">/libraries/eeschema_only</a> folder, since you might
+			want to combine your alib library with KiCad eeschema files.
+			
+			<h2>Where do I find the ".kicad_sym" file folder? </h2>
+			You only have such a folder only if you have installed Kicad. For this procedure to work, you need at least version Kicad 6,
+			which was released in 2022.<br>
+			Open your KiCad window, open "Preferences" -> "Configure Paths"<br>
+			A dialog window will appear, search for the path which is named "KICAD_SYMBOL_DIR".<br>
+			(Make sure that this path is the one that is similar as the ones as KICAD_TEMPLATE_DIR.)
+			That is the path you need in most cases. 
+			
+			<img src="kicad_symbol_dir.png" alt="A screenshot showing where you find the Kicad symbol folder">
+			
+		</section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

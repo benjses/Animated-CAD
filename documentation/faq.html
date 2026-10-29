@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | F.A.Q.</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <br>
+            <h2>Frequently asked questions</h2>
+            
+            <h4>Components disappear</h4>
+            Q: When a schematic is loaded, then a component is shown, but as soon as the simulation starts, this component disappears. Why is that?<br>
+            A: This component does not have any connections (<a href="alib_DistantConnection.html">distant connections</a> do not count here). Since it has no connections, it is considered irrelevant for the analysis therefor it is removed from the schematic.<br><br>
+            
+            So you can solve this by adding connections to the component in the library. <br>
+            Alternatively you can change the settings to keep also Components with zero connections by setting KEEP_ZERO_CONN to 1.
+            <h4></h4>
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

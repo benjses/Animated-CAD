@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Ground node</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <body>
+        <section>
+          <h2> The ground node <h2>
+          <h4> What is the ground node?</h4>
+            The ground node is the electric node which is defined to always have an electric potential at zero volt.<br>
+            All the other nodes have a voltage which relative to this ground node.<br>
+            Every circuit that you want to simulate needs a ground node, because the algorithm that computes voltages needs to know which potential it shall use as reference value.<br>
+            <img src="ground_node_compare.png" title="comparison between circuits with and without ground node.">
+        </section><section>
+          <h4> How can I add a ground node?</h4>
+            You can do so by adding a ground flag to the circuit and connecting it to a node. <br>
+            In kicad you can use one of these flags (in the standard library settings all these defined as ground node flags):<br>
+            <img src="ground_node_kicad_flags.png" title="collection of kicad ground nodes in the standard library"><br>
+            These are:<br>
+            power:Earth<br>
+            power:Earth_Clean<br>
+            power:Earth_Protective<br>
+            power:GND<br>
+            power:GNDA<br>
+            power:GNDD<br>
+            power:GNDPWR<br>
+            power:GNDREF<br>
+            power:GNDS<br>
+
+        </section><section>
+        <h4> Can I use more than one ground flag ? </h4> 
+            Yes you can, but you should watch out when doing so:<br>
+            - All nodes that are connected with a ground node flag are connected to each other by these flags, even if you use different ones of these flags mentioned above.<br>
+            - Ampere values are only calculated through electric components, but not at flags. You might want to add a component, like a small resistor next to the flags if you are missing any ampere values.<br>
+            Therefor it is not recommended to use flags excessively, unless you really know what you are doing.
+         
+        <h4> What else should I know about ground node?</h4>
+            In most circuits, ground is connected to the negative connection of the source, just like in the in the first image above. But that is not mandatory.<br>
+            <br>
+            You can find more infos about ground node on wikipedia:<br>
+            - in german language: <a href="https://de.wikipedia.org/wiki/Masse_(Elektronik)">https://de.wikipedia.org/wiki/Masse_(Elektronik)</a><br>
+            - in french language: <a href="https://fr.wikipedia.org/wiki/Masse_(électricité)">https://fr.wikipedia.org/wiki/Masse_(électricité)</a><br>
+            - an insufficiently short article in english language (in Dec. 2020. The article might get better in the future, as wikipedia articles get edited from time to time): <a href="https://en.wikipedia.org/wiki/Chassis_ground">https://en.wikipedia.org/wiki/Chassis_ground</a><br>
+            
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+       </body>
+    </div>
+</html>

@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | main window</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <body>
+        <section>
+            <h2>The Main Window</h2>
+            The main window is the first window that appears after the AniCAD program is started, and via closing the main window, the program ends as well.<br>
+            It contains:
+            <ul_vertical>
+                <li>a control bar at the top</li>
+                <li>the schematic image in the center</li>
+                <li>the time control at the bottom</li>
+                <li>a panel to control settings at the left</li>
+                <li>a panel to display informations about a selected component or wire at the right</li>
+            </ul_vertical>
+        </section>
+        <section>
+            The main window can look like this example:<br>
+            <img src="main_window.png" alt="main_window.png">
+        </section>
+        <section>
+            <h4 id="top">Control bar at the top</h4>
+            The control bar contains a menu, from which you can start several actions:
+            <ul_vertical>
+            <li>in the "Settings"-Menu, you can change the <a href=settings.html>settings</a> </li>
+            <li>in the "Input"-Menu, you can load the schematic files into the program</li>
+            <li>in the "Processing"-Menu, you can select how the previously loaded schematics shall be analyzed</li>
+            <li>in the "Output"-Menu, you can choose to save a picture or <a href="video_creating.html">a video</a> of the analyzed schematic</li>
+            <li>in the "Navigation"-Menu, you can select which <a href="subsheet.html">sheet shall be shown</a>, and you can <a href="zooming.html">zoom in and out</a>.</li>
+            <li>in the "Info"-Menu, you can find out more about this program.</li>
+            </ul_vertical>
+        </section>
+        <section>
+            <h4 id="center">Schematic image in the center</h4>
+            As soon as you have opened a schematic file, the center of this window shows the circuit of that file. 
+            As soon as the circuit is analyzed, the aquaeducts for voltages and the symbols for current flow are also shown in that window center, overlayed over the circuit.<br>
+            In the example above, the image is larger than the available space in the center of the window. In cases like this one, scrollbars appear automatically for selecting the shown part.
+        </section>
+        <section>
+            <h4 id="bottom">Time control at the bottom</h4>
+            As soon as a circuit is analyzed, the control panel appears at the bottom of the window. Via this panel you can control the independent variable's value, which usually - for transient analyses - is the value of the simulated time.
+            This control panel consists of a ruler for directly setting the value of the independent value, and play/pause/stop-buttons which can be used to start/pause/end an image-stream, similar to a video.<br>
+        </section>
+        <section>
+            <h4 id="left">Panel for general settings at the left</h4>
+            This panel allows you to set some settings (which shall not be confused with the program settings mentioned above)<br>
+            These settings are at the moment:
+            <ul_vertical>
+                <li>turn <a href="hovering.html">hovering</a> on or off</li>
+                <li>set hovering color</li>
+                <li>edit the general <a href="drawing_functions.html">drawing parameters</a></li>
+            </ul_vertical>
+       </section>
+       <section>
+            <h4 id="right">Panel for individual settings at the right</h4>
+            As soon as you have loaded a schematic into the program, you can click on a component or a wire of the schematic circuit. When you do so, the panel at the right shows you some informations about that individual component or wire which you selected. <br>
+            <br>
+            If you have selected a <b>wire</b>, you can:
+            <ul_vertical>
+                <li>set the color of the wire</li>
+                <li>add or remove a <a href="curves.html">line graph</a> for the voltage of this wire</li>
+                <li> edit the voltage <a href="drawing_functions.html">drawing parameters</a> for this wire individually.</li>
+            </ul_vertical><br>
+            If you have selected a <b>component</b>, you can:
+            <ul_vertical>
+                <li>see a component description</li>
+                <li>open links to the datasheet, if such links are given for that component</li>
+                <li>open links to a website where you can purchase the component, if such links are given for that component</li>
+                <li>set the text position of the component's description.</li>
+                <li>add or remove a <a href="curves.html">line graph</a> for the current through each of this component's connections</li>
+
+                
+            </ul_vertical>
+            
+       </section>
+       <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+       </body>
+    </div>
+</html>

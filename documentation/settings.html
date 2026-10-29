@@ -1,0 +1,346 @@
+ <html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Settings Dialog</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Settings Dialog</h2>
+        
+            In this dialog, you can edit several parameters. These parameters define...<br>
+            <a href="#ch1">1.</a> how currents and voltages are drawn <br>
+            <a href="#ch2">2.</a> how other things are drawn<br>
+            <a href="#ch3">3.</a> how simulations shall be handled<br>
+			<a href="#ch3a">3a.</a> how the editor shall be handled<br>
+            <a href="#ch4">4.</a> parameters about the user interface<br>
+            <a href="#ch5">5.</a> video options<br>
+            <a href="#ch6">6.</a> other<br>
+            
+            <img src="settings_dialog.png" title="the settings dialog (right). The menu to open this dialog (left).">
+        </section><section>
+            <h2 id="ch1">1. current and voltage drawing parameters</h2>
+                <a href="#PARAM_TEXTLENGTH"> PARAM_TEXTLENGTH </a>,
+                <a href="#CURRENT_DRAWING_MODE"> CURRENT_DRAWING_MODE </a>,
+                <a href="#VOLTAGE_DRAWING_MODE"> VOLTAGE_DRAWING_MODE </a>,
+                <a href="#VOLTAGE_TEXT_COLOR_MODE"> VOLTAGE_TEXT_COLOR_MODE </a>,
+                <a href="#CURRENT_TEXT_COLOR_MODE"> CURRENT_TEXT_COLOR_MODE </a>,
+                <a href="#VWRITE_MIN_LENGTH"> VWRITE_MIN_LENGTH</a>,
+                <a href="#MAX_VOLT_HEIGHT"> MAX_VOLT_HEIGHT </a>,
+                <a href="#MAX_VOLT_WIDTH"> MAX_VOLT_WIDTH </a>,
+                <a href="#MAX_AMP_ARRWIDTH"> MAX_AMP_ARRWIDTH </a>,
+                <a href="#MIN_AMP_ARRWIDTH"> MIN_AMP_ARRWIDTH </a>,
+                <a href="#V_AQUEDUCT_HEIGHT"> V_AQUEDUCT_HEIGHT </a>,
+                <a href="#V_SHINING_WIDTH"> V_SHINING_WIDTH </a>,
+                <a href="#I_ARROW_WIDTH"> I_ARROW_WIDTH </a>,
+                <a href="#I_ARROW_THICKNESS"> I_ARROW_THICKNESS </a>,
+                <a href="#I_ARROW_DISTANCE"> I_ARROW_DISTANCE </a>,
+                <br><br>
+                <b id="PARAM_TEXTLENGTH"> PARAM_TEXTLENGTH </b> is the default number of significant decimals, that describe the independent parameter, the voltages and the currents. The actual number is rounded to have these number of decimals. For example, if there is a current of 1.2345*10^-3A and the number of decimals is 3 then the text shown will be 1.23E-3A
+                <br>It is a default number as stated above, because it is set by default each time you open an <a href="analysis_chooser.html"> analysis dialog</a>, but the numbers shown each time can also be modified there.<br>
+                <br>
+                <b id="CURRENT_DRAWING_MODE"> CURRENT_DRAWING_MODE </b> is default current drawing mode. This default mode is set each time you open an <a href="analysis_chooser.html"> analysis dialog</a>, but you can select an other mode individually in that dialog.<br>
+                Value 0 is not drawing currents at all. Value 1 is drawing some currents only. Value 2 is trying to* draw all currents.  <br><br>
+                *"trying to draw all currents" means that the program can not find out some currents on some circuits. For example, if a wire is connected to flags only, but not to "real" components, then the currents through that flag is not measured, so the program does not know the current through that wire. If you are unsure whether a current is zero or just not known to the program, then you can add a shunt resistor or a 0-V-source, because the current through these components are calculated in usual simulations.<br>
+                <br>
+                <b id="VOLTAGE_DRAWING_MODE"> VOLTAGE_DRAWING_MODE </b> is is default voltage drawing mode. This default mode is set each time you open an <a href="analysis_chooser.html"> analysis dialog</a>, but you can select an other mode individually in that dialog.<br>
+                Value 0 is not drawing voltages at all. Value 1 is drawing voltages as aqueducts only. Value 2 is drawing voltages as shining wires.  <br><br>
+                <b id="VOLTAGE_TEXT_COLOR_MODE"> VOLTAGE_TEXT_COLOR_MODE </b> defines the color in which the voltage texts are drawn. The voltage texts are for example "3.1 V" when a node is at 3,1 volt above ground level:<br>
+                Value -2 is drawing voltage texts in white. Value -1 drawing voltage texts in black. Value 0 is drawing voltage texts in the same color as the node is colored in. Value 1 is like value 0, but a bit darker. Value 2 is like value 0 but a bit brighter.<br><br>
+                <b id="CURRENT_TEXT_COLOR_MODE"> CURRENT_TEXT_COLOR_MODE </b> defines the color in which current text are drawn. The current texts are for example "1.23 A" <br>
+                <br>
+                <b id="VWRITE_MIN_LENGTH"> VWRITE_MIN_LENGTH</b> is the minimal length a wire must have, so that the voltage text is shown on it.<br> For example if you set this value to 15, and there is one node of which the longest wire has a length of only 10 pixel, then this node will not have the voltage descibed.<br>
+                <br>
+                <b id="MAX_VOLT_HEIGHT"> MAX_VOLT_HEIGHT </b> is the maximal height of the aqueducts, used to calculate the maximal height in <a href="curves.html#functions">range functions</a> for aqueducts. <br>
+                <br>
+                <b id="MAX_VOLT_WIDTH"> MAX_VOLT_WIDTH </b> is the maximal width of shining wires, used to calculate the maximal width in <a href="curves.html#functions">range functions</a> for the shining wires. <br>
+                <br>
+                <b id="MAX_AMP_ARRWIDTH"> MAX_AMP_ARRWIDTH </b> is the <u>maximal</u> width of currents, used to calculate the maximal width in <a href="curves.html#functions">range functions</a> for currents width. <br>
+                <br>
+                <b id="MIN_AMP_ARRWIDTH"> MIN_AMP_ARRWIDTH </b> is the <u>minimal</u> width of currents, used to calculate the minimal width in <a href="curves.html#functions">range functions</a> for currents width. (This minimal value can be set to zero, and often zero is a useful value to set this parameter to. But in some circuits, you want to find out the direction of the current flow even when the current value is very small. In these cases, setting this parameter to a value larger than 0, for example 3, is recommended to do. <br>
+                <br>
+                <b id="V_AQUEDUCT_HEIGHT"> V_AQUEDUCT_HEIGHT </b> is the <a href="curves.html#functions">function</a> h=f(U) where U=voltage value of a node  and h=height of the aqueduct over that node.<br>
+                <br>
+                <b id="V_SHINING_WIDTH"> V_SHINING_WIDTH </b>  is the <a href="curves.html#functions">function</a> sw=f(U) where U=voltage value of a node and sw=width of the shining wire over that node.<br>
+                <br>
+                <b id="I_ARROW_WIDTH"> I_ARROW_WIDTH </b> is the <a href="curves.html#functions">function</a> aw=f(I) where I=current value through a wire  and aw=width of the arrow over that wire.<br>
+                <br>
+                <b id="I_ARROW_THICKNESS"> I_ARROW_THICKNESS </b> is the <a href="curves.html#functions">function</a> at=f(I) where I=current value trough a wire and at= line thickness of the arrow over that wire.<br>
+                <br>
+                <b id="I_ARROW_DISTANCE"> I_ARROW_DISTANCE </b> is the <a href="curves.html#functions">function</a> ad=f(I) where I=current value through a wire and ad= distance between two subsequent arrows.<br>
+                
+
+        </section><section>
+            <h2 id="ch2">2. general drawing parameters</h2>
+                <a href="#COLORMODEL"> COLORMODEL </a>,
+                <a href="#RADIUS_NOT_CONNECTED"> RADIUS_NOT_CONNECTED </a>,
+                <a href="#INFOHEIGHT"> INFOHEIGHT </a>,
+                <a href="#INDEPLINE_DATAPOINTS"> INDEPLINE_DATAPOINTS </a>,
+                <a href="#DRAW_FILEDAY"> DRAW_FILEDAY </a>,
+                <a href="#DRAW_FILETIME"> DRAW_FILETIME </a>,
+                <a href="#ENABLE_STROKES"> ENABLE_STROKES </a> - see also STROKE_THICKNESS,
+                <a href="#WRITE_EESCHEMA_PORTS"> WRITE_EESCHEMA_PORTS </a>,
+                <a href="#KEEP_ZERO_CONN"> KEEP_ZERO_CONN </a>,
+                <a href="#TRANSPARENT_FRAME_AniCAD"> TRANSPARENT_FRAME_AniCAD </a>,
+                <a href="#TRANSPARENT_FRAME_IMG"> TRANSPARENT_FRAME_IMG </a>,
+                <a href="#STROKE_THICKNESS"> STROKE_THICKNESS </a> - see also ENABLE_STROKES,
+                <a href="#DATE_FORMAT_DAY"> DATE_FORMAT_DAY </a>,
+                <a href="#DATE_FORMAT_TIME"> DATE_FORMAT_TIME </a>,
+                <a href="#SCALE_X_PC_EESCHEMA"> SCALE_X_PC_EESCHEMA</a>,
+                <a href="#SCALE_Y_PC_EESCHEMA"> SCALE_Y_PC_EESCHEMA</a>,
+                <a href="#SCALE_X_PC_QUCS"> SCALE_X_PC_QUCS</a>,
+                <a href="#SCALE_Y_PC_QUCS"> SCALE_Y_PC_QUCS</a>,
+                <a href="#SCALING_PERCENTAGES">SCALING_PERCENTAGES</a>, 
+                <a href="#DELTA_CONN_EAGLE">DELTA_CONN_EAGLE</a>, 
+                <a href="#DELTA_CONN_QUCS">DELTA_CONN_QUCS</a>, 
+                <a href="#DELTA_CONN_EESCHEMA">DELTA_CONN_EESCHEMA</a>, 
+				<a href="#IMAGE_QUALITY">IMAGE_QUALITY</a> 
+                <br><br>
+                
+                <b id="COLORMODEL"> COLORMODEL </b> is the set of colors of background color and default node colors, and frame settings that make the general appearance of the image.<br>
+                There are four different types of color models:
+                Value 0 is the standard model, called "day mode". It has a white background a dark frame and dark nodes. It is available in all <a href="upgrade.html">upgrade versions</a>.<br>
+                Value 1 is the "sunset mode". It has a grey background, and bright frame and nodes. It is available in "Hobby"-upgrade and above.<br>
+                Value 2 is the "transparent mode". It has a transparent background, and no frame. You can use that transparent circuit for example to place it over your individual logo. It is available in "SemiPro"-upgrade and above.<br>
+                Value 3 is the "night mode". It has a black background, and white frame and nodes. This one is the optimal solution for long working hours in front of the screen. It is available in the "FullPro"-upgrade.<br>
+                
+                (TODO: add image)<br>
+                <br>
+                <b id="RADIUS_NOT_CONNECTED"> RADIUS_NOT_CONNECTED </b> describes the red circle that is drawn around the ends of wires that are not connected.<br>
+                When this parameter is set to 0, then the red circles are not drawn. <br>
+                When it is larger than 0, then the circle is drawn with the given number of pixels around that not connected end.<br> When it is smaller than 0, then the circle is drawn <u>and filled</u> with the given number of pixels around that not connected end.<br>
+                <br>
+                <b id="INFOHEIGHT"> INFOHEIGHT </b> is the height of the information window in pixels:<br>
+                The horizontal line which contains the independent parameter (time) is at the middle of the information window. So for drawing values above and below this line, the space available is half the size each. For example, if you set this parameter to 50, then you have the range -25 to -1 below that horizontal line, and 1 to 25 above that horizontal line <br>
+                (TODO: add image)<br>
+                <br>
+                <b id="INDEPLINE_DATAPOINTS"> INDEPLINE_DATAPOINTS </b> is the number of marked points on the horizontal line which contains the independent parameter (time):<br>
+                When set to 0 or a negative number, then no markings are placed on the line.<br>
+                When set to 1, then only the start marker is placed.<br>
+                When set to 2, then the start marker and the end marker are placed.<br>
+                When set to a number larger than 2, then start and end markers are placed, and the additional markers are placed so that the distance between the markers are equal.<br>
+                <br>
+                For example, if you have an analysis with the independent parameter on a range from 0ms to 10ms and INDEPLINE_DATAPOINTS is set to 2, then only the start point at 0ms and the end point at 10ms are marked. But if you set INDEPLINE_DATAPOINTS to 5, then three additional markers will be added at 2,5ms 5,0ms and 7,5ms.<br>                
+                (TODO add image)<br>
+                <br>
+                <b id="DRAW_FILEDAY"> DRAW_FILEDAY </b> decides whether the date of the day, at which the schematic file was saved the last time shall be shown at the bottom right corner of the image. <br>
+                The format in which it shall be displayed, can be edited in <a href="#DATE_FORMAT_DAY"> DATE_FORMAT_DAY</a>.<br>
+                <br>
+                <b id="DRAW_FILETIME"> DRAW_FILETIME </b> decides whether the time whithin a day, at which the schematic file was saved the last time shall be shown at the bottom right corner of the image.<br>
+                The format in which it shall be displayed, can be edited in <a href="#DATE_FORMAT_TIME"> DATE_FORMAT_TIME </a>.<br>
+                <br>
+                <b id="ENABLE_STROKES"> ENABLE_STROKES </b> decides whether an individual stroke thickness for drawing lines of wires and components shall be enabled:<br>
+                When set to "no"=0, then the default line thickness of one pixel is used.<br>
+                When set to "yes"=1, then the see individual line thickness of the parameter <a href="#STROKE_THICKNESS"> STROKE_THICKNESS </a> is used.<br> 
+                <br>
+                <b id="WRITE_EESCHEMA_PORTS"> WRITE_EESCHEMA_PORTS </b> decides whether the port names of components shall be shown in circuits created by KiCad EEschema: <br>
+                When set to "no"=0, then the port names will <u>not</u> be displayed.<br>
+                When set to "yes"=1, then the port names will be displayed next to the ports.<br>
+                <br>
+                <b id="KEEP_ZERO_CONN"> KEEP_ZERO_CONN </b> decides whether components that to not have a connection shall be displayed or not.<br>
+                <br>
+                <b id="TRANSPARENT_FRAME_AniCAD"> TRANSPARENT_FRAME_AniCAD </b> decides whether the outer part of a circuit shall be drawn transparently <u>in the program itself</u>:<br>
+                When set to "no"=0, then the outer part is drawn in the same color as the background of the image, which is set in  <a href="#COLORMODEL"> COLORMODEL </a>.<br>
+                When set to "yes"=1, then the outer part is transparent.<br>
+                <br>
+                <b id="TRANSPARENT_FRAME_IMG"> TRANSPARENT_FRAME_IMG </b>  decides whether the outer part of a circuit shall be drawn transparently <u>in exported images</u>:<br>
+                When set to "no"=0, then the outer part is drawn in the same color as the background of the image, which is set in  <a href="#COLORMODEL"> COLORMODEL </a>.<br>
+                When set to "yes"=1, then the outer part is transparent.<br>
+                <br>
+                <b id="STROKE_THICKNESS"> STROKE_THICKNESS </b> is the line thickness in pixels in which wires and components are drawn if  <a href="#ENABLE_STROKES"> ENABLE_STROKES </a> is set to "yes"=1. <br> 
+                <br>
+                <b id="DATE_FORMAT_DAY"> DATE_FORMAT_DAY </b> is the format in which the date is displayed if <a href="#DRAW_FILEDAY"> DRAW_FILEDAY </a> is set to "yes"=1,<br>
+                see also the <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">documentation of date formats at the oracle-java-documentation website</a><br>
+                <br>
+                <b id="DATE_FORMAT_TIME"> DATE_FORMAT_TIME </b> is the format in which the time within a day is displayed if <a href="#DRAW_FILETIME"> DRAW_FILETIME </a> is set to "yes"=1,<br>
+                see also the <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">documentation of date formats at the oracle-java-documentation website</a><br>
+                <br>
+                
+                <b id="SCALE_X_PC_EESCHEMA"> SCALE_X_PC_EESCHEMA</b> and <b id="SCALE_Y_PC_EESCHEMA"> SCALE_Y_PC_EESCHEMA</b> and <b id="SCALE_X_PC_QUCS"> SCALE_X_PC_QUCS</b> and <b id="SCALE_Y_PC_QUCS"> SCALE_Y_PC_QUCS</b> are the scaling factors or zooming factors. The x-coordinates and y-coordinates are multiplied with these values. The values are given in percent of the original coordinate values.
+                The higher the value, the larger the circuit will be shown at start when opening the circuit.
+                You can use different values for x and y , but in that case the circuit will be displayed distorted.
+                See also SCALING_PERCENTAGES<br>
+                <br>
+                <b id="SCALING_PERCENTAGES">SCALING_PERCENTAGES</b> is the list of the steps which are used when you zoom in or zoom out. By zooming in (zooming out), the scaling factor is increased to the next (decreased to the previous) value. The list may only contain whole numbers, and between each of the numbers there must be a space character to separate these numbers. Also the list of numbers must be in rising order.
+                See also the scaling factors: SCALE_X_PC_EESCHEMA SCALE_Y_PC_EESCHEMA SCALE_X_PC_QUCS and SCALE_Y_PC_QUCS
+                <br>
+                <b id="DELTA_CONN_EAGLE"> DELTA_CONN_EAGLE</b> and <b id="DELTA_CONN_QUCS"> DELTA_CONN_QUCS</b> and <b id="DELTA_CONN_EESCHEMA"> DELTA_CONN_EESCHEMA</b> are the maximal distance between the coordinates of two connections at which these two connections are considered to be connected to each other. Both the x and the y difference between the two connections must be lower than the given delta to be connected. <br>
+                If the given delta value is zero or a negative value, then the two connections are only considered connected to each other when they have the exact same coordinates - but that is not recommended, because the coordinates can be rounded and can therefor differ by a small value.<br>
+                <br>
+				<b id="IMAGE_QUALITY"> IMAGE_QUALITY</b> defines the amount of antialiasing effort to create a prettier image:<br> 
+					0 means no effort, the image is created faster, but uglier (e.g. the text within the schematic diagram seems badly written).<br>
+					5 means all available methods will be used, so that the image is created prettier, but that needs a bit of computation power.<br>
+					Somewhat modern computers should have more than enough computation power for this, a high value is recommended unless you have a very old computer or a really large circuit.
+				<br>
+        </section><section>
+            <h2 id="ch3">3. simulation related parameters</h2>
+                <a href="#IGNORE_LIB_WARNINGS"> IGNORE_LIB_WARNINGS </a>,
+                <a href="#IGNORE_LIB_ERRORS"> IGNORE_LIB_ERRORS </a>,
+                <a href="#SHOW_ANALYSIS_WARNINGS"> SHOW_ANALYSIS_WARNINGS </a>,
+                <a href="#SHOW_ANALYSIS_ERRORS"> SHOW_ANALYSIS_ERRORS </a>,
+                <a href="#SIMULATION_STARTTIME">SIMULATION_STARTTIME </a>,
+                <a href="#SIMULATION_TIMESTEP">SIMULATION_TIMESTEP </a>,
+                <a href="#SIMULATION_ENDTIME"> SIMULATION_ENDTIME</a>,
+                <a href="#SIMULATION_STARTFREQUENCY">SIMULATION_STARTFREQUENCY </a>,
+                <a href="#SIMULATION_FREQUENCY_STEPS">SIMULATION_FREQUENCY_STEPS </a>,
+                <a href="#SIMULATION_ENDFREQUENCY"> SIMULATION_ENDFREQUENCY</a>,
+                
+                <br><br>
+                <b id="IGNORE_LIB_WARNINGS"> IGNORE_LIB_WARNINGS </b> decides whether warning messages that are specified in the component library for specific component parameters are shown or ignored:<br>
+                When set to 0=no, then these messages are shown. When set to 1=yes then these messages are ignored.<br>
+                <br>
+                <b id="IGNORE_LIB_ERRORS"> IGNORE_LIB_ERRORS </b> decides whether error messages that are specified in the component library for specific component parameters are shown or ignored:<br>
+                When set to 0=no, then these messages are shown. When set to 1=yes then these messages are ignored.<br>
+                <u>Attention</u>: It is highly recommended to set this parameter to 0=no, because otherwise you might suppress a message showing the reason for a failed simulation.<br>
+                <br>
+                <b id="SHOW_ANALYSIS_WARNINGS"> SHOW_ANALYSIS_WARNINGS </b>decides whether warning messages that result in running the circuit simulator (NGspice) are shown or ignored:<br>
+                When set to 0=no, then these messages are ignored. When set to 1=yes then these messages are shown.<br>
+                <br>
+                <b id="SHOW_ANALYSIS_ERRORS"> SHOW_ANALYSIS_ERRORS </b> decides whether error messages that result in running the circuit simulator (NGspice) are shown or ignored:<br>
+                When set to 0=no, then these messages are ignored. When set to 1=yes then these messages are shown.<br>
+                 <u>Attention</u>: It is highly recommended to set this parameter to 1=yes, because otherwise you might suppress a message showing the reason for a failed simulation.<br>
+                <br>
+                <b id="SIMULATION_STARTTIME"> SIMULATION_STARTTIME</b> and <b id="SIMULATION_TIMESTEP">SIMULATION_TIMESTEP </b> and <b id="SIMULATION_ENDTIME">SIMULATION_ENDTIME </b> are the three default time parameters that are pre-selected at the transient simulation.
+                (The transient simulation is also described in chapter 15.3.9 of the ngspice-manual)
+                These parameters are set, when you open the <a href="analysis_chooser.html">analysis dialog for simulation</a>. You can edit each of these parameters in that analysis dialog. But these time parameters will be set the first time when you open that dialog. If it is not the first time you open that dialog, the dialog will pre-select the parameters from the last time you have selected them.<br>
+                These time parameters are measured in seconds. You can append a little s for second, but you can also skip it.
+                <br>You can use m for milli, u for micro, n for nano, p for pico, k for kilo etc: For example<br>
+                <code>2u</code> means two microseconds, and<br>
+                <code>3.45ms</code> means three point four five milliseconds.<br>
+                You can also use the En, where n is a whole number to say "times ten to the power of n"; For example<br> <code>2E-6</code> means two times ten to the power of -3 seconds, which is two microseconds, and<br> <code>34.5E-4</code> means thirty-four point five times ten to the power of -4 seconds which is equal to three point four five milliseconds.<br>
+                <br>
+                <b id="SIMULATION_STARTFREQUENCY">SIMULATION_STARTFREQUENCY</b> and <b id="SIMULATION_FREQUENCY_STEPS">SIMULATION_FREQUENCY_STEPS</b> and 
+                <b id="SIMULATION_ENDFREQUENCY">SIMULATION_ENDFREQUENCY</b> are the three default parameters for ac analysis. (The ac analysis is also described in chapter 15.3.1 of the ngspice-manual.) These parameters are set, when you select the ac analysis in the <a href="analysis_chooser.html">analysis dialog for simulation</a>.
+                The start and end parameters are values in Hertz. The parameter SIMULATION_FREQUENCY_STEPS is the number of steps (per octave if you have selected octave, per decade if you have selected decade, or in the total linear frequency range if you have selected "linear").<br>
+                
+        </section><section>
+            <h2 id="ch3a">3a. editor related parameters</h2>
+                <a href="#DEFAULT_FRAME_WINDOW"> DEFAULT_FRAME_WINDOW </a>,
+                
+                <br><br>
+                <b id="DEFAULT_FRAME_WINDOW"> DEFAULT_FRAME_WINDOW </b> 
+					Is a text that defines which frame shall be used by default.
+					This text must be always in the form:<br>
+					<code>frame=[frame] x1=[intx1] y1=[inty1] x2=[intx2] y2=[inty2]</code><br>
+					where [frame] is one of the following values: constant, minimal, offset,none <br>
+					and where [int__] are four integer values. They can be in any order. <br>
+					<br>
+					For example, <code>frame=offset x1=200 x2=200 y1=150 y2=150</code> defines a frame around the circuit
+					which leaves just enough space to add more components. Therefor it is useful for editing circuits.
+					(In this example that is 200px at left and right, and 150px at top and bottom, when the circuit is 
+					displayed at 100% scaling.)
+					<br><br>
+					More infos about the frame, you can see in the frame-editing window in "Navigation"->"edit frame".
+				<br><br>
+               
+            
+        </section><section>
+            <h2 id="ch4">4. user interface parameters</h2>
+                <a href="#ENABLE_ICONS">ENABLE_ICONS </a>,
+                <a href="#DEFAULT_DIR">DEFAULT_DIR</a>,
+                <a href="#CIRCUIT_DIR">CIRCUIT_DIR</a>,
+                <a href="#VIDEO_DIR">VIDEO_DIR</a>,
+                <a href="#IMAGE_DIR">IMAGE_DIR</a>,
+                <a href="#QR_AUTO_LOAD_MODE">QR_AUTO_LOAD_MODE</a>,
+                <a href="#AUTO_LOAD_MODE">AUTO_LOAD_MODE</a>,
+                <a href="#AUTO_SAVE_MODE">AUTO_SAVE_MODE</a>,
+		    <a href="#USE_FX_FILESELECTOR">USE_FX_FILESELECTOR</a>
+                
+                
+                <br><br>
+                <b id="ENABLE_ICONS">ENABLE_ICONS</b> defines whether buttons shall have icons, such as the settings icon: 
+                when set to yes, then icons are shown. When set to no, then icons are not shown.<br>
+                <br>
+                <b id="DEFAULT_DIR">DEFAULT_DIR</b> the directory which is opened at start when you select a "normal" file in the file selection window. <br>
+                <br>
+                <b id="CIRCUIT_DIR">CIRCUIT_DIR</b> the directory which is opened at start when you select a circuit  in the file selection window. <br>
+                <br>
+                <b id="VIDEO_DIR">VIDEO_DIR</b> the directory which is opened at start when you select a video  in the file selection window.  <br>
+                <br>
+                <b id="IMAGE_DIR">IMAGE_DIR</b> the directory which is opened at start when you select an image in the file selection window.  <br>
+                <br>
+                <b id="QR_AUTO_LOAD_MODE">QR_AUTO_LOAD_MODE</b> Decides whether circuits found via QRcode shall be opened automatically. There are 3 available modes:<br>
+                0 -> The circuit will not be loaded automatically<br>
+                1 -> Each time a circuit is found via QRcode, the user is asked via dialog whether you want to open it<br>
+                2 -> The circuit will be loaded automatically<br>
+                See also in the <a href="QRcode.html">documentation for QRcodes</a>. <br>
+                <br>
+                <b id="AUTO_LOAD_MODE">AUTO_LOAD_MODE</b> Decides whether the settings of a circuit, which are saved in the <a href="circuit_settings.html"> circuit settings in .cns files</a>, shall be loaded automatically, when a circuit is opened.
+                <br>
+                <br>
+                <b id="AUTO_SAVE_MODE">AUTO_SAVE_MODE</b> Decides whether the settings of a circuit, which are saved in the <a href="circuit_settings.html"> circuit settings in .cns files</a>, shall be saved automatically, when a circuit is closed.<br>
+                <br>
+                <br>
+                <b id="USE_FX_FILESELECTOR">USE_FX_FILESELECTOR</b> JFXfileselector is an external sub-program. The user can use it to open files and directories, such as the circuit files. That external program is a bit slower than the internal file selector dialogue, but it is prettier and more user friendly than the simple internal dialogue.<br>
+                
+           </section><section>
+            <h2 id="ch5">5. video parameters</h2>      
+                <a href="#VIDEO_INPUT_OPTIONS">VIDEO_INPUT_OPTIONS</a>,
+                <a href="#VIDEO_OUTPUT_OPTIONS">VIDEO_OUTPUT_OPTIONS</a>,<br>
+                <br>
+                <b id="VIDEO_INPUT_OPTIONS"> VIDEO_INPUT_OPTIONS </b> is text that is used as default value for input parameters of ffmpeg. You can overwrite the value in each <a href="video_creating.html#settings">dialog for video creating</a>, but this value here is stored permanently and is set each time you open a new such dialog.<br>
+                Before you change the value of VIDEO_INPUT_OPTIONS, then you should know what you are doing (e.g. by reading the <a href="https:ffmpeg.org/ffmpeg.html">ffmpeg documentation</a> and test your parameter multiple times in the said dialog. <br>
+                <br>
+                <b id="VIDEO_OUTPUT_OPTIONS"> VIDEO_OUTPUT_OPTIONS </b> is text that is used as default value for input parameters of ffmpeg. You can overwrite the value in each <a href="video_creating.html#settings">dialog for video creating</a>, but this value here is stored permanently and is set each time you open a new such dialog.<br>
+                Before you change the value of VIDEO_OUTPUT_OPTIONS, then you should know what you are doing (e.g. by reading the <a href="https:ffmpeg.org/ffmpeg.html">ffmpeg documentation</a> and test your parameter multiple times in the said dialog.<br>
+        </section><section>
+            <h2 id="ch6">6. other parameters</h2>
+                <a href="#DELAY_MS"> DELAY_MS </a>, see also FIXED_DELAY,
+                <a href="#DELETE_WORKING_TMP_ON_EXIT"> DELETE_WORKING_TMP_ON_EXIT </a>,
+                <a href="#ACTIVATE_HOVERING"> ACTIVATE_HOVERING </a>,
+                <a href="#ALLOW_OPENENDS"> ALLOW_OPENENDS </a>,
+                <a href="#FIXED_DELAY"> FIXED_DELAY </a> - see also DELAY_MS,
+                <a href="#USE_EESCHEMA_TIMESTAMP"> USE_EESCHEMA_TIMESTAMP </a> - see also MAKE_NAMES_UNIQUE,
+                <a href="#MAKE_NAMES_UNIQUE"> MAKE_NAMES_UNIQUE </a> - see also USE_EESCHEMA_TIMESTAMP,
+                <br><br>
+                <b id="DELAY_MS"> DELAY_MS </b> is the delay between two images when playing the circuit analysis as animation within the program. In other words, it determines the speed of that animation. see also FIXED_DELAY,<br>
+                <br>
+                <b id="DELETE_WORKING_TMP_ON_EXIT"> DELETE_WORKING_TMP_ON_EXIT </b> decides whether the temporary files that are created within a session of this program are deleted as soon as the program is terminated:<br>
+                When set to 0=no, then the temporary files will <u>not</u> get deleted as soon as the program is terminated.<br> (But they are still temporary files: The will be deleted as soon as you shut down your computer. In the rare cases in which you might want to keep these files even after shutting down the computer, you should copy them out of your system's temporary directory) <br>
+                When set to 1=yes, then the temporary files will get deleted as soon as the program is terminated.<br>
+                <br>
+                <b id="ACTIVATE_HOVERING"> ACTIVATE_HOVERING </b> decides whether the <a href="hovering.html">hovering functionality</a> is activated at program start.<br>
+                <br>
+                <b id="ALLOW_OPENENDS"> ALLOW_OPENENDS </b> decides whether an open end, an unconnected pin of a component is considered an error or not:<br>
+                When set to 0=no, then a component which has an open end is considered an error in the circuit.<br>
+                When set to 1=yes, then a component which has an open end will only result in a warning message.<br>
+                <u>Attention:</u> This parameter is about unconnected pins of components only - not about unconnected pins of wires. So if you want to create an open end on purpose, then you can do so by connecting the component's pin with a short wire, and leave the other end of the wire open.<br>
+                See also this <a href="settings_imgs/ALLOW_OPENENDS.png">image:<br>
+                <img src="settings_imgs/ALLOW_OPENENDS.png" height=100 width=150></a><br>
+            </section><section>
+                <br>
+                <b id="FIXED_DELAY"> FIXED_DELAY </b> decides whether the time needed to create an image shall be considered in the frame rate, so that the time distance between two subsequent images is fixed or not:<br>
+                When set to no=0, then the time to create images is <u>not</u> considered into the frame rate. So the video in the program will be played slightly slower than you have specified in <a href="#DELAY_MS"> DELAY_MS </a>.<br>
+                When set to yes=1, then the time to create images is considered into the frame rate. So the video in the program will be played in the speed specified in <a href="#DELAY_MS"> DELAY_MS </a>, but choosing this option needs slightly more resources, since it requires the algorithm to estimate the needed time of creation of images.<br>
+                <br>
+                <b id="USE_EESCHEMA_TIMESTAMP"> USE_EESCHEMA_TIMESTAMP </b> decides whether the component names in circuits created with KiCad EEschema shall be set by their individual timestamp. This is one method to individualize component names automatically. The other one is <a href="#MAKE_NAMES_UNIQUE"> MAKE_NAMES_UNIQUE </a>.<br> 
+                <br>
+                <b id="MAKE_NAMES_UNIQUE"> MAKE_NAMES_UNIQUE </b> decides whether component names shall be individualized by adding a number at the end of components which otherwise would not have an individual component name.This is one method to individualize component names automatically. The other one is <a href="#USE_EESCHEMA_TIMESTAMP"> USE_EESCHEMA_TIMESTAMP </a>.<br>
+                <u>Info:</u> You need individual component names in order to simulate the circuit containing the circuit. If there are two component that have the same component name, then the NGspice simulator probably will throw an error. So you either can set one of these two parameters to yes=1 so that the names are individualized automatically, or you can set the component names to individual names in your schematic editor manually.<br>
+                <br>  
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+                <br><br>
+                
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

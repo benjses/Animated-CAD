@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Subsheets</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Subsheets</h2>
+            <h4>Definition</h4>
+            Subsheets, also called "Hierarchical Sheets" are parts of circuit, which contain one or more components.
+            When creating circuits that are more complex, then packing some of the components into a subsheet may be desirable. By making a subsheet, you can make your circuit look more cleaned up, because some of the parts are not shown in the top hierarcy of your circuit, but "hidden" in the subsheet. Also you can re-use that circuit part, and use it multiple times in this circuit. That is easier than placing the same components again and again.<br>
+            <br>
+            
+            <h4>How to use subsheets</h4>
+            Subsheets can be created in KiCad Eeschema, as described in <a href="https://en.wikibooks.org/wiki/Kicad/eeschema/Hierarchical_Sheets"> this wiki</a>. When you have created the top-level circuit, and all its subsheets, save them in the same folder, because otherwise they will not be linked to each other. Then you can open the top-level circuit with the Animated CAD. The subsheets of that circuit will also be loaded, so that you can analyze the top-level circuit and any subsheet. You can switch between the sheets by selecting "Navigation" -> "select drawn schematic", as shown in the following image:<br>
+            
+            
+        </section>
+        <section>
+            <img src="subsheet.png" alt="image of subsheet"><br>
+            in this image a top-level circuit, called "label_test.sch" has a subsheet, called "label_test_sub01.sch":<br>
+            on the left, the <a href="main_window.html">main window</a>, with the mouse on the field to open the schematic-select-dialog<br>
+            on the right, that schematic-select-dialog. 
+            
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

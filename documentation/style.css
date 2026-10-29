@@ -1,0 +1,100 @@
+#wrapper{
+    width: 800px;
+    margin-right: auto;
+    margin-left: auto;    
+} 
+
+div{
+    font-family: Arial,Dejavu Sans, sans-serif;
+    color: #05004c;
+    
+    font-size: 14px;
+}
+/*header contains image and overview*/
+header{
+    padding-top: 0px;
+    padding-bottom: 10px;
+    width: 600px;
+    height: 224px;
+    text-align: left;
+    float: left;
+}
+
+/*navigation section*/
+nav {
+    float: left;
+}
+
+/*lists and list items*/
+ul_vertical{
+    margin-left: 10px;
+    list-style-type: circle;
+}
+ul_vertical li{
+    margin-top: 2px;
+    
+    
+}
+.selectable li a:hover{
+    margin-left: 5px;
+}
+
+
+ul_horizontal{ 
+    
+}
+ul_horizontal li{ 
+    display: inline;
+    margin-right: 10px;
+}
+
+/*link, internal or external*/
+a{
+    color: #008188;
+    font-family: Times New Roman, Times, Arial;
+    text-decoration: none;
+    -webkit-transition: color ease-in 0.1s;
+    -moz-transition: color ease-in 0.1s;
+    -o-transition: color ease-in 0.1s;
+    transition: color ease-in 0.1s;
+}
+
+a:hover{
+    color: #00c1cc;
+    background-color: #F2F2F2;
+    border: 1px solid #F4F4F4;
+    border-radius: 3px
+}
+/*section: sections of text*/
+section{
+    clear: both;
+    float: left;
+    margin-bottom: 5px;
+}
+section img{
+    float: left;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #DEDEDE;
+    border-radius: 3px;
+}
+
+/*text format code. For code examples*/
+code{
+    clear: both;
+    float: both;
+    white-space: nowrap;
+    font-family: Courier, Courier new, Dejavu Sans Mono, Arial;
+}
+
+.framed{
+    border: 1px solid #DEDEDE;
+    background-color: #F2F2F2;
+    border-radius: 5px;
+}
+
+/*footer section for bottom line*/
+footer{
+    clear: both;
+    float: bottom;
+}

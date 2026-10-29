@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Library logic</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Logic statements</h2>
+            The <a href="alib_library.html">.alib library format</a> is called "advanced library", because unlike the usual libraries in .lib-format (.lib documentation in<a href="https://qucs-help.readthedocs.io/en/latest/internal.html#library-file-format"> english</a>|<a href="https://qucs-help.readthedocs.io/de/latest/internal.html#library-file-format">german</a>),the alib format supports logic statements and <a href="alib_variables.html">variable declarations</a> <br>
+            
+            But before learning these details of alib-files in this document below, you might want to read the <a href="alib_creating.html">introduction about how to create alib-files</a>
+            <h4>General structure of logic statements in .alib</h4>
+            The central four logic buzzwords are: <code>IF</code> <code>THEN</code> <code>ELSE</code> <code>ENDIF</code><br>
+            These buzzwords must be written in uppercase letters. The <code>ELSE</code> is optional.<br>
+            <h4>The IF-statement</h4>
+            For the if-statement between <code>IF</code> and <code>THEN</code> you can use a comparation word from the ones listed below.<br>
+            <br>
+            If you do NOT use a comparation word, then this if-statement will be false when the text in the statement is "null" or when that text is blank (for example if that text is "", because apostrophes are ignored here) or when that text starts with a bracket [ and ends with a bracket ] (this is useful to check if that <!--TODO create file for link:--><a href="alib_variables.html">variable</a> is defined or not). Otherwise that statement is true.<br>
+            <br>
+            If you do use a comparation word in the if-statement, then this statement is decided by your choosen comparation word.  You may choose one of these:<br>
+            <br>
+            Type comparisons:
+            <ul_vertical>
+                <li><code>IS_NUMBER</code>: true when the other word between IF and THEN is a number, false otherwise.</li>
+            </ul_vertical>
+            <br>
+            Text comparisons:
+            <ul_vertical>
+                <li><code>EQUAL_TO</code>: true when both texts are same, false otherwise.</li>
+                <li><code>STARTS_WITH</code>: true when the first text starts with the second text, false otherwise</li>
+                <li><code>ENDS_WITH</code>: true when the first text ends with the second text, false otherwise</li>
+                <li><code>CONTAINS</code>: true when the first text contains the second text, false otherwise</li>
+                <li><code>MATCHES</code>: true when the first text matches the second text as a regular expression, false otherwise. The regular expression need slashes doubled, as regular expressions in java language use double slashes. It is advised to test this comparison type extra intensively.</li>
+            </ul_vertical>
+            <br>Numeric comparisons: changes both texts into float values. If that text before or after the comparation word is not a value that can be parsed into float, then makes warning dialog and returns false
+            <ul_vertical>
+                <li><code>EQUAL_OR_HIGHER_THAN</code>:true when the first value is equal or higher than the second value, false otherwise </li>
+                <li><code>EQUAL_OR_LOWER_THAN</code>:true when the first value is equal or lower than the second value, false otherwise </li>
+                <li><code>HIGHER_THAN</code>:true when the first value is strictly higher than the second value, false otherwise </li>
+                <li><code>LOWER_THAN</code>:true when the first value is strictly lower than the second value, false otherwise </li>
+                <li><code>LOWER_OR_HIGHER_THAN</code>:true when the first value is strictly higher or strictly lower than the second value</li>
+            </ul_vertical>
+            Existence of variable:<br>
+            <ul_vertical>
+                <li><code>[variable]</code>:true when the variable [variable] exists and has a value which is not blank, and not between the brackets "[" and "]" and is not "null".</li>
+            </ul_vertical>
+            
+            <br>
+            <u>Attention</u> comparisons ignore leading whitespaces, trailing whitespaces, brackets and apostrophes:<br>
+            Examples: let's assume a resistor, which has the pins [pin1] and [pin2], and has a variable [smbl], which has the value "US", as the example below:<br>
+            
+            <code>IF[smbl]EQUAL_TO international</code> is false. <br>
+            <code>IF[smbl]EQUAL_TO US</code> is true. <br>
+            <code>IF[smbl]</code> is true, because "US" is not empty and not null and not in brackets<br>
+            <code>IF[non_existant_variable]</code>is false.<br>
+            <code>IF[pin1]</code> is true in spice section, but false in drawing section, because [pin1] is being defined in drawing section.<br>
+            <code>IF[pin999]</code> is false, because [pin999] does not exist.<br>
+            
+            
+            <h4>The THEN-statement</h4>
+            This is the part between <code>THEN</code> and <code>ELSE</code> or between <code>THEN</code> and <code>ENDIF</code>. It is executed when the if-statement is true.
+            <h4>The ELSE-statement</h4>
+            This statement can be omitted. If it is not omitted, then it is the part between <code>ELSE</code> and <code>ENDIF</code>. It is executed when the if-statement is false.
+            
+            <h4>Example of logic statement in drawing section</h4>
+            The following example draws a resistor, similar to Example 1 in the <a href="alib_creating.html">introduction about how to create alib-files</a>, but here we use the variable [smbl] which can take the values "US" or "european" to decide whether we draw the in the american symbol according to ANSY Y32 (like this:<code>-/\/\/\/\-</code>) or the european/international norm according to IEC 60617  (like this:<code>-[:::::]-</code>, the different styles of how resistors are drawn is also described on <a href="http://www.resistorguide.com/fixed-resistor/#Fixed_resistor_symbols")> in this explainating website</a>.<br>
+            This component can also be found in the <a href="../libraries/components.alib"> standard components library</a><br>
+            <br>
+            </section><section>
+            <code>
+            &emsp;&emsp;&lt;qucs_symbol&gt;<br>
+                &emsp;&emsp;&emsp;IF [smbl] EQUAL_TO "US" THEN<br>
+                &emsp;&emsp;&emsp;&emsp;<font color="#00A000"> // Drawing of resistor in US-style:</font><br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line -18 0 3 -9 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line -15 -9 6 18 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line -9 9 6 -18 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line -3 -9 6 18 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line 3 9 6 -18 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line 9 -9 6 18 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Line 15 9 3 -9 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;ELSE <br>
+                &emsp;&emsp;&emsp;&emsp; <font color="#00A000"> // Drawing of resistor in international style:</font><br>
+                &emsp;&emsp;&emsp;&emsp;&lt;Rectangle -18 -9 36 18 #000080 2 1 #000080 1 0&gt;<br>
+                &emsp;&emsp;&emsp;ENDIF<br>
+                &emsp;&emsp;&emsp;&emsp; <font color="#00A000"> // Pins and connection lines to pins are independent of drawing style:</font><br>
+                
+                &emsp;&emsp;&emsp;&lt;.PortSym -30 0 [pin1] 0&gt;<br>
+                &emsp;&emsp;&emsp;&lt;.PortSym 30 0 [pin2] 0&gt;<br>
+                &emsp;&emsp;&emsp;&lt;Line -30 0 12 0 #000080 2 1&gt;<br>
+                &emsp;&emsp;&emsp;&lt;Line 30 0 -12 0 #000080 2 1&gt;<br>
+                
+                &emsp;&emsp;&lt;/qucs_symbol&gt;<br></code>
+                <br>
+        </section><section>
+            By the way: The variable [smbl] is only declared in the &lt;qucs_sch&gt;, but not in the &lt;eeschema_sch&gt; section.  So if we would use this drawing not in &lt;qucs_symbol&gt; but in &lt;eeschema_symbol&gt; then it would draw the international symbol, because the text "[smbl]" would not be replaced by its value. And "[smbl]" is not equal to "US" so the if-statement is false, so the else path is executed.<br>
+            (Also the component would be drawn very small and the connections' coordinates not match the circuit around that resistor, because Eeschema uses different coordinates than Q.U.C.S. This would lead to an error message, stating that the resistor is not connected.)
+        </section><section>
+            <h4> Example of logic statement in spice section</h4>
+            In the spice section you can use logic statements as well. The following example is of a MOSFET, where the variable [type] can take the values "nfet" or "pfet" and decides whether that component is a N-channel MOSFET or a P-channel-MOSFET. 
+            This component can also be found in the <a href="../libraries/components.alib"> standard components library</a><br>
+        </section><section>
+            <code>
+                &lt;Spice&gt;<br>
+                    .model M_MDL_[name] IF [type] EQUAL_TO "nfet" THEN nmos ENDIF IF [type] EQUAL_TO "pfet" THEN pmos ENDIF level=6  <font color="#00A000"> // Transistor model M_MDL_[name] created based on value of [type]</font><br>
+                    M_[name] [d] [g] [s] [b] M_MDL_[name] l=[L] w=[W] M_MDL_[name]<font color="#00A000"> // Component sets further parameters and calls the model. </font><br>
+                &lt;/Spice&gt;<br>
+            </code>
+        </section><section>
+            In this example, we see that the Ngspice model type is chosen to be either "nmos" or "pmos" depending on the variable [type].
+            These model types can be found in chapter 11.2 "MOSFET models" in the <a href="http://www.ngspice.sourceforge.net/docs/ngspice-manual.pdf"> Ngspice user manual</a>
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

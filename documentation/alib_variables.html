@@ -1,0 +1,220 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Library variables</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Logic statements</h2>
+            The <a href="alib_library.html">.alib library format</a> is called "advanced library", because unlike the usual libraries in .lib-format (.lib documentation in<a href="https://qucs-help.readthedocs.io/en/latest/internal.html#library-file-format"> english</a>|<a href="https://qucs-help.readthedocs.io/de/latest/internal.html#library-file-format">german</a>), the alib format supports <a href="alib_logic.html">logic statements</a> and variable declarations <br>
+            <br>
+            But before learning these details of alib-files in this document below, you might want to read the <a href="alib_creating.html">introduction about how to create alib-files</a>
+            
+            <h4>Pre-defined variables</h4>
+            There are variables that can be used directly. These pre-defined variables are:
+            <ul_vertical>
+                <li>[name] the name of the component</li>
+                <li>[model]the name of the component's model</li>
+                <li>[xpos] the integer value for the x-position of the component</li>
+                <li>[ypos] the integer value for the y-position of the component</li>
+                <li>[rotation] the integer value, 0 or 1 or 2 or 3, describes how many times the component is turned for 90° counter-clockwise </li>
+                <li>[value] the value given by the user. Can be a physical value (e.g. in Ohm for resistors) but can also contain a parameter list or description of the component type for more complex components. </li>
+            </ul_vertical>
+            
+            <ul_vertical>    
+                
+                <li>[timestep] defines the timestep of the transient simulation</li>
+                <li>[starttime] defines the point of time at which the transient simulation starts, usually 0</li>
+                <li>[endtime] defines the point of time at which the transient simulation ends </li>
+                <li></li>
+                <li></li>
+            </ul_vertical>
+            Also the connections can be used as variable. For example, if the drawing section defines three connections called [D] [G] [S], then these connections can be used in the spice section.
+        </section>
+        <section>
+            
+            
+            <h4>How to define a variable</h4>
+            The easiest way to define a variable is to give it a value with one line:
+        </section>
+        <section>
+            <code>DEFINE [variable] value</code><br>
+            for example:<br>
+            <code>DEFINE [one_point_five] 1.5</code><br>
+            <code>DEFINE [series_number] 52-8.024.12.34</code><br>
+            <code>DEFINE [hotel] trivago!</code><br>
+            <code>DEFINE [param_list] param1=1.5 param2=2k param3=35e-9 param4=4.4E12</code><br>
+            <br>
+            But you can also use define by so-called "AS_"-Functions. These are functions that also define variables, but modify the value in the process. These "AS_"-Functions are:<br>
+            <br>
+			<br>AS_UPPERCASE:<br>
+            <code>DEFINE [hotel] AS_UPPERCASE OF:[hotel] <font color="#00A000"> // changes [hotel] from trivago! to TRIVAGO!.</font></code>
+            <br>AS_LOWERCASE:<br>
+            <code>DEFINE [hotel] AS_LOWERCASE OF:[hotel] <font color="#00A000"> // changes [hotel] back to lowercase trivago!</font></code><br>
+		
+			<br>
+            AS_SUBSTRING:<br>
+            <font color=#888888> defines a subsection of the "OF:"string where the parameters FROM:(inclusively) and TO:(exclusively) are numbers. For example:</font>
+            <code>DEFINE [hotel] AS_SUBSTRING FROM:2 TO:7 OF:[hotel]  <font color="#00A000"> //[hotel]=trivago, extracts a substring between the indexes , here removes the "!" at the end.</font></code><br>
+            <code>DEFINE [ago] AS_SUBSTRING FROM:4 OF:[hotel]  <font color="#00A000"> //[ago]=ago, you can omit the TO: in substring, so that the substring goes to the end of the original string.</font></code><br>
+            <code>DEFINE [tri] AS_SUBSTRING TO:3 OF:[hotel]  <font color="#00A000"> //[tri]=tri, you can omit the FROM: as well in substring. In this case, FROM: is 0.</font></code><br>
+            <br>
+            AS_SUBTEXT:<br>
+            <font color=#888888> defines a subsection of the "OF:"string where the optional parameters "FROM:", "AFTER:", "TO:" and "BEFORE:" mark the start and end of that subsection.<br>
+            "FROM:" and "TO:" are with the marker, whereas "AFTER:" and "BEFORE:" are without the marker. For example:</font><br>
+            <code>DEFINE [hotel] AS_SUBTEXT BEFORE:!OF:[hotel] <font color="#00A000"> //[hotel]=trivago, extracts a substring from start to "!"(exclusively the "!").</font><br>
+            DEFINE [riva] AS_SUBTEXT AFTER:tTO:vaOF:[hotel]  <font color="#00A000"> //[riva]=riva</font>
+            </font></code><br>
+            <br>
+            AS_REPLACEMENT:<br>
+            <code>DEFINE [fifteen] AS_REPLACEMENT FROM:.TO:OF:[one_point_five] <font color="#00A000"> // replaces "." to "", so "1.5"->"15". Watch out for spaces at wrong places!</font></code><br>
+            AS_FIRST_REPLACEMENT:<br>
+            <code>DEFINE [snr] AS_FIRST_REPLACEMENT FROM:.TO:OF:[series_number] <font color="#00A000"> // replaces only the first dot to "". So [snr]=52-8024.12.34</font></code><br>
+            AS_REPLACEMENT_REGEX:<br>
+            <code>DEFINE [snr] AS_REPLACEMENT_REGEX FROM:-[0-9]{4}\.TO:-xxxx.OF:[snr] <font color="#00A000"> //[snr]=52-xxxx.12.34, here FROM: is a regular expression</font></code><br>
+            AS_FIRST_REPLACEMENT_REGEX:<br>
+            <code>DEFINE [point_five] AS_FIRST_REPLACEMENT_REGEX FROM:[0-9]TO:OF:[one_point_five] <font color="#00A000"> //[point_five]=.5, this example removes the first decimal</font></code><br>
+            <br>
+            AS_WORD_RIGHT:<br>
+            <code>DEFINE [second_param] AS_WORD_RIGHT OF:param2 IN:[param_list]<font color="#00A000"> //[second_param]=2k, finds out the word after the first occurence of "param2" and ignores the "=" by default.</font></code><br></code>
+            
+            
+            
+            
+            <br>AS_VISIBLE:<br>
+            <code>DEFINE [one_point_five] AS_VISIBLE <font color="#00A000"> // the variable [one_point_five] will be visible by default.</font></code>*<br>
+            
+            <br>AS_INVISIBLE:<br>
+            <code>DEFINE [one_point_five] AS_INVISIBLE <font color="#00A000"> //the variable [one_point_five] will NOT be visible by default.</font>*</code><br>
+            * "visible by default" means that the visibility is set when loading the circuit, but user can change the visibility of the parameter in the <a href="main_window.html#right">right panel of the main window</a>.<br>
+        
+		
+           
+            <br>AS_NULL:<br>
+            <code>DEFINE [snr] AS_NULL <font color="#00A000"> // erases the variable [snr]</font></code><br>
+            
+            <h4>Numeric functions</h4>
+            AS_NUMBER:<br>
+            <code>DEFINE [second_param] AS_NUMBER OF:[second_param]<font color="#00A000"> //[second_param]=2e3, tries to make a number out of a string. If that is not possible, erases the variable.</font></code>
+            <br>
+            <br>
+            AS_CALCULATION:<br>
+            <code>DEFINE [two] AS_CALCULATION OF:Math.log10(100)<font color="#00A000"> //[two]=2.0 This is a math text interpreter, can calculate functions.<br>
+			// It uses the JavaScript Math objects such as: Math.abs(x) or Math.pow(x,y) or Math.log(x) or Math.log10(x)</font></code>
+            <br>
+			<br>
+			
+            AS_MATH_MUL, AS_MATH_DIV, AS_MATH_ADD, AS_MATH_SUB, <font color="#00A000">// math basic functions will create a simple math operation, e.g.<br></font>
+            <code>DEFINE [four_point_five] AS_MATH_MUL OF:[one_point_five] AND:3</code><br>
+            <br>
+            AS_MATH_MIN, AS_MATH_MAX, // math comparison, e.g:<br>
+            DEFINE [four_point_two] AS_MATH_MIN OF:[four_point_five] AND:4.2<br>
+            <br>
+            AS_MATH_ROUND, // makes the next whole number, e.g.<br>
+            <code>DEFINE [four] AS_MATH_ROUND OF:[four_point_two]<br></code>
+            <br>
+			<br>
+            AS_DECIMAL_FORMAT, // makes number in the given decimal form, e.g.<br>
+            <code>DEFINE [four_point_20] AS_DECIMAL_FORMAT OF:[four_point_two] FORM:##.##<br> <font color="#00A000">// returns 4.20</font> </code>
+            <br>
+			
+            AS_MATH_ABS, AS_MATH_SQRT, AS_MATH_POW,<font color="#00A000"> //more math functions, e.g.</font><br>
+            <code>DEFINE [one_point_five] AS_MATH_ABS OF:-1.5<br>
+            DEFINE [two] AS_MATH_SQRT OF:[four]<br>
+            DEFINE [sixteen] AS_MATH_POW AS_MATH_POW OF:[four] AND:[two]</code><font color="#00A000">// because 4^2=4*4=16</font> <br>
+
+			<h4>Trigonometric functions</h4>
+            all trigonometric functions have one parameter, marked with OF: <br>
+			These functions are:<br>
+			AS_DEG_SIN, AS_DEG_COS, AS_DEG_TAN <font color="#00A000">// normal trigonometric functions for degree parameter</font> <br> 
+			AS_RAD_SIN, AS_RAD_COS, AS_RAD_TAN <font color="#00A000">// normal trigonometric functions for radian parameter</font> <br>
+			<br> 
+			AS_DEG_ASIN, AS_DEG_ACOS, AS_DEG_ATAN <font color="#00A000">// inverse trigonometric functions giving out degree parameter</font> <br> 
+			AS_RAD_ASIN, AS_RAD_ACOS, AS_RAD_ATAN <font color="#00A000">// inverse trigonometric functions giving out radian parameter</font> <br>
+			<br> 
+			AS_DEG_HSIN, AS_DEG_HCOS, AS_DEG_HTAN <font color="#00A000">// hyperbolic trigonometric functions for degree parameter</font> <br> 
+			AS_RAD_HSIN, AS_RAD_HCOS, AS_RAD_HTAN <font color="#00A000">// hyperbolic trigonometric functions for radian parameter</font> <br>
+			<br>
+			Examples:<br>
+            <code>DEFINE [one] AS_DEG_SIN OF:90 </code><font color="#00A000">// because sin(90°)=1.0</font> <br>
+            <code>DEFINE [pi]  AS_RAD_ACOS OF:1.0 </code><font color="#00A000">// because acos(1.0)=cos^-1(1.0)=3.141=pi</font> <br>
+			<code>DEFINE [baz] AS_RAD_TAN OF:sometext </code><font color="#00A000">// that will erase the [baz] variable, because "sometext" is not a number.</font> <br>
+				
+			<h4>Only in animation section: actual value</h4>
+			In the animation section, you can get the actual currents and actual voltages of pins, and of internally saved values.
+			These values are calculated for each timestep. But they are only calculated, when component animation is activated.
+			
+			To get pin values you can use :
+			<code>DEFINE [act_current] I[outpin] </code><font color="#00A000"> // when outpin is the name of a pin, this gets the actual current in ampere.</font> <br>
+			<code>DEFINE [act_voltage] AS_MATH_SUB OF:V[pin1] AND:V[pin2] </code><font color="#00A000"> // voltages are often defined by a voltage difference. That is why this example uses a subtraction of two pin voltages.</font> <br>
+			<br>
+			To get internally saved actual values, you can use the AS_ACTUAL statement.
+			First you need to save that value in the spice section, and then you can call its value in the animation section. 
+			For example lets assume a component called x_[individual], then
+			you can write a line in the spice .subckt of the component: <br>
+			<code>.save v(ctrl)</code><font color="#00A000">// saves the internal variable "ctrl" </font> <br>
+			<br>
+			then you can call it again in the animation section by the following line:<br>
+			<code>DEFINE [act_s] AS_ACTUAL OF:x_[individual].ctrl </code><font color="#00A000"> // calls the value of the internal varible ctrl of this component. </font> <br>
+			<br>	
+			(This example is from the potentiometer in the basic components. You might want to open the <a href="../libraries/01 basic components.alib">01 basic component.alib</a> library to look at the whole potentiometer description.
+        </section>
+        <section>
+            <h4>Where to define a variable</h4>
+            You can define a variable in the declaration, at the beginning of the drawing section and at the beginning of the spice section: 
+        </section>
+        <section>
+           <img src="images/alib_example_sections/text_mark_definitions.png"><br>
+        </section>
+        <section>       
+            The following example is the definition of two different series of relays. In order to see a description of each section, hover the mouse it:<br>
+        </section>
+        <section>
+            <img src="images/alib_example_relays/1.png" title="starting a component, in this example a Relay type" ><br>
+            <img src="images/alib_example_relays/2.png" title="DIPxx-1Axx-11x is a series of relays with one switch."><br>
+            <img src="images/alib_example_relays/3.png" title="Finder 30 series are relays with two switches. Their maximum current is 3 Ampere."><br>
+            <img src="images/alib_example_relays/4.png" title=
+"Symbol drawing for relays. 
+The beginning of the drawing section can be used for definitions of variables used in that section:
+    For example, here the variable [nr_switches] gets the default value 1."><br>
+            <img src="images/alib_example_relays/5.png" title=
+"The spice section defines how the component behaves in a simulation.
+
+The beginning of the spice section van be used for definitions of variables used in that section:
+For example, here the variable [I_destroy_switch] gets the default value 999
+
+Also other variables, that were declared in the other sections, can be used:
+For example, here the variable [nr_switches] is being used, 
+even though it was defined above, in the declaration of each model and in the drawing section.
+
+Other than definitions of variables, you can use IF-THEN-ELSE-ENDIF logic everywhere of the spice section, not only at the beginning:
+For example, here the variable [nr_switches] is used in the model to create the switches s2a and s2b only in case there are more than 1 switch in the relay"
+><br>
+    </section>
+    <section>
+       The models for relays actually exist in the <a href="../libraries/eeschema_only/Relay.alib">library for Relays</a>, but this  example above is a bit shorter and easier to understand. The two relay series that are mentioned in this example do exist in reality. But the parameters used in this example do not match the real series or the model of the library, since the example was shortened and modified to make a short and easy to understand example.<br>
+    </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Analysis errors</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Errors in simulation</h2>
+               There are a couple of reasons, why a circuit simulation fails to deliver current and voltage values. You might be reading this document, because your simulation fails to run.<br>
+               There are two typical types of errors: Systematical errors which appear in every circuit, and individual errors that only appear at some circuits. At first you might want to try a very simple circuit, such as a resistor and a battery, in order to find out whether that simple circuit also fails to run. If that circuit can not be simulated too, then you probably have a Systematical error, but if that simulation runs, then you hava an individual error.
+               
+            <h4>Systematical errors</h4>
+                If every simulation of every circuit fails, then you might want to check your link to ngspice, the circuit simulator. Go to "Settings" -> "program dependencies" and check whether the field on ngspice is in green.
+                If it is not in green, then download an ngspice version. Recommended is version 32 because that one is the one the cirnavsys was tested with. (Version 33 is incompatible to some versions of Windows).<br>
+                
+                You can also put NGspice into your system path, and directly call it from there. In that case, you need to remove the path to NGspice inside the AniCAD dependencies window, so that the AniCAD searches for the default path of NGspice of your operating system.
+                
+            <h4>individual errors</h4>
+                Having an individual error in your analysis means that the circuit can not be solved mathematically by the simulation program. This might be due to an error in the circuit or because the simulation model does not match for this circuit where it is placed. (You can edit each simulation model in the "spice" section of the component library, if you know what you are doing or if you are <a href="alib_creating.html#spice"> willing to learn about the format of the component library</a>.<br>
+                So you might try one of the following:<br>
+                (A) Change the model of the components. E.g. if you have added a new type of transistor, replace that one with a model of an other transistor that you already know better.<br>
+                (B) Change the simulation parameters, like timestep or endtime. Timestep can vary the stability of a model. And if you decrease the endtime, you might find out at which point of time in the simulation the error occurs. A typical point of time is when a device which contains an inductor is switched off, and where you do not have any <a href="https://en.wikipedia.org/wiki/Flyback_diode">flyback in the circuit</a>.<br>
+                (C) Turn off currents or voltages and only display the other value. You might find out that displaying only voltages works in a few circuits, where displaying currents fails. Again, in that case you might still to edit your circuit as described in (A) and (D)<br>
+                (D) change the layout of your circuit. check whether you have an error in the circuit, like a <a href="https://en.wikipedia.org/wiki/Short_circuit">shorted</a> voltage source, or a current source at an open end.
+            
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | model chooser dialog</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <body>
+        <section>
+        <h2>The Dialog to set Models</h2>
+
+        <h3>Introduction</h3>
+        <p> This Dialog appears when you open a schematic which contains components of models which are not specified libraries. It gives you the possibility to set your components' models. (Setting the models means specifying the connections of this component, specifying how the components are drawn, and specifying the electrical characteristic of the components in a ngspice-simulation.)<br>
+        The Dialog typically looks like this:<br>
+        
+        </section>
+        <img src="model_chooser_component_info.png" alt="Image of dialog - component info tab"><br>
+        <section>
+        In this image, the transistors T1 to T8 are of an unknown type. In the "Component Info"-tab we can see, that the Component "T1" is a transistor of the type "BSS296" and it is one of the "NMOSFETs", an N-channel MOSFET.<br>
+        </p>
+        <h4>Default Model</h4>
+        <p> The fastest and easiest way to set the model of T1 to a N-channel MOSFET is to set it to the default NMOSFET in the "Default-Model"-Tab. However, this of course does not set it to the type "BSS296", so using the default model may be a good idea sometimes, if you want some results fast, and don't know which model to use for T1 anyway.<br>
+        </p>
+        <br>
+        </section>
+        <img src="model_chooser_default_model.png" alt="Image of dialog - default model tab"><br>
+        <section>
+        
+        In this image, the model of T1 has just been set to the default model "NMOSFET", the default model for a N-channel MOSFET.<p>
+        <br>
+        But in many cases, you might want to specify a model that matches to the real behaviour of a BSS296-tranistor better than some default model:
+        </p>
+
+        <h4>New Model</h4>
+        <p>You can create a new model and set this new model to your component. This option is suited for practical engineering, if the user knows the specifications of the components and knows <a href="alib_creating.html">how to create an ".alib"-library</a><br>
+        You can save that model in the libraries folder, if you want to use it again.      
+        However, it might be faster and easier to  open the <a href="..\libraries">libraries folder</a> and write an alib-file with a text editor.
+        </p>
+
+        <h4>other Model</h4>
+        <p>If you have the alib-file of your desired model (in the example above, the model for "BSS296") somewhere else than in the libraries folder, then you can open that file in the "other Model"-tab and set the model in that tab
+        </p>
+
+
+        <h3>
+        F.A.Q.</h3>
+        <p><b>Q:</b> What happens, when I modify the textfields for a component?</p>
+        <p><b>A:</b> A model for a component will always be set based on the texts that are in the textfields describing that model.<br>
+        That means that you can modify the textfields on purpose, for example to set some parameters, or to make it look different.
+        When you push the "set-Model"-Button, then a Model will be created based on these texts.
+        But changing the textfields does not change the library text, since the library document will not be overwritten.
+        <br>So if you changed the text without purpose, then you may simply reload the normal library text by selecting that model again.
+        In this case, all modifications are reverted.
+        <p><b>Q:</b> How can I save my modifications then?</p>
+        <p><b>A:</b> You can get the total text from the "totalText"-Button and copy it into a text-File with the file-ending ".alib"<br>
+        This ".alib" file must be placed <a href="alib_library.html#howto_add_library">in a way, so that AniCAD finds it</a>
+        <br>(TODO: Documentation how to do that)
+        <br>(TODO: make such a total-Text-Button)</p>
+
+        <br>----------------<br></p>
+
+        <p><b>Q:</b> What is this okay button for? Can't I set all models and then close this window?</p>
+        <p><b>A:</b> Yes in fact, this is also a completely correct way to do. But some users prefer to work via ok-button, and not just closing a Window, as soon as they are done setting all components' models.
+        <br>----------------<br></p>
+       </section>
+       </body>
+    </div>
+</html>

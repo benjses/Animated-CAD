@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Edit drawing functions</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Drawing parameters</h2>
+            <h4>Intro</h4>
+            The Animated CAD allows the user to change the drawing parameters for voltages and for currents. <br>
+            So you can edit...
+            <br>...how high the aqueducts are for a certain voltage
+            <br>...how intense wires are "shining" for a certain voltage
+            <br>...how long/how wide the current drawing arrows are for a certain current
+            <br>...how thick the current drawing arrows are for a certain current
+            <br>...how much space is between the current drawing arrows for a certain current.<br>
+        </section>
+        <section>   
+            <h4>How to edit drawing parameters:</h4>
+            You can edit drawing parameters for all nodes at once, and you can edit the voltage drawing parameters for one node.<br>
+            It is recommended to edit the parameters AFTER <a href="analysis_chooser.html">making an analysis</a>, because when making an analysis, the AniCAD can automaticlly set parameters and it is easier to simply change that than to write that on your own - but in the end, that's up to you.<br>
+            In the following image, you can see the dialog for editing general parameters at the left, and on the right, the dialog for editing the voltage size of a selected node:<br>
+          
+            <img src="drawing_functions_dialogs.png" alt="image of dialogs for editing the drawing parameters"
+title="Dialogs for editing the drawing parameters, and the buttons for opening these dialogs.
+On the left, in blue: Edit drawing parameters for the whole circuit in general, 
+On the right, in orange: Edit voltage drawing parameters for 'node_2' specifically."
+            >
+           </section>
+        <section> 
+           <br>
+            (By default, all nodes in any circuit do not have their own specific drawing parameters. So their drawing parameters are the general ones. But if you, the user, define a specific drawing for a node that you select, then for this specific node, the specific drawing parameters are selected, while all others still use the general drawing parameters.)
+            <h4> Which text to write?</h4>
+            The functions and their parameters are the same as you can choose for <a href="curves.html#functions">curves</a>:
+            
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

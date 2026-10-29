@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | raw-file</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>The raw-file</h2>
+            <h4>Intro</h4>
+            The raw-file is the file that contains the current and voltage values for your circuit. Usually it is created by the simulation engine, called "ngspice".
+        </section>
+        <section>   
+            <h4>Troubleshooting</h4>
+            Unfortunately, simulation sometimes does not work as expected. Creating a circuit, that can be simulated correctly, is tricky and ngspice might return a raw-file with errors.<br>
+            Fortunately, some of these errors can be corrected quickly.<br>
+            <br>
+            <b>Easiest case</b>: If there is just one wrong parameter, for example "No. Variables" or "No. Points", then the simulation has started, but not ended correctly. You can view the part that has been simulated in the following steps:<br>
+            1.Open the raw-file with a text editor. You might see that the <code>No. Points</code> is wrong, usually zero.<br>
+            2.remove the wrong number and replace it by the correct number: The "correct" number in this case is easy to find: When you scroll down in the raw-file, then you should find the values. The values are numbered by some indexes from {0, 1, 2, ...  } . Find the last one of these indexes, and add one to the last found index (because the indexes start counting at zero, the number of indexes is one more than the last index). <br>
+            3.Save your corrected raw-file.<br>
+            4.Select "Processing" -> "load dataset" and enter the corrected raw-file.<br>
+            <br>
+            -> You now should see the program working. At least for the part that was simulated.<br>
+            <br>
+            <br>
+            But in more <b>difficult cases</b>, the simulation does not even start, but fails directly: In this case, either the circuit or the library description of at least one component is wrong. Of course you also can read and modify the raw-file or the <a href = "TODO!!!">(TODO)netlist-file</a>. But more efficient is to change the circuit: You can try to replace a component that you do not know well, or that might be the cause of the fault. Then you can run the simulation again. When you found out, that the simulation runs without a specific component, this might be a hint, that this component's library is wrong or that the component has an incorrect parameter (like a wrong [value] or a [name] that contains special characters that are not allowed in ngspice).<br>
+            <br>
+            But if this component can be simulated in another circuit, then the fault most likely is not the parameters or the library, it probably is the circuit, in which that component shall operate. Maybe some electric rule is violated in a circuit. You might want to compare the error message to chapter 29 "Error Messages" of the ngspice manual <a href="TODO Link!!!">TODO link!</a>
+            
+            
+        </section>
+        <section>               
+            
+            
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | libraries</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>What is an ".alib"-file? </h2>
+            .alib stands for "<a href="alib_logic.html">advanced</a> library". It is a file which describes the different types of electric circuit components.
+            <br> The ".alib" files are needed by the AniCAD to find the components' types for each schematic.
+            <h2 id="howto_add_library">How can I add a library to AniCAD?</h2>
+            The easiest way to add a library is to copy that ".alib" file into the "libraries" folder under the AniCAD program path. <!-- TODO describe how to find that path -->
+            <h2>How can I create an ".alib"-file?</h2>
+            You can write an ".alib"-file with a text editor. The language used in ".alib" is an 
+            <a href="https://en.wikipedia.org/wiki/XML">Extensible Markup Language</a>. 
+            We have a documentation, which explains <a href="alib_creating.html">how to create Components in ".alib"-files</a>. But if you are a programmer, then it might be easier for you to simply read the the <a href="../libraries/components.alib"> standard component library</a> with a text editor. If you know some XML or HTML and understand some NGspice format and the KiCad component format, then this will be easy for you. If you know parts of that, maybe you will understand the rest by the examples in that library.
+            
+        </section>
+        <section>
+            <h2>Under which license are the ".alib"-files distributed?<br>
+            And under which license may I distribute an ".alib"-file?</h2>
+            The AniCAD team distributes some ".alib"-files, and we try to distribute them as freely as possible. That means, we like to give you the <a href="https://en.wikipedia.org/wiki/Free_software#Definition_and_the_Four_Freedoms"> four Freedoms</a> for our distributed component, as far as possible.<br>
+            <br>
+            But sometimes when creating components in ".alib"-files, we need to use texts, which are not distributed this freely.
+            Usually these textparts are Spice-texts of some components, for example if a company produces some OpAmps and provides Spicetext for their components, then they usually use a license that limits modifiactions of that spicetext. In this case, we like to use their spicetext, but of course we can not allow you to modify that text, since it would violate their original license.<br>
+            <br>
+            Because of that, the license of each component may be different. So it is good practise to add some license information into the Description of every component.<br>
+            <br>
+            We encourage you to also distribute ".alib"-files as freely as possible, but of course you should also pay attention if you are using some texts which are not free.<br>
+            <br>
+            Also we are not experts for all types of electric components. Even though we try our best to create and test realistic models for all the components, we can not guarantee that they are flawless. So we present our components AS IS and we disclaim liability for any consequences resulting from using our components.<br>
+            When you create a component which you are not absolutely sure about, then you might also present your components the same way. And if you find an error in one of our ".alib"-files, please contact us.
+        </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>

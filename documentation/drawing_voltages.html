@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | Voltage drawing</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>Drawing Voltages</h2>
+            <h4>Introduction</h4>
+            <p>There are three different options how voltages can be drawn.
+            From these options, one can be selected in the <a href="analysis_chooser.html">dialog for creating an analysis</a>
+            </p>
+            <h4>Option A: The aquaeduct model</h4>
+            <p>
+            The aquaeduct model is the standard model for this program. It is inspired by <a href="https://en.wikipedia.org/wiki/Roman_aqueduct">roman aquaeducts</a>.<br>
+            <img src="drawing_voltages_A_aquaeduct.png" align="left" hspace="10" vspace="1" alt = "missing image: drawing_voltages_A_aquaeduct.png"><br>
+            For example, this image shows the aquaeduct model of a simple voltage divider, consisting of one source and two resistors. 
+            At each node or each wire, there is a so called "aquaeduct", the graphical element which indicates the voltage versus ground potential. The aquaeduct's height depends on the voltage at this node: The higher the voltage is, the higer is the aquaeduct(*). So in this image, there are three different heights of aquaeducts:<br>
+            <p>
+            1: The highest aquaeduct/the highest voltage is at the positive connection of the source, in the top left corner<br>
+            2: The lower aquaeduct is at the right side of the image, between the two resistors, because here the voltage is lower than at source (electronic explaination see at <a href="https://en.wikipedia.org/wiki/Voltage_divider"> wikipedia</a>)<br>
+            3: An aquaeduct with the height of zero is at the lower-left side of the image: this node is connected to the ground flag. By definition, every wire connected to ground has zero voltage versus ground.
+            </p>
+            In the aquaeduct model, voltages below ground can also be displayed: These aquaeducts are drawn right-down from the wire, (in contrary to this image, where the wires are at or above ground: here the aquaeducts are drawn  left-up from the wire)
+            </p>
+            <p>
+            (*) At the moment of the program, the depency between the height of the aquaeduct and the voltage is a simple
+            positive linear proportional depency: aquaeduct_height = C x voltage<br>
+            where C is a constant, which is calculated individually for each analysis depending on the maximal voltage.
+            But in future, also non-linear and discrete depencies are planned to implement
+            </p>
+            
+            <img src="drawing_voltages_B_shining.png" align="left" hspace="10" vspace="1" alt="missing image: drawing_voltages_B_shining.png">
+            <h4>Option B: Shining wire</h4>
+            <p>
+                Another option to draw voltages is to make wires with high voltages "shine":
+            </p>
+            <p>
+                This option has the advantage, that it takes less space on the screen than the aquaeduct model, but it has the disadvantages that it can not display voltages below ground: All voltages at or below ground are represented by no shining. Also it shows the exact voltage value less exact than the aquaeduct model <br>
+                Because of that, the shining wire option is not suited well for many analog circuits, but it is made mostly for digital circuits, where it is enough to know if a wire is at HIGH or LOW.<br>
+            </p>
+            <p>
+            In this image all voltages are at or above zero, so here all "shining wires" can be drawn correctly. But here the reader can not conclude the exact voltage of the wire at the right side of the image from the intensity of the shining: In this example the voltage at source it twice as high as between the resistors (the two resistors her have the same value) , but the shining between the resistors looks less than half as intense than at source.
+            </p>
+            
+            <img src="drawing_voltages_Zero_none.png" align="left" hspace="10" vspace="1" alt = "missing image: drawing_voltages_Zero_none.png">
+            <h4>Option 0: No drawing of voltages</h4>
+            <p>
+            You can opt-out any drawing of voltages, for example if you want to draw currents only.
+            </p>
+            </section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>
+
+
+
+

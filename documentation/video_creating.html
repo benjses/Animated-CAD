@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>AniCAD | How to create an AniCAD video</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="wrapper">
+        <header>
+           <img src="logos/logo_en.png" alt="logo">
+        </header>
+        <nav>
+            <ul_vertical class="selectable">
+                <li><a href = "https://www.cirnavsys.com">Home</a></li>
+                <li><a href = "overview.html">Overview</a></li>
+                <li><a href = "../documentation/">Content list</a></li>
+            </ul_vertical>
+        </nav>
+    </div>
+    <div>
+        <section>
+            <h2>How to create an AniCAD video</h2>
+            <h4>Content</h4>
+            Chapter 1: <a href="#prerequisites">Prerequisites for creating a video</a><br>
+            Chapter 2: <a href="#window">The video creation window and how to use it</a><br>
+            Chapter 3: <a href="#settings">Input and output settings</a><br>
+            -- chapter 3.1:<a href="#quality">settings for video quality</a><br>
+            -- chapter 3.2:<a href="#find_encoder">How to find your video encoder</a><br>
+            Chapter 4: <a href="#workaround">What to do if automatical video creation fails</a><br>
+            -- chapter 4.1:<a href="#repair">Option A: Repair</a><br>
+            -- chapter 4.2:<a href="#manual">Option B: Create videos manually</a><br>
+            
+            <h4 id="prerequisites">Chapter 1: Prerequisites for creating a video</h4>
+            The video creation is based on the external tool FFmpeg. In order to create videos, you need to install and link FFmpeg. <a href="getting_started/external_programs.html#linking">Here</a> is a description how to do that.<br>
+            AniCAD was tested with ffmpeg version 3.4.6. , but it is likely to work with other versions as well.<br>
+        </section>
+        <section>
+            Before you can make a video, you need to <a href="analysis_chooser.html"> run an analysis</a> because, in the analysis the values get calculated, which will be shown in the video. <br>
+            <h4 id="window">Chapter 2: The video creation window and how to use it</h4>
+            <img src="video_creating_window.png" alt="image of the video-creating dialog window">
+            You can open a dialog for creating a video either by pressing the "v"-button when the main window of AniCAD is active, or by klicking "Output" -> "create a video". The dialog should look like 
+            this image. Here you can:<br>
+            <ul_vertical>
+                <li>set the <a href="video_data_formats.html">data-format of the output video</a></li>
+                <li>set the file under which the video is stored</li>
+                <li>set the frame rate of the video</li>
+                <li>turn <a href="video_autoscaling.html">autoscaling</a> on or off</li>
+            </ul_vertical><br>
+            As soon as you click the "okay"-button in this dialog, the video-creating process starts.<br>
+        </section>
+		<section>
+            <h4 id="settings">Chapter 3: Input and output settings</h4>
+            In the creation window, there are two fields, in which you can enter the input and output parameters of ffmpeg.
+            Here you can enter the options that are specified in the options list from the <a href="https://www.ffmpeg.org/ffmpeg.html#Options">FFmpeg website</a>.
+            But since that list is quite long and contains many settings and some settings are more important than others, here is a selection of recommended output options:<br>
+            <br>
+            <code style="background-color:#444444"><font color="white">-pix_fmt yuv420p</font></code> States that images in the output video file shall be saved in the YUV420p format (<a href="https://en.wikipedia.org/wiki/YUV">wikipedia</a>). Since this option is more efficient than the usual RGB format (for the same video quality, it needs less space on your hard drive), it is set by default in the <a href="settings.html"> settings</a>.
+            
+            <h4 id="quality">chapter 3.1: setting the video output quality</h4>
+            there are several settings that have an effect on the output video quality. Also, the file size corresponds to the video quality. Therefor, you might either want to increase video quality if either your video is not sharp enough or decrease the video quality the file is too large: <br>
+            <br>
+            <code style="background-color:#444444"><font color="white">-crf 18</font></code> sets the Constant Rate Factor. The value 18 here is a recommended value to start with*: <br>
+            if you enter a <u>lower value</u>,  then the video quality and the file size <u>increase</u>,<br>
+            if you enter a <u>higher value</u>, then the video quality and the file size <u>decrease</u>.<br>
+            *(that is if your computer is using the <a href="https://trac.ffmpeg.org/wiki/Encode/H.264">x264 video encoder</a>. But if you are using an other encoder, such as the <a href="https://trac.ffmpeg.org/wiki/Encode/VP9">vp9 video encoder</a>, then a different value might be better, such as 10. You might want to try out different values.)<br>
+            <br>
+            You can also set the output bitrate, as described in the <a href="https://trac.ffmpeg.org/wiki/Limiting the output bitrate">ffmpeg wiki</a>. An example output setting to do that would be:<br>
+            <code style="background-color:#444444"><font color="white">-b:v 2M -maxrate 2M -bufsize 1M</font></code><br>
+            Please keep in mind that the output video quality depends on the image size and the bitrate. 
+            <br>So if you set a constant bitrate, and make videos for small circuits with small images then the quality is high. But if you use the same bitrate for a large circuit, the output video quality is low.<br>
+            <br>
+            If you are using the <a href="https://trac.ffmpeg.org/wiki/Encode/MPEG-4">mpeg-4</a> encoder (not to be confused with the .mpeg or .mp4 output formats), then you can set the variable bit rate with <code>-qscale n</code>, such as <code style="background-color:#444444"><font color="white">-qscale 3</font></code><br>
+            The value 3 here is a recommended value to start with*: <br>
+            if you enter a <u>lower value</u>,  then the video quality and the file size <u>increase</u>,<br>
+            if you enter a <u>higher value</u>, then the video quality and the file size <u>decrease</u>.<br>
+        </section>
+		<section>
+            <h4 id="find_encoder">chapter 3.2: How to find your default encoder</h4>
+            1. Open the video creation window shown above and create a video with it. (Or at least create the images from process)<br>
+            2. Then open the window again, make the same settings as Step 1.<br>
+            3. click on the cmd button, and copy the command shown in the text window which appears after clicking on that button. <br>
+            4.Paste the whole command into your command terminal. Press enter.<br>
+            You should then see an output similar to this image 
+            <a  href="video_encoder_of_ffmpeg.png">(click to increase):<br>
+            <img src="video_encoder_of_ffmpeg.png" height=100 width=100
+title="the upgrade dialog.
+Here you can see your identification code and you can copy it to get a matching license code."></a>
+            
+            
+		</section>
+		<section>
+			<h4 id="workaround">Chapter 4: What to do if automatical video creation fails </h4>
+			<h4 id="repair">chapter 4.1:Option A:Repair</h4>
+			There is a document that explains <a href="video_repair.html">how to repair the video creation</a>.
+			
+			
+			<h4 id="manual">chapter 4.2:Option B: create videos manually</h4>
+			If you don't want to install FFmpeg, or if one of the following happens when you try to create a video:
+			<ul_vertical>
+			<li> - the video creation step 1 works but step 2 freezes, or
+			<li> - the video step 2 does not freeze but takes forever, or
+			<li> - the created video file is just a few bytes large and does not show anything
+			</ul_vertical><br>
+			<br>
+			then you can still create AniCAD videos. Either by calling FFmpeg in the command terminal, or creating the video <a href="#manual_video_creation"> without FFmpeg</a><br>
+			<br>
+			<u>How to call FFmpeg manually:</u>
+			 If calling FFmpeg automatically by the AniCAD does not work, then You can try to work around that problem by calling FFmpeg manually via command terminal.<br>
+			<b>1.</b> open the video creation dialog<br>
+			<b>2.</b> select at which file you want to save the video.<br>
+			<b>3.</b> click on "cmd" button.<br>
+			-> A text window appears. Copy the command line from that dialog and close the window again.<br>
+			<b>4.</b> in the video creation dialog, click on ok.<br>
+			-> The video creation process starts. It will fail in part 2, but at least the part 1 should succeed. That part 1 is the creation of images into a temporary folder. <br>
+			<b>5.</b> As soon as Part 1 of the process is finished, close the video creation dialog, but do NOT close the AniCAD.<br>
+			<b>6.</b> open your command terminal and paste the command line that you have copied in step 3.<br>
+			<b>7.</b> check whether the output file path is correct.<br>
+			-- If it contains some text like SET\PATH\TO\OUTPUT_VIDEO_FILE.mp4 , then it's wrong and you should replace that text by your desired output path.<br>
+			-- Also, if the path contains any whitespace characters, then it should be inside a pair of  apostrophes "<br>
+			<b>8.</b> press enter.<br>
+			-> Part 2 of the video creation runs in the terminal. That part is creating a video out of the images created before. Wait until this step is done. Now your video is created.<br>
+			<br>
+			<u id="manual_video_creation">How to create a video without FFmpeg</u><br>
+			You can create AniCAD-videos without FFmpeg but some other video program (*1), because in the first step of each video creation, the AniCAD creates all the images for that video and saves them in a temporary folder (*2). So even when FFmpeg is not installed, you can use these images to create a video with a program of your choice:<br>
+			<b>1. </b> open the video creation dialog of the AniCAD<br>
+			<b>2. </b> click on "create", without setting any output video file<br>
+			-> The video creation process starts. It may fail in part 2, but at least the part 1 should succeed. That part 1 is the creation of images into a temporary folder. <br>
+			<b>3. </b> copy the path of the temporary folder. (<a href="video_creating_temp_dir.png">image</a>)<br>
+			<b>4. </b> open the temporary folder. There are the just created images, the folder should look<a href="video_creating_temp_imgs.png"> like this</a><br>
+			<b>5. </b> use these images and your selected video program(*1) to create a video.<br>
+
+
+			<br>
+			(*1) for example <a href="https://www.openshot.org"> OpenShot Video Editor </a><br>
+			(*2) temporary folder means that the folder and everything in it will get erased as soon as you close the AniCAD, or as soon as you restart the computer. By default, that folder gets erased when closing the AniCAD, but in the <a href="program_settings.html">program settings</a> you can turn off this erasing the temp folder.<br>
+			
+		</section>
+        <footer class="framed">
+            <ul_horizontal> 
+                <li><a href="https://www.cirnavsys.com">Home</a></li>
+                <li><a href="about_us.html">About us</a></li>
+                <li><a href="https://www.cirnavsys.com/contact">Contact</a></li>
+            </ul_horizontal>
+        </footer>
+    <div>
+  </body>
+</html>
