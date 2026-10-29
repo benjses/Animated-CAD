@@ -1,0 +1,681 @@
+eeschema
+// Animated-CAD digital logic library.
+// Combinational logic with ideal switching and configurable electrical voltage levels.
+//
+// Supply configuration is entered in the component value field, for example:
+//   vpos=5.0 vneg=0.0
+// The default levels are vpos=5.0 V and vneg=0.0 V.
+// The switching threshold is (vpos + vneg) / 2. An input above the threshold is HIGH;
+// an input at or below the threshold is LOW. Outputs are driven to vpos or vneg.
+//
+// These gates are ideal and have no propagation delay, hysteresis, input current,
+// output resistance, or internal power-supply pins. Sequential components are
+// intentionally not included until their transient/state behavior can be validated.
+
+<Component>
+	<Description>
+		Inverter: output is HIGH when A is LOW.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NOT
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(!(V(A) > (([vpos]+[vneg])/2))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 0.00 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "NOT" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Non-inverting buffer.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:BUFFER
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=((V(A) > (([vpos]+[vneg])/2))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 0.00 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "BUFFER" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Two-input AND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:AND
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=((V(A) > (([vpos]+[vneg])/2)) && (V(B) > (([vpos]+[vneg])/2))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -2.54 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "AND" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Two-input OR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:OR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=((V(A) > (([vpos]+[vneg])/2)) || (V(B) > (([vpos]+[vneg])/2))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -2.54 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "OR" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Two-input NAND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NAND
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(!((V(A) > (([vpos]+[vneg])/2)) && (V(B) > (([vpos]+[vneg])/2)))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -2.54 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "NAND" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Two-input NOR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NOR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(!((V(A) > (([vpos]+[vneg])/2)) || (V(B) > (([vpos]+[vneg])/2)))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -2.54 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "NOR" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Two-input exclusive OR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:XOR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(((V(A) > (([vpos]+[vneg])/2)) != (V(B) > (([vpos]+[vneg])/2)))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -2.54 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "XOR" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Two-input exclusive NOR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:XNOR
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(((V(A) > (([vpos]+[vneg])/2)) == (V(B) > (([vpos]+[vneg])/2)))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -2.54 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "XNOR" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Three-input AND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:AND3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=((V(A) > (([vpos]+[vneg])/2)) && (V(B) > (([vpos]+[vneg])/2)) && (V(C) > (([vpos]+[vneg])/2))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 5.08 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 0.00 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -5.08 0) (length 2.54)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "AND3" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Three-input OR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:OR3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=((V(A) > (([vpos]+[vneg])/2)) || (V(B) > (([vpos]+[vneg])/2)) || (V(C) > (([vpos]+[vneg])/2))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 5.08 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 0.00 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -5.08 0) (length 2.54)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "OR3" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Three-input NAND gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NAND3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(!((V(A) > (([vpos]+[vneg])/2)) && (V(B) > (([vpos]+[vneg])/2)) && (V(C) > (([vpos]+[vneg])/2)))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 5.08 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 0.00 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -5.08 0) (length 2.54)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "NAND3" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Three-input NOR gate.
+		The input threshold is the midpoint of the configured supply levels:
+		Vth = (vpos + vneg) / 2.
+		An input voltage strictly above Vth is interpreted as HIGH; an input at or below Vth is LOW.
+		The output is driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		These are ideal, zero-delay logic gates with electrical voltage levels, not transistor-level models.
+	</Description>
+	<eeschema_sch>
+		L anicad:NOR3
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=3.3 vneg=0.0
+		vpos=5.0 vneg=-5.0
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN
+			DEFINE [vpos] AS_NUMBER OF:[vpos]
+		ELSE
+			DEFINE [vpos] 5.0
+		ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN
+			DEFINE [vneg] AS_NUMBER OF:[vneg]
+		ELSE
+			DEFINE [vneg] 0.0
+		ENDIF
+		B_[individual] [Y] 0 V=(!((V(A) > (([vpos]+[vneg])/2)) || (V(B) > (([vpos]+[vneg])/2)) || (V(C) > (([vpos]+[vneg])/2)))) ? [vpos] : [vneg]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -6.35 6.35) (end 6.35 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 5.08 0) (length 2.54)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 0.00 0) (length 2.54)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(pin input line (at -10.16 -5.08 0) (length 2.54)
+			(name "C" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(pin output line (at 10.16 0 180) (length 2.54)
+			(name "Y" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "NOR3" (at 0 0 0) (effects (font (size 1.27 1.27))))
+	</eeschema_symbol>
+</Component>
