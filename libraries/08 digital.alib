@@ -1,4 +1,3 @@
-eeschema
 // Animated-CAD digital logic library.
 // Combinational logic with ideal switching and configurable electrical voltage levels.
 //
@@ -1647,11 +1646,12 @@ eeschema
 				DEFINE [s_01] AS_NULL
 			ENDIF
 			
+			// get the y coordinate of the input channel (in old kicad 5 mils. Attention: the y axis is inversed between new kicad 6 and old kicad 5 coordinate system.)
 			IF [s_01] THEN
-				IF     [s_01] EQUAL_TO 00 THEN DEFINE [yco] -250 //mils=6.35mm A
-				ELSEIF [s_01] EQUAL_TO 01 THEN DEFINE [yco] -150 //mils=3.81mm B
-				ELSEIF [s_01] EQUAL_TO 10 THEN DEFINE [yco] -50  //mils=1.27mm C
-				ELSEIF [s_01] EQUAL_TO 11 THEN DEFINE [yco] 50   //mils=-1.27mm D
+				IF     [s_01] EQUAL_TO 00 THEN DEFINE [yco] -250 //mils= +6.35mm=A
+				ELSEIF [s_01] EQUAL_TO 01 THEN DEFINE [yco] -150 //mils= +3.81mm B
+				ELSEIF [s_01] EQUAL_TO 10 THEN DEFINE [yco] -50  //mils= +1.27mm C
+				ELSEIF [s_01] EQUAL_TO 11 THEN DEFINE [yco] 50   //mils= -1.27mm D
 				ENDIF ENDIF ENDIF ENDIF 
 			ELSE
 				DEFINE [yco] AS_NULL
