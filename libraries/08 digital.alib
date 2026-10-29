@@ -1483,16 +1483,35 @@ eeschema
 		DEFINE [vout] V[Y]
 		DEFINE [vout] AS_NUMBER OF: [vout]
 		IF [vout] THEN
+			DEFINE [s_0] V[S]
+			IF [s_0] THEN
+				IF [s_0] HIGHER_THAN [vth] THEN
+					DEFINE [s_0] 1
+					DEFINE [yco] -50 //mils 
+				ELSE 
+					DEFINE [s_0] 0
+					DEFINE [yco] -150 //mils=3.81mm A
+				ENDIF
+			ENDIF
+			
+			// draw connection to output
 			IF [vout] HIGHER_THAN [vth] THEN
+				DEFINE [color] #FF0000 
 				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
 				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
 				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
 			ELSE
+				DEFINE [color] #0000FF
 				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
 				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
 				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
 			ENDIF
+			// draw input channel in high or low color:
+			IF [yco] && [color] THEN 
+				<Line -250 [yco] 150 0 [color] 2 1>
+			ENDIF
+			
 		ENDIF
 	</animation>
 </Component>
