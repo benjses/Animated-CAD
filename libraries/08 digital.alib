@@ -1431,39 +1431,48 @@ eeschema
 			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
 		.ends
 		// ---- component ----
-		X_[individual] [A] [B] [S] mdl_mux2_[individual]
+		X_[individual] [A] [B] [S] [Y] mdl_mux2_[individual]
 	</Spice>
 	<eeschema_symbol>
-		(rectangle (start -8.89 7.62) (end 8.89 -7.62)
+		(rectangle (start -8.89 6.35) (end 8.89 -6.35)
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
 		// horizontal line creates a minus - symbol
-		(polyline (pts (xy -0.51 -6.35)(xy 0.51 -6.35))
-			(stroke (width 0) (type default))
-			(fill (type none))
-		)
+		(polyline (pts	(xy -0.51 -5.08)(xy 0.51 -5.08)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
+			)
 		// two lines create a plus + symbol
-		(polyline (pts (xy -0.51 6.35)(xy 0.51 6.35))
+		(polyline
+			(pts	(xy -0.51 5.08)(xy 0.51 5.08))
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
-		(polyline (pts (xy 0 5.84)(xy 0 6.86))
-			(stroke (width 0) (type default))
-			(fill (type none))
+		(polyline (pts	(xy 0 4.57)(xy 0 5.59)
+			  )
+			  (stroke (width 0) (type default))
+			  (fill (type none))
 		)
 		(pin input line (at -10.16 3.81 0) (length 1.27)
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
 		)
+		(text "A" (at -7.62 3.81 0) (effects (font (size 1.5 1.5))))
+		
 		(pin input line (at -10.16 1.27 0) (length 1.27)
 			(name "B" (effects (font (size 1.27 1.27))))
 			(number "2" (effects (font (size 1.27 1.27))))
 		)
+		(text "B" (at -7.62 1.27 0) (effects (font (size 1.5 1.5))))
+		
 		(pin input line (at -10.16 -3.81 0) (length 1.27)
 			(name "S" (effects (font (size 1.27 1.27))))
 			(number "3" (effects (font (size 1.27 1.27))))
 		)
+		(text "S" (at -7.62 -3.81 0) (effects (font (size 1.5 1.5))))
+
 		(pin output line (at 10.16 0 180) (length 1.27)
 			(name "Y" (effects (font (size 1.27 1.27))))
 			(number "4" (effects (font (size 1.27 1.27))))
@@ -1536,7 +1545,7 @@ eeschema
 			S_neg pwr_neg out logic 0 mdl_swneg_[individual]
 		.ends
 		// ---- component ----
-		X_[individual] [A] [B] [C] [D] [S0] [S1] mdl_mux4_[individual]
+		X_[individual] [A] [B] [C] [D] [S0] [S1] [Y] mdl_mux4_[individual]
 	</Spice>
 	<eeschema_symbol>
 		(rectangle (start -8.89 7.62) (end 8.89 -7.62)
@@ -1561,46 +1570,94 @@ eeschema
 			(name "A" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
 		)
+		(text "A" (at -7.62 6.35 0) (effects (font (size 1.5 1.5))))
+		
 		(pin input line (at -10.16 3.81 0) (length 1.27)
 			(name "B" (effects (font (size 1.27 1.27))))
 			(number "2" (effects (font (size 1.27 1.27))))
 		)
+		(text "B" (at -7.62 3.81 0) (effects (font (size 1.5 1.5))))
+
 		(pin input line (at -10.16 1.27 0) (length 1.27)
 			(name "C" (effects (font (size 1.27 1.27))))
 			(number "3" (effects (font (size 1.27 1.27))))
 		)
+		(text "C" (at -7.62 1.27 0) (effects (font (size 1.5 1.5))))
+
 		(pin input line (at -10.16 -1.27 0) (length 1.27)
 			(name "D" (effects (font (size 1.27 1.27))))
 			(number "4" (effects (font (size 1.27 1.27))))
 		)
+		(text "D" (at -7.62 -1.27 0) (effects (font (size 1.5 1.5))))
+
 		(pin input line (at -10.16 -3.81 0) (length 1.27)
 			(name "S0" (effects (font (size 1.27 1.27))))
 			(number "5" (effects (font (size 1.27 1.27))))
 		)
+		(text "S0" (at -7.62 -3.81 0) (effects (font (size 1.5 1.5))))
+
 		(pin input line (at -10.16 -6.35 0) (length 1.27)
 			(name "S1" (effects (font (size 1.27 1.27))))
 			(number "6" (effects (font (size 1.27 1.27))))
 		)
+		(text "S1" (at -7.62 -6.35 0) (effects (font (size 1.5 1.5))))
+
 		(pin output line (at 10.16 0 180) (length 1.27)
 			(name "Y" (effects (font (size 1.27 1.27))))
 			(number "7" (effects (font (size 1.27 1.27))))
 		)
+		(text "Y" (at 7.62 0 0) (effects (font (size 1.5 1.5))))
+
 		(text "MUX4" (at 0 0 0) (effects (font (size 2.54 2.54))))
 	</eeschema_symbol>
 	<animation>
 		DEFINE [vout] V[Y]
 		DEFINE [vout] AS_NUMBER OF: [vout]
 		IF [vout] THEN
-			IF [vout] HIGHER_THAN [vth] THEN
-				<Line 250 0 -200 -200 #FF0000 2 1 #FF0000 1 0> // red line to positive output
-				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
-				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
-				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
+			DEFINE [s_0] V[S0]
+			DEFINE [s_1] V[S1]
+			IF [s_0] && [s_1] THEN 
+				IF [s_0] HIGHER_THAN [vth] THEN DEFINE [s_0] 1
+				ELSE  					        DEFINE [s_0] 0
+				ENDIF
+				IF [s_1] HIGHER_THAN [vth] THEN DEFINE [s_1] 1
+				ELSE  					        DEFINE [s_1] 0
+				ENDIF
+				DEFINE [s_01] [s_0][s_1] // status value
 			ELSE
-				<Line 250 0 -200 200 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
-				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
-				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
+				DEFINE [s_01] AS_NULL
 			ENDIF
+			
+			IF [s_01] THEN
+				IF     [s_01] EQUAL_TO 00 THEN DEFINE [yco] -250 //mils=6.35mm A
+				ELSEIF [s_01] EQUAL_TO 01 THEN DEFINE [yco] -150 //mils=3.81mm B
+				ELSEIF [s_01] EQUAL_TO 10 THEN DEFINE [yco] -50  //mils=1.27mm C
+				ELSEIF [s_01] EQUAL_TO 11 THEN DEFINE [yco] 50   //mils=-1.27mm D
+				ENDIF ENDIF ENDIF ENDIF 
+			ELSE
+				DEFINE [yco] AS_NULL
+			ENDIF
+			
+			
+			// draw output switch: 
+			IF [vout] HIGHER_THAN [vth] THEN
+				DEFINE [color] #FF0000 // red
+				<Line 350 0 -250 -250 #FF0000 2 1 #FF0000 1 0> // red line to positive output
+				<Line 0 -270 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -250 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -280 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
+			ELSE
+				DEFINE [color] #0000FF // blue
+				<Line 350 0 -250 250 #0000FF 2 1 #0000FF 1 0> // blue line to negative output
+				<Line -20 250 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 220 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
+			ENDIF
+			
+			// draw input channel in high or low color:
+			IF [yco] && [color] THEN 
+				<Line -250 [yco] 150 0 [color] 2 1>
+			ENDIF
+			
 		ENDIF
 	</animation>
 </Component>
