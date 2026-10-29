@@ -1,0 +1,4725 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+<Component>
+    <Description>
+        A Battery, or multiple batteries, or a solar cell or multiple solar cells.
+        Simulated as dc voltage source with the voltage given in [value] 
+    </Description>
+    <eeschema_sch>
+        L Device:Battery
+        ALIAS Device:Battery_Cell
+        DEFINE [type] batt
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Solar_Cell
+        ALIAS Device:Solar_Cells
+        DEFINE [type] solar
+    </eeschema_sch>
+    <Default_Values>
+      5.0 V //DC voltage
+    </Default_Values>
+    <Spice>
+        DEFINE [voltage] AS_NUMBER OF:[value]
+        IF [voltage] THEN
+            DEFINE [value] AS_NULL
+            V_[name] [+] [-] dc [voltage]
+        ELSE 
+            <Dialog type="error" title="Please enter a numeric value for the [model]">
+                IF [language] EQUAL_TO "de" THEN 
+                    Das [model] Bauteil namens [name] auf Position ([xpos]|[ypos]) hat keinen korrekten Wert:
+                    Der vorgegebene Wert, "[value]" ist kein numerischer Wert.
+                    Bitte geben Sie dem Bauteil einen numerischen Wert fuer die Spannung in Volt an.
+                    Wenn Sie statt dessen eine Wechselspannung haben moechten, verwenden Sie bitte eine Quelle wie z.B. VSIN
+                ELSE
+                    The [model] component, which has the name [name] at position ([xpos]|[ypos]) does not have a correct value:
+                    The given value, "[value]" is not a numeric one.
+                    Please give the component a numeric value for the Voltage in V.
+                    If you want to have an AC voltage instead, then please use a source such as VSIN.
+                ENDIF
+            </Dialog>
+        ENDIF
+    </Spice>
+        <purchase>
+        <link>
+            IF [type] EQUAL_TO solar THEN
+            
+            ELSE //then type is equal to batt
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fakkus-batterien-280070.html</url>
+                    <title>Overview</title>
+                    <detail>Overview of batteries at Conrad Electronic</detail>
+                 </link><link>
+                IF[voltage] LOWER_THAN 2 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-bh-311-1a-batteriehalter-1x-mignon-aa-kabel-1672589.html</url>
+                    <title>battery holder for 1x1.5V AA battery</title>
+                    <detail>a battery holder for a standard AA battery at Conrad Electronic</detail>
+                ELSE IF [voltage] LOWER_THAN 4 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-sbh-321-3as-batteriebox-2x-mignon-aa-kabel-1672618.html</url>
+                    <title>battery holder for 2x1.5V AA batteries</title>
+                    <detail>a battery holder for two standard AA batteries at Conrad Electronic. Combined voltage=2x1.5V=3V</detail>
+                ELSE IF [voltage] LOWER_THAN 6 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-sbh-331a-batteriehalter-3x-mignon-aa-kabel-1672628.html</url>
+                    <title>battery holder for 3x1.5V AA batteries</title>
+                    <detail>a battery holder for three standard AA batteries at Conrad Electronic. Combined voltage=3x1,5V=4,5V</detail>
+                ELSE IF [voltage] LOWER_THAN 8 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-sbh341-1a-batteriehalter-4x-mignon-aa-kabel-1672572.html</url>
+                    <title>battery holder for 4x1.5V AA batteries</title>
+                    <detail>a battery holder for four standard AA batteries at Conrad Electronic. Combined voltage=4x1,5V=6V</detail>
+                ELSE IF [voltage] LOWER_THAN 11 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fbeltrona-9v-i-clip-batterieclip-1x-9-v-block-druckknopfanschluss-l-x-b-x-h-26-x-13-x-8-mm-624691.html</url>
+                    <title>9V block battery holder</title>
+                    <detail>a battery holder for a 9V block battery at Conrad Electronic</detail>
+                  </link><link>
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fvarta-longlife-6lr61-9-v-block-batterie-alkali-mangan-565-mah-9-v-1-st-650709.html</url>
+                    <title>9V battery</title>
+                    <detail>Varta Longlife 9V block battery at Conrad Electronic</detail>
+                  </link><link>
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-bh-364a-batteriehalter-6x-mignon-aa-kabel-1680434.html</url>
+                    <title>battery holder for 6x1.5V AA batteries</title>
+                    <detail>a battery holder for four standard AA batteries at Conrad Electronic. Combined voltage=6x1,5V=9V</detail>
+                ELSE IF [voltage] LOWER_THAN 14 THEN
+                    <url>www.conrad.com/p/conrad-energy-scale-model-battery-pack-lipo-111-v-3000-mah-no-of-cells-3-20-c-softcase-xt60-1344138</url>
+                    <title>IF[language]EQUAL_TO"de"THENModellbau-BatterieELSEScale model batteryENDIF</title>
+                    <detail>IF[language]EQUAL_TO"de"THENLiPo Modellbau-Batterie mit hoher Leistungsdichte, 11.1V 3000mAhELSELiPo battery for scale models with much power in a small package. 11.1V 3000mAhENDIF</detail>  
+                  </link><link>
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-bh-382b-batteriehalter-8x-mignon-aa-druckknopfanschluss-1680421.html</url>
+                    <title>battery holder for 8x1.5V AA batteries</title>
+                    <detail>a battery holder for eight standard AA batteries at Conrad Electronic. Combined voltage=8x1,5V=12V</detail>
+                ELSE 
+                    
+                ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF
+            ENDIF
+        </link><link>
+             <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fmignon-akkus-aa-0501031.html</url>
+             <title>AA battery cells</title>
+             <detail>overview of AA size battery cells at Conrad electronic.</detail>
+        </link><link>
+             <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fsearch.html%3Fsearch%3Dlipo%2520akku</url>
+             <title>LiPo akkumulators</title>
+             <detail>overview of lightweight LiPo akkumulators at conrad electronic</detail>
+        </link>
+	</purchase>
+    <eeschema_symbol>
+	IF [model] ENDS_WITH Solar_Cells THEN
+    (symbol "Solar_Cells_0_1"
+      (rectangle (start -2.032 -1.397) (end 2.032 -1.651)
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+      (rectangle (start -2.032 1.778) (end 2.032 1.524)
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+      (rectangle (start -1.3208 -1.9812) (end 1.27 -2.4892)
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+      (rectangle (start -1.3208 1.1938) (end 1.27 0.6858)
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+      (polyline
+        (pts
+          (xy -2.54 0.254)
+          (xy -4.064 1.778)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -2.54 2.286)
+          (xy -4.064 3.81)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -1.524)
+          (xy 0 -1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -1.016)
+          (xy 0 -0.762)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -0.508)
+          (xy 0 -0.254)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 0.254)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0.508)
+          (xy 0 0.762)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 1.778)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.254 2.667)
+          (xy 1.27 2.667)
+        )
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 3.175)
+          (xy 0.762 2.159)
+        )
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -2.54 1.016)
+          (xy -2.54 0.254)
+          (xy -3.302 0.254)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -2.54 3.048)
+          (xy -2.54 2.286)
+          (xy -3.302 2.286)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+    )
+	(symbol "Solar_Cells_1_1"
+      (pin passive line (at 0 5.08 270) (length 2.54)
+        (name "+" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 0 -5.08 90) (length 2.54)
+        (name "-" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+    )
+	ELSE 
+		IF [model] ENDS_WITH Solar_Cell THEN 
+			DRAW
+			S -80 70 80 60 0 1 0 F
+			S -52 47 50 27 0 1 0 F
+			P 2 0 1 0 -80 90 -140 150 N
+			P 2 0 1 0 -30 110 -90 170 N
+			P 2 0 1 0 0 30 0 0 N
+			P 2 0 1 0 0 70 0 100 N
+			P 2 0 1 10 10 105 50 105 N
+			P 2 0 1 10 30 125 30 85 N
+			P 3 0 1 0 -80 120 -80 90 -110 90 N
+			P 3 0 1 0 -30 140 -30 110 -60 110 N
+			X + 1 0 200 100 D 50 50 1 1 P
+			X - 2 0 -100 100 U 50 50 1 1 P
+			ENDDRAW			
+		ELSE // neither Solar_Cell nor Solar_Cells -> Battery
+			IF [model] ENDS_WITH Battery THEN
+				DRAW
+				S -80 -55 80 -65 0 1 0 F
+				S -80 70 80 60 0 1 0 F
+				S -52 -78 50 -98 0 1 0 F
+				S -52 47 50 27 0 1 0 F
+				P 2 0 1 0 0 -60 0 -50 N
+				P 2 0 1 0 0 -40 0 -30 N
+				P 2 0 1 0 0 -20 0 -10 N
+				P 2 0 1 0 0 0 0 10 N
+				P 2 0 1 0 0 20 0 30 N
+				P 2 0 1 0 0 70 0 100 N
+				P 2 0 1 10 10 105 50 105 N
+				P 2 0 1 10 30 125 30 85 N
+				X + 1 0 200 100 D 50 50 1 1 P
+				X - 2 0 -200 100 U 50 50 1 1 P
+				ENDDRAW
+			ELSE // Battery_Cell = default:
+				DRAW
+				S -90 70 90 60 0 1 0 F
+				S -62 47 58 27 0 1 0 F
+				P 2 0 1 0 0 30 0 0 N
+				P 2 0 1 0 0 70 0 100 N
+				P 2 0 1 10 20 135 60 135 N
+				P 2 0 1 10 40 155 40 115 N
+				X + 1 0 200 100 D 50 50 1 1 P
+				X - 2 0 -100 100 U 50 50 1 1 P
+				ENDDRAW
+			ENDIF
+		ENDIF
+	ENDIF
+
+    </eeschema_symbol>
+</Component>
+
+// Device:C and similar condensators are described in components.alib
+<Component>
+    <Description>
+        A Diode.
+        [value] can be given as a number or can be a parameter list:
+          - If it is given as number, then that value is the forward knee current in Ampere.
+          - If given as parameter list (e.g. value is "ikf=1.4 rs=550m") then the parameters given will be used for the diode model. To use this option,it is advised to read the ngspice user manual chapter 7.2 "Diode Model" 
+          - If neither is choosed, (e.g. value is "D") then this diode has the default parameters. These default parameters are described in the ngspice user manual mentioned above.
+    </Description>
+    <eeschema_sch>
+        L Device:D
+        ALIAS Device:D_ALT Device:D_Small Device:D_Small_ALT
+    </eeschema_sch>
+    
+    //Following schematic declarations are for Schottky-Diodes. TODO Remove them here and make Schottky-specific section.
+    <eeschema_sch>
+        L Device:D_Schottky
+        ALIAS Device:D_Schottky_ALT Device:D_Schottky_Small Device:D_Schottky_Small_ALT
+    </eeschema_sch>
+    <Default_Values>
+        default // no value given means standard diode according to ngspice user manual.
+    </Default_Values>
+    <Spice>
+        DEFINE [knee_current] AS_NUMBER OF:[value]
+        IF [knee_current] THEN 
+            DEFINE [value] AS_NULL
+        ELSEIF [value] CONTAINS = THEN
+            DEFINE [param_list] AS_REPLACEMENT_REGEX FROM:\s+TO: OF:[value]
+            DEFINE [param_list] AS_REPLACEMENT FROM: =TO:=OF:[param_list]
+            DEFINE [param_list] AS_REPLACEMENT FROM:= TO:=OF:[param_list]
+            DEFINE [value] AS_NULL
+        ENDIF ENDIF
+        
+        .model D_[individual]_MDL D IF[knee_current]THEN IKF=[knee_current] ELSEIF[param_list]THEN[param_list]ENDIF ENDIF
+        D_[individual] [A] [K] D_[individual]_MDL
+	</Spice>
+	<purchase>
+        <link>
+        IF[model]CONTAINS Schottky THEN
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fschottky-dioden-6203050.html</url>
+            <title>"Schottky diodes"</title>
+            <detail>"overview of Schottky diodes at conrad electronic"</detail>
+        ELSE // normal diodes
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fdioden-standard-hf-leistung-6203020.html</url>
+            <title>"standard diodes"</title>
+            <detail>"overview of standard diodes at conrad electronic"</detail>
+        ENDIF
+        </link>
+	</purchase>
+    <eeschema_symbol>
+		IF [model] CONTAINS Small THEN
+			(symbol "D_Schottky_Small_0_1"
+			  (polyline
+				(pts
+				  (xy -0.762 0)
+				  (xy 0.762 0)
+				)
+				(stroke (width 0) (type default))
+				(fill (type none))
+			  )
+			  (polyline
+				(pts
+				  (xy 0.762 -1.016)
+				  (xy -0.762 0)
+				  (xy 0.762 1.016)
+				  (xy 0.762 -1.016)
+				)
+				(stroke (width 0.254) (type default))
+				(fill (type none))
+			  )
+			  (polyline
+				(pts
+				  (xy -1.27 0.762)
+				  (xy -1.27 1.016)
+				  (xy -0.762 1.016)
+				  (xy -0.762 -1.016)
+				  (xy -0.254 -1.016)
+				  (xy -0.254 -0.762)
+				)
+				(stroke (width 0.254) (type default))
+				(fill (type none))
+			  )
+			)
+			(symbol "D_Schottky_Small_1_1"
+			  (pin passive line (at -2.54 0 0) (length 1.778)
+				(name "K" (effects (font (size 1.27 1.27))))
+				(number "1" (effects (font (size 1.27 1.27))))
+			  )
+			  (pin passive line (at 2.54 0 180) (length 1.778)
+				(name "A" (effects (font (size 1.27 1.27))))
+				(number "2" (effects (font (size 1.27 1.27))))
+			  )
+			)	
+		ELSE // Device:Diode 
+			DRAW
+			P 2 0 1 0 50 0 -50 0 N
+			P 4 0 1 8 50 50 50 -50 -50 0 50 50 N
+			P 6 0 1 8 -75 25 -75 50 -50 50 -50 -50 -25 -50 -25 -25 N
+			X K 1 -150 0 100 R 50 50 1 1 P
+			X A 2 150 0 100 L 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        Light emitting diode, short "LED".
+        You can define the color of said LED, by entering a color into the value. The color has the format #RrGgBb, for example #FF0000 for red, #00FF00 for green, #0000FF for blue, #FFFF00 for yellow.
+        If you do not define any color, then the default color is yellow.
+        
+        For example, you can define a purple LED with default simulation parameters, by simply entering the color value:
+        #9230b9
+        
+        But advanced users can also define the diode simulation parameters, called param. To use this option,it is advised to read the ngspice user manual chapter 7.2 "Diode Model". The parameters must be in brackets "(" and ")". For example, enter the value:
+        color=#00FF00 param=(bv=50 is=1e-13 n=1.05)
+    </Description>
+     <eeschema_sch>
+        L Device:LED
+        ALIAS Device:LED_Small Device:LED_ALT Device:LED_Small_ALT
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Laserdiode_1A3C
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Laserdiode_1C2A
+    </eeschema_sch>
+    <purchase>
+        <link>
+            IF[model]CONTAINS Laser THEN
+                <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Flaserdioden-0212561.html</url>
+                <title>"laser diodes"</title>
+                <detail>"overview of laser diodes at conrad electronic"</detail>
+            ELSE
+                <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fleds-bedrahtet-0212029.html</url>
+                <title>"LEDs"</title>
+                <detail>"overview of LEDs at conrad electronic"</detail>
+            ENDIF
+        </link>
+    </purchase>
+    <Spice>
+       DEFINE [color] AS_WORD_RIGHT OF:#IN:[value]
+       IF [color] THEN
+            DEFINE [color] #[color]
+       ELSE
+            DEFINE [color] #FFFF00 //default color
+       ENDIF
+       
+       DEFINE [param] AS_SUBTEXT FROM:(TO:)OF:[value]
+       .model D_[individual]_MDL_LED D IF[param]THEN[param]ENDIF
+        D_[individual] [A] [K] D_[individual]_MDL_LED
+    </Spice>        
+    <animation>
+        DEFINE [curr] I[A]
+        DEFINE [start] AS_MATH_MUL OF:[curr] AND:1000
+        DEFINE [start] AS_MATH_MIN OF:[start] AND:300
+        DEFINE [shine] AS_MATH_MUL OF:[start] AND:2
+        DEFINE [start] AS_MATH_ROUND OF:[start]
+        DEFINE [shine] AS_MATH_ROUND OF:[shine]
+        <Ellipse -[start] -[start] [shine] [shine] [color] 2 1 [color] 1 0.5>
+    </animation>
+    <eeschema_symbol>
+	IF [model] CONTAINS Small THEN
+		(symbol "LED_Small_0_1"
+		  (polyline
+			(pts
+			  (xy -0.762 -1.016)
+			  (xy -0.762 1.016)
+			)
+			(stroke (width 0.254) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 1.016 0)
+			  (xy -0.762 0)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 0.762 -1.016)
+			  (xy -0.762 0)
+			  (xy 0.762 1.016)
+			  (xy 0.762 -1.016)
+			)
+			(stroke (width 0.254) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 0 0.762)
+			  (xy -0.508 1.27)
+			  (xy -0.254 1.27)
+			  (xy -0.508 1.27)
+			  (xy -0.508 1.016)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 0.508 1.27)
+			  (xy 0 1.778)
+			  (xy 0.254 1.778)
+			  (xy 0 1.778)
+			  (xy 0 1.524)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		)
+		(symbol "LED_Small_1_1"
+		  (pin passive line (at -2.54 0 0) (length 1.778)
+			(name "K" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		  )
+		  (pin passive line (at 2.54 0 180) (length 1.778)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		  )
+		)
+	ELSE
+		
+		IF [model] CONTAINS Laserdiode THEN
+			DRAW
+			P 2 0 1 0 -160 50 -100 110 N
+			P 2 0 1 0 -160 70 -100 90 N
+			P 2 0 1 0 -160 90 -100 70 N
+			P 2 0 1 0 -160 110 -100 50 N
+			P 2 0 1 0 -140 110 -120 50 N
+			P 2 0 1 0 -130 80 -130 40 N
+			P 2 0 1 0 -130 80 -130 120 N
+			P 2 0 1 0 -120 110 -140 50 N
+			P 2 0 1 0 -70 80 -170 80 N
+			P 2 0 1 8 -60 50 -60 -50 N
+			P 2 0 1 0 50 120 30 120 N
+			P 2 0 1 0 100 0 -200 0 N
+			P 3 0 1 0 -10 60 50 120 50 100 N
+			P 4 0 1 8 40 50 40 -50 -60 0 40 50 N
+			P 5 0 1 0 -60 60 0 120 0 100 0 120 -20 120 N
+			X A 1 200 0 100 L 50 50 1 1 P
+			X K 3 -300 0 100 R 50 50 1 1 P
+			ENDDRAW
+		ELSE  // not laser, not small, just normal LED:
+			DRAW
+			P 2 0 1 8 -50 -50 -50 50 N
+			P 2 0 1 0 -50 0 50 0 N
+			P 4 0 1 8 50 -50 50 50 -50 0 50 -50 N
+			P 5 0 1 0 -120 -30 -180 -90 -150 -90 -180 -90 -180 -60 N
+			P 5 0 1 0 -70 -30 -130 -90 -100 -90 -130 -90 -130 -60 N
+			X K 1 -150 0 100 R 50 50 1 1 P
+			X A 2 150 0 100 L 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+	ENDIF
+		
+
+    </eeschema_symbol>
+</Component>
+    
+    
+<Component>
+    <Description>
+        A Zener-Diode. 
+        [value] is the reverse breakdown voltage (the voltage, at which the diode starts to conduct in reverse direction)
+    </Description>
+    <eeschema_sch>
+        L Device:D_Zener
+        ALIAS Device:D_Zener_ALT Device:D_Zener_Small Device:D_Zener_Small_ALT
+    </eeschema_sch>
+    <Default_Values>
+        3.3 V // zener voltage
+    </Default_Values>
+    <Spice>
+    DEFINE [volts_breakdown] AS_NUMBER OF:[value]
+    IF [volts_breakdown] THEN
+        DEFINE [value] AS_NULL
+    ELSE
+        <Dialog type="warning" title="Missing numeric value for zener diode [name]">
+            Missing value for the reverse breakdown voltage of the zener diode [name] at position ([xpos] | [ypos]).
+            The value given, [value], is not a valid number. Therefor the default value, 3.3V is selected automatically.
+        </Dialog>
+        DEFINE [volts_breakdown] 3.3
+		DEFINE [volts_breakdown] AS_VISIBLE
+    ENDIF
+    .model DZENER_[individual]_MDL D BV=[volts_breakdown]
+	D_[individual] [A] [K] DZENER_[individual]_MDL
+	</Spice>
+	<purchase>
+        <link>
+            IF [volts_breakdown] THEN
+                IF [volts_breakdown] LOWER_THAN 2 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-si-diode-tc-zpy1-gehaeuseart-halbleiter-do-41-zener-spannung-1-v-leistung-max-p-tot-1-3-w-1581929.html</url>
+                ELSEIF [volts_breakdown] LOWER_THAN 4 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-z-diode-tc-zpd3-0-gehaeuseart-halbleiter-do-35-zener-spannung-3-v-leistung-max-p-tot-501-mw-1581886.html</url>
+                ELSEIF [volts_breakdown] LOWER_THAN 7 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fdiotec-z-diode-zpd6-2-gehaeuseart-halbleiter-do-35-zener-spannung-6-2-v-leistung-max-p-tot-509-mw-180114.html</url>
+                ELSEIF [volts_breakdown] LOWER_THAN 9 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fdiotec-z-diode-zpd8-2-gehaeuseart-halbleiter-do-35-zener-spannung-8-2-v-leistung-max-p-tot-512-mw-180149.html</url>
+                ELSEIF [volts_breakdown] LOWER_THAN 15 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fdiotec-leistungszenerdiode-1n5349b-gehaeuseart-halbleiter-do-201-zener-spannung-12-v-leistung-max-p-tot-5-w-140667.html</url>
+                ELSEIF [volts_breakdown] LOWER_THAN 25 THEN
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fdiotec-z-diode-zpd20-gehaeuseart-halbleiter-do-35-zener-spannung-20-v-leistung-max-p-tot-521-mw-180220.html</url>
+                ELSEIF [volts_breakdown] LOWER_THAN 40 THEN 
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fdiotec-z-diode-zpy33-gehaeuseart-halbleiter-do-41-zener-spannung-33-v-leistung-max-p-tot-1-3-w-180726.html</url>
+                ELSE
+                    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fdiotec-z-diode-z1sma100-gehaeuseart-halbleiter-do-214ac-zener-spannung-100-v-leistung-max-p-tot-1-w-556856.html</url>
+                ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF
+                    <title> Zener diode </title>
+                    <detail>zener diode at conrad electronic</detail>
+            ENDIF
+        </link>
+        <link>
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fsearch.html%3FcategoryId%3D6203100</url>
+            <title>"overview"</title>
+            <detail>"overview of zener diodes at conrad electronic"</detail>
+        </link>
+	</purchase>
+    <eeschema_symbol>
+		IF [model] CONTAINS Small THEN
+			DRAW
+			P 2 0 1 0 30 0 -30 0 N
+			P 3 0 1 0 -10 40 -30 40 -30 -40 N
+			P 4 0 1 0 30 40 -30 0 30 -40 30 40 N
+			X K 1 -100 0 70 R 50 50 1 1 P
+			X A 2 100 0 70 L 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+			P 2 0 1 0 50 0 -50 0 N
+			P 3 0 1 8 -50 -50 -50 50 -30 50 N
+			P 4 0 1 8 50 -50 50 50 -50 0 50 -50 N
+			X K 1 -150 0 100 R 50 50 1 1 P
+			X A 2 150 0 100 L 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        Diac: A pair of Diodes, which are positioned anti-paralell to each other.
+        If a numeric value is given, then that value is the knee_current in Ampere. Otherwise default value is used.
+    </Description>
+    <eeschema_sch>
+        L Device:DIAC
+        ALIAS Device:DIAC_ALT Device:DIAC_Filled
+    </eeschema_sch>
+    <Spice>
+    DEFINE [knee_current] AS_NUMBER OF:[value]
+    .model D_[name]_MDL_DIAC D IF[knee_current] THEN IKF=[knee_current]ENDIF
+    .subckt DIAC_[name] 1 2
+        D1 1 2 D_[name]_MDL_DIAC
+        D2 2 1 D_[name]_MDL_DIAC
+    .ends
+    //component
+	X_DIAC_[name] [A] [K] DIAC_[name] //Connections of Device:DIAC and Device:DIAC_ALT are called A and K in Eeschema's library, which means Anode and Kathode. Even though this does not make sense for Diacs, these Pin-names are also used here for compatibility to that library.
+	</Spice>
+        <purchase>
+            <link>
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fdiacs-0204086.html</url>
+        <title>DIAC overview</title>
+        <detail>DIACs at conrad electronic</detail>
+        </link>
+    </purchase>
+    <eeschema_symbol>
+    (symbol "DIAC_0_1"
+      (polyline
+        (pts
+          (xy -1.27 -2.54)
+          (xy -1.27 2.54)
+          (xy 1.27 1.27)
+          (xy -1.27 0)
+        )
+        (stroke (width 0.254) (type default))
+        (fill (type outline))
+      )
+      (polyline
+        (pts
+          (xy 1.27 2.54)
+          (xy 1.27 -2.54)
+          (xy -1.27 -1.27)
+          (xy 1.27 0)
+        )
+        (stroke (width 0.254) (type default))
+        (fill (type outline))
+      )
+    )
+	(symbol "DIAC_1_1"
+      (pin passive line (at -3.81 0 0) (length 2.54)
+        (name "K" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 3.81 0 180) (length 2.54)
+        (name "A" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+    )
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        D_Bridge: A bridge of four diodes, which may rectify an ac voltage/current into a dc voltage/current.
+        If a numeric value is given, then that value is the knee_current in Ampere. Otherwise default value is used.
+    </Description>
+    <eeschema_sch>
+        L Device:D_Bridge_+-AA
+        ALIAS Device:D_Bridge_+A-A Device:D_Bridge_+AA- Device:D_Bridge_-A+A Device:D_Bridge_-AA+
+    </eeschema_sch>
+    <eeschema_symbol>
+        
+        DRAW
+        C -200 0 10 0 1 0 F
+        C 0 -200 10 0 1 0 F
+        C 0 200 10 0 1 0 F
+        C 200 0 10 0 1 0 F
+        P 2 0 1 0 -100 150 -50 100 N
+        P 2 0 1 0 -50 -100 -100 -150 N
+        P 2 0 1 0 100 -50 150 -100 N
+        P 2 0 1 0 100 50 150 100 N
+        P 4 0 1 0 -150 100 -100 50 -75 125 -150 100 N
+        P 4 0 1 0 -100 -50 -150 -100 -75 -125 -100 -50 N
+        P 4 0 1 0 50 100 100 150 125 75 50 100 N
+        P 4 0 1 0 125 -75 50 -100 100 -150 125 -75 N
+        P 5 0 1 0 -200 0 0 -200 200 0 0 200 -200 0 N
+        X pos 1 300 0 100 L 50 50 1 1 P
+        X neg 2 -300 0 100 R 50 50 1 1 P
+        X ac1 3 0 300 100 D 50 50 1 1 P
+        X ac2 4 0 -300 100 U 50 50 1 1 P
+        ENDDRAW
+    </eeschema_symbol>
+    <Spice>
+        DEFINE [knee_current] AS_NUMBER OF:[value]
+        .model D_[name]_MDL_BRIDGE D IF [knee_current] IS_NUMBER THEN IKF=[knee_current]ENDIF
+        .subckt BRIDGE_[name] pos neg ac1 ac2
+            D1 neg ac1 D_[name]_MDL_BRIDGE
+            D2 neg ac2 D_[name]_MDL_BRIDGE
+            D3 ac1 pos D_[name]_MDL_BRIDGE
+            D4 ac2 pos D_[name]_MDL_BRIDGE
+        .ends
+        X_[name] [pos] [neg] [ac1] [ac2] BRIDGE_[name]
+    </Spice>
+    <purchase>
+        <link>
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fbrueckengleichrichter-6203210.html</url>
+            <title>overview bridge rectifiers</title>
+            <detail>overview of diode bridges at conrad electronic</detail>
+        </link>
+    </purchase>
+</Component>
+
+// Heater and Resistor are part of component.alib
+
+<Component>
+    <Description>
+        A  Neon Lamp. In reality there are many types of lamps, with many different electrical properties.
+        Here a lamp is simulated by a resistance, which might match more or less to some lamp types, but will not match well to other lamp types.
+    </Description>
+    <eeschema_sch>
+        L Device:Lamp_Neon
+    </eeschema_sch>
+    <Default_Values>
+        R=100 Ohm L=2.2mH // ohm  and henry value of a lamp
+    </Default_Values>
+    <Spice>
+       DEFINE [ohms] AS_WORD_RIGHT OF:R IN:[value]
+       DEFINE [ohms] AS_NUMBER OF:[ohms]
+       DEFINE [henry] AS_WORD_RIGHT OF:L IN:[value]
+       DEFINE [henry] AS_NUMBER OF:[henry]
+       
+       IF [ohms] && [henry] THEN
+        .subckt DEVICE_LAMP 1 2
+           R_Neon 1 2 [ohms]
+           L_Neon 1 2 [henry]
+        .ends
+        X_Lamp_[name] [pin1] [pin2] DEVICE_LAMP
+       ELSE
+        <Dialog type="error" title="Missing numeric R and L value for lamp [name]">
+            Missing value for the ohmic resistance R and the inductivity L of the lamp named [name] at position ([xpos] | [ypos]).
+            The value given, [value], does not specify this correctly.
+            Please enter a correct value for these two parameters. A good example would be the line:
+            R=100 L=2.2m
+         </Dialog>
+       ENDIF
+    </Spice>
+    <animation>
+        DEFINE [curr] I[+]
+        DEFINE [curr] AS_MATH_ABS OF:[curr]
+        IF [curr] HIGHER_THAN 50m THEN
+            DEFINE [start] AS_MATH_MUL OF:[curr] AND:50
+            DEFINE [start] AS_MATH_MAX OF:[start] AND:100
+            DEFINE [start] AS_MATH_MIN OF:[start] AND:500
+            DEFINE [start] AS_MATH_ROUND OF:[start]
+            DEFINE [shine] AS_MATH_MUL OF:[start] AND:2
+            <Ellipse -[start] -[start] [shine] [shine] #CCCC00 2 1 #CCCC00 1 0.5>
+        ELSE
+            <Ellipse -100 -100 200 200 #222222 2 1 #222222 1 0.5>
+        ENDIF
+    </animation>
+    <purchase>
+     <link>
+        <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fleuchtmittel-22519.html</url>
+        <title>overview of light bulbs</title>
+        <detail>overview of light bulbs at conrad electronic</detail>
+     </link>
+     <link>
+           <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fleuchtstoffroehren-1905175.html</url>
+            <title>"overview"</title>
+            <detail>"overview of neon glow lamps at conrad electronic"</detail>
+     </link>        
+    </purchase>
+    
+    <eeschema_symbol>
+		IF [model] CONTAINS Neon THEN
+			DRAW
+			C 0 0 100 0 1 0 N
+			C 40 -50 10 0 1 0 F
+			S -60 -20 60 -30 0 1 0 F
+			S -60 30 60 20 0 1 0 F
+			P 2 0 1 0 0 -100 0 -30 N
+			P 2 0 1 0 0 30 0 100 N
+			X ~ 1 0 -200 100 U 50 50 1 1 P
+			X ~ 2 0 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+			C 0 0 100 0 1 0 N
+			P 2 0 1 0 -70 70 70 -70 N
+			P 2 0 1 0 70 70 -70 -70 N
+			X ~ 1 0 -200 100 U 50 50 1 1 P
+			X ~ 2 0 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+    A coupled pair of inductors. Coupled paralell:   .||.
+    The parameters are:
+    1: each of the two inductors will have an inductivity of 1H; unless [value] is given as number, in this case each inductor will have that value in Henry.
+    2: The coupling is c=0.95 by default. You can set the coupling value to a number in the range 0<c<=1
+	Example for a given value list, where primary coil L12 has 22 MilliHenry, secondary coil L34 has 10 MilliHenry and coupling coefficient is 0,8 :
+		c=0.8 henry12=22m henry34=10m
+    </Description>
+    <eeschema_sch>
+        L Device:L_Coupled
+        ALIAS Device:L_Coupled_Small Device:L_Core_Ferrite_Coupled Device:L_Core_Ferrite_Coupled_Small Device:L_Core_Iron_Coupled Device:L_Core_Iron_Coupled_Small
+	//	ALIAS Device:L_Coupled_1243 Device:L_Coupled_1324 Device:L_Coupled_1342 Device:L_Coupled_1423
+	//	ALIAS Device:L_Coupled_Small_1243 Device:L_Coupled_Small_1324 Device:L_Coupled_Small_1342 Device:L_Coupled_Small_1423
+	</eeschema_sch>
+    <Default_Values>
+        c=0.95 henry12=22mH henry34=10mH //c is the coupling, henry12 is the L value for the  primary coil, henry34 is the L value for the secondary coil.
+    </Default_Values>
+    <Spice>
+        //pre-compiler
+		DEFINE [henry12] AS_NUMBER OF:[value]
+		IF [henry12] THEN
+			DEFINE [henry34] [henry12]
+			DEFINE [coeff] 0.95 
+		ELSE
+            DEFINE [coeff] AS_WORD_RIGHT OF:c IN:[value]
+            DEFINE [coeff] AS_NUMBER OF:[coeff]
+            
+            DEFINE [henry12] AS_WORD_RIGHT OF:henry12 IN:[value]
+            DEFINE [henry12] AS_NUMBER OF:[henry12]
+             
+            DEFINE [henry34] AS_WORD_RIGHT OF:henry34 IN:[value]
+            DEFINE [henry34] AS_NUMBER OF:[henry34]
+          ENDIF
+		  
+		IF [coeff] && [henry12] && [henry34] THENELSE
+			<Dialog title="missing or invalid parameter in coupled inductors" type="warning" dimension="650x350">
+				The coupled inductors component, named [name] at position ([xpos] | [ypos]) misses one numeric parameter.
+				there should be the following ones:
+				1. the inductivity of the first coil, between pins 1 and 2, called "henry12"
+				2. the inductivity of the second coil,between pins 3 and 4, called "henry34"
+				3. the coupling coefficient, between the two coils, called "coeff"
+				But here the values are: 
+				1. IF [henry12] THEN [henry12] (okay) ELSE (not given as a number) ENDIF
+				2. IF [henry34] THEN [henry34] (okay) ELSE (not given as a number) ENDIF
+				3. IF [coeff] THEN [coeff] (okay) ELSE (not given as a number) ENDIF
+				
+				Please correct the value of that component. For example, you can set the value to the following line:
+				c=0.95 henry12=22m henry34=0.01
+			</Dialog>
+			IF !  [coeff] THEN 
+				DEFINE [coeff] 0.95
+			ENDIF
+			IF ! [henry12] THEN 
+				DEFINE [henry12] 22m
+			ENDIF
+			IF ! [henry34] THEN
+				DEFINE [henry34] 10m
+			ENDIF
+		ENDIF
+		IF [coeff] HIGHER_THAN 1.0 || [coeff] EQUAL_OR_LOWER_THAN 0.0 THEN
+		<Dialog title "wrong value for coupling coefficient of coupled inductors" type="warning">
+				The coupled inductors component, named [name] at position ([xpos] | [ypos]) 
+				has the given coupling parameter [coeff]
+				But the coupling should be between 0 and 1, so coeff should hold: 0<coeff<=1
+				It is set to the value 0.95 instead
+		</Dialog>
+			DEFINE [coeff] 0.95
+		ENDIF
+        //model
+		// pins 1 and 2 are primary side, pins 3 and 4 are secondary side.
+        .subckt Coupled_[individual] 1 2 3 4
+            L12 1 2 [henry12]
+            L34 3 4 [henry34]
+            Kpl L12 L34 [coeff]
+        .ends
+		// Component:  
+        X_coupled_[individual] [1] [2] [3] [4] Coupled_[individual]
+        //component
+    </Spice>
+    <purchase>
+        <link>
+		<title>Overview transformator coils</title>
+		<detail>An overview of various transformator types at Conrad electronic</detail>
+		<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Ftransformatoren-17430.html</url>
+		</link>
+    </purchase>
+    <eeschema_symbol>
+	IF [model] CONTAINS Small THEN
+		DRAW
+		A -60 -50 20 1 1799 0 1 0 N -40 -50 -80 -50
+		A -60 50 20 -1799 -1 0 1 0 N -80 50 -40 50
+		A -20 -50 20 1 1799 0 1 0 N 0 -50 -40 -50
+		A -20 50 20 -1799 -1 0 1 0 N -40 50 0 50
+		A 20 -50 20 1 1799 0 1 0 N 40 -50 0 -50
+		A 20 50 20 -1799 -1 0 1 0 N 0 50 40 50
+		A 60 -50 20 1 1799 0 1 0 N 80 -50 40 -50
+		A 60 50 20 -1799 -1 0 1 0 N 40 50 80 50
+		C -60 -50 10 0 1 0 F
+		C -60 50 10 0 1 0 F
+		X 1 1 -100 50 20 R 50 50 1 1 P
+		X 2 2 100 50 20 L 50 50 1 1 P
+		X 3 3 -100 -50 20 R 50 50 1 1 P
+		X 4 4 100 -50 20 L 50 50 1 1 P
+		ENDDRAW
+	ELSE
+		DRAW
+		A -80 -80 20 1 1799 0 1 0 N -60 -80 -100 -80
+		A -80 80 20 -1799 -1 0 1 0 N -100 80 -60 80
+		A -40 -80 20 1 1799 0 1 0 N -20 -80 -60 -80
+		A -40 80 20 -1799 -1 0 1 0 N -60 80 -20 80
+		A 0 -80 20 1 1799 0 1 0 N 20 -80 -20 -80
+		A 0 80 20 -1799 -1 0 1 0 N -20 80 20 80
+		A 40 -80 20 1 1799 0 1 0 N 60 -80 20 -80
+		A 40 80 20 -1799 -1 0 1 0 N 20 80 60 80
+		A 80 -80 20 1 1799 0 1 0 N 100 -80 60 -80
+		A 80 80 20 -1799 -1 0 1 0 N 60 80 100 80
+		C -120 -50 10 0 1 0 F
+		C -120 60 10 0 1 0 F
+		P 2 0 1 0 -100 -80 -100 -100 N
+		P 2 0 1 0 -100 80 -100 100 N
+		P 2 0 1 0 100 -80 100 -100 N
+		P 2 0 1 0 100 100 100 80 N
+		X 1 1 -200 100 100 R 50 50 1 1 P
+		X 2 2 200 100 100 L 50 50 1 1 P
+		X 3 3 -200 -100 100 R 50 50 1 1 P
+		X 4 4 200 -100 100 L 50 50 1 1 P
+		ENDDRAW
+
+	ENDIF
+    </eeschema_symbol>
+</Component>
+
+
+<Component>
+    <Description>
+        Resistor package.
+        Each resistor has the Ohmic value given as [value]
+    </Description>
+    <eeschema_sch>
+        L Device:R_Pack11
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack10
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack09
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack08
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack07
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack06
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack05
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack04
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack03
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Pack02
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Pack07_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Pack06_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Pack05_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Pack04_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Pack03_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Pack02_SIP
+    </eeschema_sch>
+    <Default_Values>
+        220 Ohm
+    </Default_Values>
+    <Spice>
+        //Pre-compiler
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        IF ![ohm] THEN 
+        <Dialog type="error" title="Please enter a correct value">
+            Missing value for the resistors network component [name] at position ([xpos] | [ypos]). 
+            [value] is not a valid number, please correct that.
+        </Dialog>ENDIF
+        //model
+        .subckt rpack_[individual] 1a 1b 2a 2b IF [R3.1] THEN 3a 3b ENDIF IF [R4.1] THEN 4a 4b ENDIF IF [R5.1] THEN 5a 5b ENDIF IF[R6.1] THEN 6a 6b ENDIF IF [R7.1] THEN 7a 7b ENDIF IF [R8.1] THEN 8a 8b ENDIF IF [R9.1] THEN 9a 9b ENDIF IF [R10.1] THEN 10a 10b ENDIF IF [R11.1] THEN 11a 11b ENDIF
+        
+        
+        
+        R1 1a 1b [ohm]
+        R2 2a 2b [ohm]
+        IF [R3.1] THEN R3 3a 3b [ohm] ENDIF
+        IF [R4.1] THEN R4 4a 4b [ohm] ENDIF
+        IF [R5.1] THEN R5 5a 5b [ohm] ENDIF
+        IF [R6.1] THEN R6 6a 6b [ohm] ENDIF
+        IF [R7.1] THEN R7 7a 7b [ohm] ENDIF
+        IF [R8.1] THEN R8 8a 8b [ohm] ENDIF
+        IF [R9.1] THEN R9 9a 9b [ohm] ENDIF
+        IF [R10.1] THEN R10 10a 10b [ohm] ENDIF
+        IF [R11.1] THEN R11 11a 11b [ohm] ENDIF
+        .ends
+        
+        //component
+        X_rpack_[individual] [R1.1] [R1.2] [R2.1] [R2.2] IF [R3.1] THEN [R3.1] [R3.2] ENDIF IF [R4.1] THEN [R4.1] [R4.2] ENDIF IF [R5.1] THEN [R5.1] [R5.2] ENDIF IF[R6.1] THEN [R6.1] [R6.2] ENDIF IF [R7.1] THEN [R7.1] [R7.2] ENDIF IF [R8.1] THEN [R8.1] [R8.2] ENDIF IF [R9.1] THEN [R9.1] [R9.2] ENDIF IF [R10.1] THEN [R10.1] [R10.2] ENDIF IF [R11.1] THEN [R11.1] [R11.2] ENDIF rpack_[individual]        
+    </Spice>
+	 <purchase>
+	   <link>
+        <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fwiderstandsnetzwerke-0241410.html</url>
+        <title>overview</title>
+        <detail>overview resistor networks at conrad electronic</detail>
+	  </link><link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fbourns-4116r-1-102lf-widerstandsnetzwerk-1-k-radial-bedrahtet-dip-16-0-25-w-1-st-1055156.html</url>
+			<title>1k ohm individual resistors</title>
+			<detail>resistor network of individual resistors with 1k ohm each<detail>
+	  </link>
+    </purchase>
+    <eeschema_symbol>
+		IF [model] ENDS_WITH R_Pack02  THEN
+			DRAW
+			S -150 -95 50 95 0 1 10 f
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			X R1.1 1 -100 -200 100 U 50 50 1 1 P
+			X R2.1 2 0 -200 100 U 50 50 1 1 P
+			X R2.2 3 0 200 100 D 50 50 1 1 P
+			X R1.2 4 -100 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+		IF [model] ENDS_WITH R_Pack02_SIP  THEN
+			DRAW
+			S -250 -75 250 175 0 1 10 f
+			S -230 110 -170 -50 0 1 10 N
+			S 70 110 130 -50 0 1 10 N
+			P 4 0 1 0 -200 110 -200 140 -100 140 -100 -50 N
+			P 4 0 1 0 100 110 100 140 200 140 200 -50 N
+			X R1.1 1 -200 -200 150 U 50 50 1 1 P
+			X R1.2 2 -100 -200 150 U 50 50 1 1 P
+			X R2.1 3 100 -200 150 U 50 50 1 1 P
+			X R2.2 4 200 -200 150 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+			DRAW
+			S -150 -95 150 95 0 1 10 f
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			X R1.1 1 -100 -200 100 U 50 50 1 1 P
+			X R2.1 2 0 -200 100 U 50 50 1 1 P
+			X R3.1 3 100 -200 100 U 50 50 1 1 P
+			X R3.2 4 100 200 100 D 50 50 1 1 P
+			X R2.2 5 0 200 100 D 50 50 1 1 P
+			X R1.2 6 -100 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack03_SIP  THEN
+			DRAW
+			S -350 -75 450 175 0 1 10 f
+			S -330 110 -270 -50 0 1 10 N
+			S -30 110 30 -50 0 1 10 N
+			S 270 110 330 -50 0 1 10 N
+			P 4 0 1 0 -300 110 -300 140 -200 140 -200 -50 N
+			P 4 0 1 0 0 110 0 140 100 140 100 -50 N
+			P 4 0 1 0 300 110 300 140 400 140 400 -50 N
+			X R1.1 1 -300 -200 150 U 50 50 1 1 P
+			X R1.2 2 -200 -200 150 U 50 50 1 1 P
+			X R2.1 3 0 -200 150 U 50 50 1 1 P
+			X R2.2 4 100 -200 150 U 50 50 1 1 P
+			X R3.1 5 300 -200 150 U 50 50 1 1 P
+			X R3.2 6 400 -200 150 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+
+		IF [model] ENDS_WITH R_Pack04  THEN
+			DRAW
+			S -250 -95 150 95 0 1 10 f
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			X R1.1 1 -200 -200 100 U 50 50 1 1 P
+			X R2.1 2 -100 -200 100 U 50 50 1 1 P
+			X R3.1 3 0 -200 100 U 50 50 1 1 P
+			X R4.1 4 100 -200 100 U 50 50 1 1 P
+			X R4.2 5 100 200 100 D 50 50 1 1 P
+			X R3.2 6 0 200 100 D 50 50 1 1 P
+			X R2.2 7 -100 200 100 D 50 50 1 1 P
+			X R1.2 8 -200 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack04_SIP  THEN
+			DRAW
+			S -550 -75 550 175 0 1 10 f
+			S -530 110 -470 -50 0 1 10 N
+			S -230 110 -170 -50 0 1 10 N
+			S 70 110 130 -50 0 1 10 N
+			S 370 110 430 -50 0 1 10 N
+			P 4 0 1 0 -500 110 -500 140 -400 140 -400 -50 N
+			P 4 0 1 0 -200 110 -200 140 -100 140 -100 -50 N
+			P 4 0 1 0 100 110 100 140 200 140 200 -50 N
+			P 4 0 1 0 400 110 400 140 500 140 500 -50 N
+			X R1.1 1 -500 -200 150 U 50 50 1 1 P
+			X R1.2 2 -400 -200 150 U 50 50 1 1 P
+			X R2.1 3 -200 -200 150 U 50 50 1 1 P
+			X R2.2 4 -100 -200 150 U 50 50 1 1 P
+			X R3.1 5 100 -200 150 U 50 50 1 1 P
+			X R3.2 6 200 -200 150 U 50 50 1 1 P
+			X R4.1 7 400 -200 150 U 50 50 1 1 P
+			X R4.2 8 500 -200 150 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack05  THEN
+			DRAW
+			S -250 -95 250 95 0 1 10 f
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			X R1.1 1 -200 -200 100 U 50 50 1 1 P
+			X R1.2 10 -200 200 100 D 50 50 1 1 P
+			X R2.1 2 -100 -200 100 U 50 50 1 1 P
+			X R3.1 3 0 -200 100 U 50 50 1 1 P
+			X R4.1 4 100 -200 100 U 50 50 1 1 P
+			X R5.1 5 200 -200 100 U 50 50 1 1 P
+			X R5.2 6 200 200 100 D 50 50 1 1 P
+			X R4.2 7 100 200 100 D 50 50 1 1 P
+			X R3.2 8 0 200 100 D 50 50 1 1 P
+			X R2.2 9 -100 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack05_SIP  THEN
+			DRAW
+			S -650 -75 750 175 0 1 10 f
+			S -630 110 -570 -50 0 1 10 N
+			S -330 110 -270 -50 0 1 10 N
+			S -30 110 30 -50 0 1 10 N
+			S 270 110 330 -50 0 1 10 N
+			S 570 110 630 -50 0 1 10 N
+			P 4 0 1 0 -600 110 -600 140 -500 140 -500 -50 N
+			P 4 0 1 0 -300 110 -300 140 -200 140 -200 -50 N
+			P 4 0 1 0 0 110 0 140 100 140 100 -50 N
+			P 4 0 1 0 300 110 300 140 400 140 400 -50 N
+			P 4 0 1 0 600 110 600 140 700 140 700 -50 N
+			X R1.1 1 -600 -200 150 U 50 50 1 1 P
+			X R5.2 10 700 -200 150 U 50 50 1 1 P
+			X R1.2 2 -500 -200 150 U 50 50 1 1 P
+			X R2.1 3 -300 -200 150 U 50 50 1 1 P
+			X R2.2 4 -200 -200 150 U 50 50 1 1 P
+			X R3.1 5 0 -200 150 U 50 50 1 1 P
+			X R3.2 6 100 -200 150 U 50 50 1 1 P
+			X R4.1 7 300 -200 150 U 50 50 1 1 P
+			X R4.2 8 400 -200 150 U 50 50 1 1 P
+			X R5.1 9 600 -200 150 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack06  THEN
+
+			DRAW
+			S -350 -95 250 95 0 1 10 f
+			S -325 75 -275 -75 0 1 10 N
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			P 2 0 1 0 -300 -100 -300 -75 N
+			P 2 0 1 0 -300 75 -300 100 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			X R1.1 1 -300 -200 100 U 50 50 1 1 P
+			X R3.2 10 -100 200 100 D 50 50 1 1 P
+			X R2.2 11 -200 200 100 D 50 50 1 1 P
+			X R1.2 12 -300 200 100 D 50 50 1 1 P
+			X R2.1 2 -200 -200 100 U 50 50 1 1 P
+			X R3.1 3 -100 -200 100 U 50 50 1 1 P
+			X R4.1 4 0 -200 100 U 50 50 1 1 P
+			X R5.1 5 100 -200 100 U 50 50 1 1 P
+			X R6.1 6 200 -200 100 U 50 50 1 1 P
+			X R6.2 7 200 200 100 D 50 50 1 1 P
+			X R5.2 8 100 200 100 D 50 50 1 1 P
+			X R4.2 9 0 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack06_SIP  THEN
+			DRAW
+			S -850 -75 850 175 0 1 10 f
+			S -830 110 -770 -50 0 1 10 N
+			S -530 110 -470 -50 0 1 10 N
+			S -230 110 -170 -50 0 1 10 N
+			S 70 110 130 -50 0 1 10 N
+			S 370 110 430 -50 0 1 10 N
+			S 670 110 730 -50 0 1 10 N
+			P 4 0 1 0 -800 110 -800 140 -700 140 -700 -50 N
+			P 4 0 1 0 -500 110 -500 140 -400 140 -400 -50 N
+			P 4 0 1 0 -200 110 -200 140 -100 140 -100 -50 N
+			P 4 0 1 0 100 110 100 140 200 140 200 -50 N
+			P 4 0 1 0 400 110 400 140 500 140 500 -50 N
+			P 4 0 1 0 700 110 700 140 800 140 800 -50 N
+			X R1.1 1 -800 -200 150 U 50 50 1 1 P
+			X R5.2 10 500 -200 150 U 50 50 1 1 P
+			X R6.1 11 700 -200 150 U 50 50 1 1 P
+			X R6.2 12 800 -200 150 U 50 50 1 1 P
+			X R1.2 2 -700 -200 150 U 50 50 1 1 P
+			X R2.1 3 -500 -200 150 U 50 50 1 1 P
+			X R2.2 4 -400 -200 150 U 50 50 1 1 P
+			X R3.1 5 -200 -200 150 U 50 50 1 1 P
+			X R3.2 6 -100 -200 150 U 50 50 1 1 P
+			X R4.1 7 100 -200 150 U 50 50 1 1 P
+			X R4.2 8 200 -200 150 U 50 50 1 1 P
+			X R5.1 9 400 -200 150 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack07  THEN
+			DRAW
+			S -350 -95 350 95 0 1 10 f
+			S -325 75 -275 -75 0 1 10 N
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			S 275 75 325 -75 0 1 10 N
+			P 2 0 1 0 -300 -100 -300 -75 N
+			P 2 0 1 0 -300 75 -300 100 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			P 2 0 1 0 300 -100 300 -75 N
+			P 2 0 1 0 300 75 300 100 N
+			X R1.1 1 -300 -200 100 U 50 50 1 1 P
+			X R5.2 10 100 200 100 D 50 50 1 1 P
+			X R4.2 11 0 200 100 D 50 50 1 1 P
+			X R3.2 12 -100 200 100 D 50 50 1 1 P
+			X R2.2 13 -200 200 100 D 50 50 1 1 P
+			X R1.2 14 -300 200 100 D 50 50 1 1 P
+			X R2.1 2 -200 -200 100 U 50 50 1 1 P
+			X R3.1 3 -100 -200 100 U 50 50 1 1 P
+			X R4.1 4 0 -200 100 U 50 50 1 1 P
+			X R5.1 5 100 -200 100 U 50 50 1 1 P
+			X R6.1 6 200 -200 100 U 50 50 1 1 P
+			X R7.1 7 300 -200 100 U 50 50 1 1 P
+			X R7.2 8 300 200 100 D 50 50 1 1 P
+			X R6.2 9 200 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+
+		IF [model] ENDS_WITH R_Pack07_SIP  THEN
+		F0 "RN" -1000 0 50 V V C CNN
+		F1 "R_Pack07_SIP" 1100 0 50 V V C CNN
+		F2 "Resistor_THT:R_Array_SIP14" 1175 0 50 V I C CNN
+		F3 "" 0 0 50 H I C CNN
+		$FPLIST
+		 R?Array?SIP*
+		$ENDFPLIST
+		DRAW
+		S -950 -75 1050 175 0 1 10 f
+		S -930 110 -870 -50 0 1 10 N
+		S -630 110 -570 -50 0 1 10 N
+		S -330 110 -270 -50 0 1 10 N
+		S -30 110 30 -50 0 1 10 N
+		S 270 110 330 -50 0 1 10 N
+		S 570 110 630 -50 0 1 10 N
+		S 870 110 930 -50 0 1 10 N
+		P 4 0 1 0 -900 110 -900 140 -800 140 -800 -50 N
+		P 4 0 1 0 -600 110 -600 140 -500 140 -500 -50 N
+		P 4 0 1 0 -300 110 -300 140 -200 140 -200 -50 N
+		P 4 0 1 0 0 110 0 140 100 140 100 -50 N
+		P 4 0 1 0 300 110 300 140 400 140 400 -50 N
+		P 4 0 1 0 600 110 600 140 700 140 700 -50 N
+		P 4 0 1 0 900 110 900 140 1000 140 1000 -50 N
+		X R1.1 1 -900 -200 150 U 50 50 1 1 P
+		X R5.2 10 400 -200 150 U 50 50 1 1 P
+		X R6.1 11 600 -200 150 U 50 50 1 1 P
+		X R6.2 12 700 -200 150 U 50 50 1 1 P
+		X R7.1 13 900 -200 150 U 50 50 1 1 P
+		X R7.2 14 1000 -200 150 U 50 50 1 1 P
+		X R1.2 2 -800 -200 150 U 50 50 1 1 P
+		X R2.1 3 -600 -200 150 U 50 50 1 1 P
+		X R2.2 4 -500 -200 150 U 50 50 1 1 P
+		X R3.1 5 -300 -200 150 U 50 50 1 1 P
+		X R3.2 6 -200 -200 150 U 50 50 1 1 P
+		X R4.1 7 0 -200 150 U 50 50 1 1 P
+		X R4.2 8 100 -200 150 U 50 50 1 1 P
+		X R5.1 9 300 -200 150 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Pack08
+		//
+		IF [model] ENDS_WITH R_Pack08  THEN
+			DRAW
+			S -450 -95 350 95 0 1 10 f
+			S -425 75 -375 -75 0 1 10 N
+			S -325 75 -275 -75 0 1 10 N
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			S 275 75 325 -75 0 1 10 N
+			P 2 0 1 0 -400 -100 -400 -75 N
+			P 2 0 1 0 -400 75 -400 100 N
+			P 2 0 1 0 -300 -100 -300 -75 N
+			P 2 0 1 0 -300 75 -300 100 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			P 2 0 1 0 300 -100 300 -75 N
+			P 2 0 1 0 300 75 300 100 N
+			X R1.1 1 -400 -200 100 U 50 50 1 1 P
+			X R7.2 10 200 200 100 D 50 50 1 1 P
+			X R6.2 11 100 200 100 D 50 50 1 1 P
+			X R5.2 12 0 200 100 D 50 50 1 1 P
+			X R4.2 13 -100 200 100 D 50 50 1 1 P
+			X R3.2 14 -200 200 100 D 50 50 1 1 P
+			X R2.2 15 -300 200 100 D 50 50 1 1 P
+			X R1.2 16 -400 200 100 D 50 50 1 1 P
+			X R2.1 2 -300 -200 100 U 50 50 1 1 P
+			X R3.1 3 -200 -200 100 U 50 50 1 1 P
+			X R4.1 4 -100 -200 100 U 50 50 1 1 P
+			X R5.1 5 0 -200 100 U 50 50 1 1 P
+			X R6.1 6 100 -200 100 U 50 50 1 1 P
+			X R7.1 7 200 -200 100 U 50 50 1 1 P
+			X R8.1 8 300 -200 100 U 50 50 1 1 P
+			X R8.2 9 300 200 100 D 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+		//
+		// R_Pack09
+		//
+		IF [model] ENDS_WITH R_Pack09  THEN
+			DRAW
+			S -450 -95 450 95 0 1 10 f
+			S -425 75 -375 -75 0 1 10 N
+			S -325 75 -275 -75 0 1 10 N
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			S 275 75 325 -75 0 1 10 N
+			S 375 75 425 -75 0 1 10 N
+			P 2 0 1 0 -400 -100 -400 -75 N
+			P 2 0 1 0 -400 75 -400 100 N
+			P 2 0 1 0 -300 -100 -300 -75 N
+			P 2 0 1 0 -300 75 -300 100 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			P 2 0 1 0 300 -100 300 -75 N
+			P 2 0 1 0 300 75 300 100 N
+			P 2 0 1 0 400 -100 400 -75 N
+			P 2 0 1 0 400 75 400 100 N
+			X R1.1 1 -400 -200 100 U 50 50 1 1 P
+			X R9.2 10 400 200 100 D 50 50 1 1 P
+			X R8.2 11 300 200 100 D 50 50 1 1 P
+			X R7.2 12 200 200 100 D 50 50 1 1 P
+			X R6.2 13 100 200 100 D 50 50 1 1 P
+			X R5.2 14 0 200 100 D 50 50 1 1 P
+			X R4.2 15 -100 200 100 D 50 50 1 1 P
+			X R3.2 16 -200 200 100 D 50 50 1 1 P
+			X R2.2 17 -300 200 100 D 50 50 1 1 P
+			X R1.2 18 -400 200 100 D 50 50 1 1 P
+			X R2.1 2 -300 -200 100 U 50 50 1 1 P
+			X R3.1 3 -200 -200 100 U 50 50 1 1 P
+			X R4.1 4 -100 -200 100 U 50 50 1 1 P
+			X R5.1 5 0 -200 100 U 50 50 1 1 P
+			X R6.1 6 100 -200 100 U 50 50 1 1 P
+			X R7.1 7 200 -200 100 U 50 50 1 1 P
+			X R8.1 8 300 -200 100 U 50 50 1 1 P
+			X R9.1 9 400 -200 100 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+		//
+		// R_Pack10
+		//
+		IF [model] ENDS_WITH R_Pack10  THEN
+		DRAW
+			S -550 -95 450 95 0 1 10 f
+			S -525 75 -475 -75 0 1 10 N
+			S -425 75 -375 -75 0 1 10 N
+			S -325 75 -275 -75 0 1 10 N
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			S 275 75 325 -75 0 1 10 N
+			S 375 75 425 -75 0 1 10 N
+			P 2 0 1 0 -500 -100 -500 -75 N
+			P 2 0 1 0 -500 75 -500 100 N
+			P 2 0 1 0 -400 -100 -400 -75 N
+			P 2 0 1 0 -400 75 -400 100 N
+			P 2 0 1 0 -300 -100 -300 -75 N
+			P 2 0 1 0 -300 75 -300 100 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			P 2 0 1 0 300 -100 300 -75 N
+			P 2 0 1 0 300 75 300 100 N
+			P 2 0 1 0 400 -100 400 -75 N
+			P 2 0 1 0 400 75 400 100 N
+			X R1.1 1 -500 -200 100 U 50 50 1 1 P
+			X R10.1 10 400 -200 100 U 50 50 1 1 P
+			X R10.2 11 400 200 100 D 50 50 1 1 P
+			X R9.2 12 300 200 100 D 50 50 1 1 P
+			X R8.2 13 200 200 100 D 50 50 1 1 P
+			X R7.2 14 100 200 100 D 50 50 1 1 P
+			X R6.2 15 0 200 100 D 50 50 1 1 P
+			X R5.2 16 -100 200 100 D 50 50 1 1 P
+			X R4.2 17 -200 200 100 D 50 50 1 1 P
+			X R3.2 18 -300 200 100 D 50 50 1 1 P
+			X R2.2 19 -400 200 100 D 50 50 1 1 P
+			X R2.1 2 -400 -200 100 U 50 50 1 1 P
+			X R1.2 20 -500 200 100 D 50 50 1 1 P
+			X R3.1 3 -300 -200 100 U 50 50 1 1 P
+			X R4.1 4 -200 -200 100 U 50 50 1 1 P
+			X R5.1 5 -100 -200 100 U 50 50 1 1 P
+			X R6.1 6 0 -200 100 U 50 50 1 1 P
+			X R7.1 7 100 -200 100 U 50 50 1 1 P
+			X R8.1 8 200 -200 100 U 50 50 1 1 P
+			X R9.1 9 300 -200 100 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+		//
+		// R_Pack11
+		//
+		IF [model] ENDS_WITH R_Pack11  THEN
+			DRAW
+			S -550 -95 550 95 0 1 10 f
+			S -525 75 -475 -75 0 1 10 N
+			S -425 75 -375 -75 0 1 10 N
+			S -325 75 -275 -75 0 1 10 N
+			S -225 75 -175 -75 0 1 10 N
+			S -125 75 -75 -75 0 1 10 N
+			S -25 75 25 -75 0 1 10 N
+			S 75 75 125 -75 0 1 10 N
+			S 175 75 225 -75 0 1 10 N
+			S 275 75 325 -75 0 1 10 N
+			S 375 75 425 -75 0 1 10 N
+			S 475 75 525 -75 0 1 10 N
+			P 2 0 1 0 -500 -100 -500 -75 N
+			P 2 0 1 0 -500 75 -500 100 N
+			P 2 0 1 0 -400 -100 -400 -75 N
+			P 2 0 1 0 -400 75 -400 100 N
+			P 2 0 1 0 -300 -100 -300 -75 N
+			P 2 0 1 0 -300 75 -300 100 N
+			P 2 0 1 0 -200 -100 -200 -75 N
+			P 2 0 1 0 -200 75 -200 100 N
+			P 2 0 1 0 -100 -100 -100 -75 N
+			P 2 0 1 0 -100 75 -100 100 N
+			P 2 0 1 0 0 -100 0 -75 N
+			P 2 0 1 0 0 75 0 100 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 2 0 1 0 100 75 100 100 N
+			P 2 0 1 0 200 -100 200 -75 N
+			P 2 0 1 0 200 75 200 100 N
+			P 2 0 1 0 300 -100 300 -75 N
+			P 2 0 1 0 300 75 300 100 N
+			P 2 0 1 0 400 -100 400 -75 N
+			P 2 0 1 0 400 75 400 100 N
+			P 2 0 1 0 500 -100 500 -75 N
+			P 2 0 1 0 500 75 500 100 N
+			X R1.1 1 -500 -200 100 U 50 50 1 1 P
+			X R10.1 10 400 -200 100 U 50 50 1 1 P
+			X R11.1 11 500 -200 100 U 50 50 1 1 P
+			X R11.2 12 500 200 100 D 50 50 1 1 P
+			X R10.2 13 400 200 100 D 50 50 1 1 P
+			X R9.2 14 300 200 100 D 50 50 1 1 P
+			X R8.2 15 200 200 100 D 50 50 1 1 P
+			X R7.2 16 100 200 100 D 50 50 1 1 P
+			X R6.2 17 0 200 100 D 50 50 1 1 P
+			X R5.2 18 -100 200 100 D 50 50 1 1 P
+			X R4.2 19 -200 200 100 D 50 50 1 1 P
+			X R2.1 2 -400 -200 100 U 50 50 1 1 P
+			X R3.2 20 -300 200 100 D 50 50 1 1 P
+			X R2.2 21 -400 200 100 D 50 50 1 1 P
+			X R1.2 22 -500 200 100 D 50 50 1 1 P
+			X R3.1 3 -300 -200 100 U 50 50 1 1 P
+			X R4.1 4 -200 -200 100 U 50 50 1 1 P
+			X R5.1 5 -100 -200 100 U 50 50 1 1 P
+			X R6.1 6 0 -200 100 U 50 50 1 1 P
+			X R7.1 7 100 -200 100 U 50 50 1 1 P
+			X R8.1 8 200 -200 100 U 50 50 1 1 P
+			X R9.1 9 300 -200 100 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+	
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        Resistor network.
+        Each resistor has the Ohmic value given as [value].
+    </Description>
+    <eeschema_sch>
+        L Device:R_Network13
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network12
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network11
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network10
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network09
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network08
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network07
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network06
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network05
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network04
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network03
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network13_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network12_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network11_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network10_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network09_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network08_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network07_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network06_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network05_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network04_US
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:R_Network03_US
+    </eeschema_sch>
+    <Default_Values>
+        220 Ohm
+    </Default_Values>
+    <Spice>
+    //Pre-compiler
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        IF ![ohm] THEN 
+        <Dialog type="error" title="Please enter a correct value">
+            Missing value for the resistors network component [name] at position ([xpos] | [ypos]). 
+            [value] is not a valid number, please correct that.
+        </Dialog>ENDIF
+        //model
+        .subckt rnetwork_[individual] cmn 1 2 3 IF[R4]THEN4ENDIF IF[R5]THEN5ENDIF IF[R6]THEN6ENDIF IF[R7]THEN7ENDIF IF[R8]THEN8ENDIF IF[R9]THEN9ENDIF IF[R10]THEN10ENDIF IF[R11]THEN11ENDIF IF[R12]THEN12ENDIF IF[R13]THEN13ENDIF
+        
+        R1 1 cmn [ohm]
+        R2 2 cmn [ohm]
+        R3 3 cmn [ohm]
+        IF[R4]THEN 4 cmn [ohm] ENDIF
+        IF[R5]THEN 5 cmn [ohm] ENDIF
+        IF[R6]THEN 6 cmn [ohm] ENDIF
+        IF[R7]THEN 7 cmn [ohm] ENDIF
+        IF[R8]THEN 8 cmn [ohm] ENDIF
+        IF[R9]THEN 9 cmn [ohm] ENDIF
+        IF[R10]THEN 10 cmn [ohm] ENDIF
+        IF[R11]THEN 11 cmn [ohm] ENDIF
+        IF[R12]THEN 12 cmn [ohm] ENDIF
+        IF[R13]THEN 13 cmn [ohm] ENDIF
+        .ends
+        //component
+        X_rnetwork_[individual] [common] [R1] [R2] [R3] IF[R4]THEN[R4]ENDIF IF[R5]THEN[R5]ENDIF IF[R6]THEN[R6]ENDIF IF[R7]THEN[R7]ENDIF IF[R8]THEN[R8]ENDIF IF[R9]THEN[R9]ENDIF IF[R10]THEN[R10]ENDIF IF[R11]THEN[R11]ENDIF IF[R12]THEN[R12]ENDIF IF[R13]THEN[R13]ENDIF rnetwork_[individual]
+    </Spice>
+	<purchase>
+	   <link>
+        <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fwiderstandsnetzwerke-0241410.html</url>
+        <title>overview</title>
+        <detail>overview resistor networks at conrad electronic</detail>
+	  </link><link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Ftru-components-widerstandsnetzwerk-4-7-k-sip-8-1-0-125-w-1-st-1557172.html</url>
+			<title> resistor network 4.7k ohm</title>
+			<detail>resistor network. resistors with one common connection at conrad electronic<detail>
+	  </link>
+    </purchase>
+    <eeschema_symbol>//
+		// R_Network03
+		//
+		IF [model] ENDS_WITH R_Network03 THEN
+		DRAW
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		S -150 -125 150 125 0 1 10 f
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		P 2 0 1 0 -100 100 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		X common 1 -100 200 100 D 50 50 1 1 P
+		X R1 2 -100 -200 100 U 50 50 1 1 P
+		X R2 3 0 -200 100 U 50 50 1 1 P
+		X R3 4 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network03_US
+		//
+		IF [model] ENDS_WITH R_Network03_US THEN
+		DRAW
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		S -150 -125 150 125 0 1 10 f
+		P 2 0 1 0 -100 -98 -100 -150 N
+		P 2 0 1 0 -100 100 -100 58 N
+		P 2 0 1 0 0 -98 0 -150 N
+		P 2 0 1 0 95 135 100 135 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 4 0 1 0 -100 58 -100 90 0 90 0 58 N
+		P 4 0 1 0 0 58 0 90 100 90 100 58 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		X common 1 -100 200 100 D 50 50 1 1 P
+		X R1 2 -100 -200 50 U 50 50 1 1 P
+		X R2 3 0 -200 50 U 50 50 1 1 P
+		X R3 4 100 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network04
+		//
+		IF [model] ENDS_WITH R_Network04 THEN
+		DRAW
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		S -250 -125 150 125 0 1 10 f
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		P 2 0 1 0 -200 100 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		X common 1 -200 200 100 D 50 50 1 1 P
+		X R1 2 -200 -200 100 U 50 50 1 1 P
+		X R2 3 -100 -200 100 U 50 50 1 1 P
+		X R3 4 0 -200 100 U 50 50 1 1 P
+		X R4 5 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network04_US
+		//
+		IF [model] ENDS_WITH R_Network04_US THEN
+		DRAW
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		S -250 -125 150 125 0 1 10 f
+		P 2 0 1 0 -200 -98 -200 -150 N
+		P 2 0 1 0 -100 -150 -100 -98 N
+		P 2 0 1 0 0 -150 0 -98 N
+		P 2 0 1 0 0 90 -100 90 N
+		P 2 0 1 0 100 -150 100 -98 N
+		P 4 0 1 0 -200 58 -200 90 -100 90 -100 58 N
+		P 4 0 1 0 100 58 100 90 0 90 0 58 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		X common 1 -200 200 100 D 50 50 1 1 P
+		X R1 2 -200 -200 50 U 50 50 1 1 P
+		X R2 3 -100 -200 50 U 50 50 1 1 P
+		X R3 4 0 -200 50 U 50 50 1 1 P
+		X R4 5 100 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network05
+		//
+		IF [model] ENDS_WITH R_Network05 THEN
+		DRAW
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		S -250 -125 250 125 0 1 10 f
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		P 2 0 1 0 -200 100 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		X common 1 -200 200 100 D 50 50 1 1 P
+		X R1 2 -200 -200 100 U 50 50 1 1 P
+		X R2 3 -100 -200 100 U 50 50 1 1 P
+		X R3 4 0 -200 100 U 50 50 1 1 P
+		X R4 5 100 -200 100 U 50 50 1 1 P
+		X R5 6 200 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network05_US
+		//
+		IF [model] ENDS_WITH R_Network05_US THEN
+		DRAW
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		S -250 -125 250 125 0 1 10 f
+		P 2 0 1 0 -200 -150 -200 -98 N
+		P 2 0 1 0 -100 -150 -100 -98 N
+		P 2 0 1 0 0 -150 0 -98 N
+		P 2 0 1 0 100 -150 100 -98 N
+		P 2 0 1 0 200 -150 200 -98 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 4 0 1 0 200 58 200 90 100 90 100 58 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		X common 1 -200 200 100 D 50 50 1 1 P
+		X R1 2 -200 -200 50 U 50 50 1 1 P
+		X R2 3 -100 -200 50 U 50 50 1 1 P
+		X R3 4 0 -200 50 U 50 50 1 1 P
+		X R4 5 100 -200 50 U 50 50 1 1 P
+		X R5 6 200 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network06
+		//
+		IF [model] ENDS_WITH R_Network06 THEN
+		DRAW
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		S -350 -125 250 125 0 1 10 f
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		P 2 0 1 0 -300 100 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		X common 1 -300 200 100 D 50 50 1 1 P
+		X R1 2 -300 -200 100 U 50 50 1 1 P
+		X R2 3 -200 -200 100 U 50 50 1 1 P
+		X R3 4 -100 -200 100 U 50 50 1 1 P
+		X R4 5 0 -200 100 U 50 50 1 1 P
+		X R5 6 100 -200 100 U 50 50 1 1 P
+		X R6 7 200 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network06_US
+		//
+		IF [model] ENDS_WITH R_Network06_US THEN
+		DRAW
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		S -350 -125 250 125 0 1 10 f
+		P 2 0 1 0 -300 -150 -300 -98 N
+		P 2 0 1 0 -200 -150 -200 -98 N
+		P 2 0 1 0 -100 -150 -100 -98 N
+		P 2 0 1 0 0 -150 0 -98 N
+		P 2 0 1 0 100 -150 100 -98 N
+		P 2 0 1 0 200 -150 200 -98 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 4 0 1 0 200 58 200 90 100 90 100 58 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		X common 1 -300 200 100 D 50 50 1 1 P
+		X R1 2 -300 -200 50 U 50 50 1 1 P
+		X R2 3 -200 -200 50 U 50 50 1 1 P
+		X R3 4 -100 -200 50 U 50 50 1 1 P
+		X R4 5 0 -200 50 U 50 50 1 1 P
+		X R5 6 100 -200 50 U 50 50 1 1 P
+		X R6 7 200 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network07
+		//
+		IF [model] ENDS_WITH R_Network07 THEN
+		DRAW
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		S -350 -125 350 125 0 1 10 f
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		P 2 0 1 0 -300 100 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		X common 1 -300 200 100 D 50 50 1 1 P
+		X R1 2 -300 -200 100 U 50 50 1 1 P
+		X R2 3 -200 -200 100 U 50 50 1 1 P
+		X R3 4 -100 -200 100 U 50 50 1 1 P
+		X R4 5 0 -200 100 U 50 50 1 1 P
+		X R5 6 100 -200 100 U 50 50 1 1 P
+		X R6 7 200 -200 100 U 50 50 1 1 P
+		X R7 8 300 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network07_US
+		//
+		IF [model] ENDS_WITH R_Network07_US THEN
+		DRAW
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		S -350 -125 350 125 0 1 10 f
+		P 2 0 1 0 -300 -150 -300 -98 N
+		P 2 0 1 0 -200 -150 -200 -98 N
+		P 2 0 1 0 -100 -150 -100 -98 N
+		P 2 0 1 0 0 -150 0 -98 N
+		P 2 0 1 0 100 -150 100 -98 N
+		P 2 0 1 0 200 -150 200 -98 N
+		P 2 0 1 0 300 -150 300 -98 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 4 0 1 0 300 58 300 90 200 90 200 58 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		X common 1 -300 200 100 D 50 50 1 1 P
+		X R1 2 -300 -200 50 U 50 50 1 1 P
+		X R2 3 -200 -200 50 U 50 50 1 1 P
+		X R3 4 -100 -200 50 U 50 50 1 1 P
+		X R4 5 0 -200 50 U 50 50 1 1 P
+		X R5 6 100 -200 50 U 50 50 1 1 P
+		X R6 7 200 -200 50 U 50 50 1 1 P
+		X R7 8 300 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network08
+		//
+		IF [model] ENDS_WITH R_Network08 THEN
+		DRAW
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		S -450 -125 350 125 0 1 10 f
+		S -430 60 -370 -100 0 1 10 N
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		P 2 0 1 0 -400 100 -400 60 N
+		P 4 0 1 0 -400 60 -400 90 -300 90 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		X common 1 -400 200 100 D 50 50 1 1 P
+		X R1 2 -400 -200 100 U 50 50 1 1 P
+		X R2 3 -300 -200 100 U 50 50 1 1 P
+		X R3 4 -200 -200 100 U 50 50 1 1 P
+		X R4 5 -100 -200 100 U 50 50 1 1 P
+		X R5 6 0 -200 100 U 50 50 1 1 P
+		X R6 7 100 -200 100 U 50 50 1 1 P
+		X R7 8 200 -200 100 U 50 50 1 1 P
+		X R8 9 300 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network08_US
+		//
+		IF [model] ENDS_WITH R_Network08_US THEN
+		DRAW
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		S -450 -125 350 125 0 1 10 f
+		P 2 0 1 0 -400 -150 -400 -98 N
+		P 2 0 1 0 -300 -150 -300 -98 N
+		P 2 0 1 0 -200 -150 -200 -98 N
+		P 2 0 1 0 -100 -150 -100 -98 N
+		P 2 0 1 0 0 -150 0 -98 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 2 0 1 0 200 -98 200 -150 N
+		P 2 0 1 0 300 -98 300 -150 N
+		P 3 0 1 0 -300 90 -400 90 -400 58 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 4 0 1 0 300 58 300 90 200 90 200 58 N
+		P 8 0 1 0 -400 58 -375 45 -425 19 -375 -7 -425 -33 -375 -59 -425 -85 -400 -98 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		X common 1 -400 200 100 D 50 50 1 1 P
+		X R1 2 -400 -200 50 U 50 50 1 1 P
+		X R2 3 -300 -200 50 U 50 50 1 1 P
+		X R3 4 -200 -200 50 U 50 50 1 1 P
+		X R4 5 -100 -200 50 U 50 50 1 1 P
+		X R5 6 0 -200 50 U 50 50 1 1 P
+		X R6 7 100 -200 50 U 50 50 1 1 P
+		X R7 8 200 -200 50 U 50 50 1 1 P
+		X R8 9 300 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network09
+		//
+		IF [model] ENDS_WITH R_Network09 THEN
+		DRAW
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		S -450 -125 450 125 0 1 10 f
+		S -430 60 -370 -100 0 1 10 N
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		S 370 60 430 -100 0 1 10 N
+		P 2 0 1 0 -400 100 -400 60 N
+		P 4 0 1 0 -400 60 -400 90 -300 90 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		P 4 0 1 0 300 60 300 90 400 90 400 60 N
+		X common 1 -400 200 100 D 50 50 1 1 P
+		X R9 10 400 -200 100 U 50 50 1 1 P
+		X R1 2 -400 -200 100 U 50 50 1 1 P
+		X R2 3 -300 -200 100 U 50 50 1 1 P
+		X R3 4 -200 -200 100 U 50 50 1 1 P
+		X R4 5 -100 -200 100 U 50 50 1 1 P
+		X R5 6 0 -200 100 U 50 50 1 1 P
+		X R6 7 100 -200 100 U 50 50 1 1 P
+		X R7 8 200 -200 100 U 50 50 1 1 P
+		X R8 9 300 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network09_US
+		//
+		IF [model] ENDS_WITH R_Network09_US THEN
+		DRAW
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		S -450 -125 450 125 0 1 10 f
+		P 2 0 1 0 -400 -98 -400 -150 N
+		P 2 0 1 0 -300 -98 -300 -150 N
+		P 2 0 1 0 -200 -98 -200 -150 N
+		P 2 0 1 0 -100 -98 -100 -150 N
+		P 2 0 1 0 0 -98 0 -150 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 2 0 1 0 200 -98 200 -150 N
+		P 2 0 1 0 300 -98 300 -150 N
+		P 2 0 1 0 400 -98 400 -150 N
+		P 3 0 1 0 -300 90 -400 90 -400 58 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 3 0 1 0 300 90 200 90 200 58 N
+		P 4 0 1 0 400 58 400 90 300 90 300 58 N
+		P 8 0 1 0 -400 58 -375 45 -425 19 -375 -7 -425 -33 -375 -59 -425 -85 -400 -98 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		P 8 0 1 0 400 58 425 45 375 19 425 -7 375 -33 425 -59 375 -85 400 -98 N
+		X common 1 -400 200 100 D 50 50 1 1 P
+		X R9 10 400 -200 50 U 50 50 1 1 P
+		X R1 2 -400 -200 50 U 50 50 1 1 P
+		X R2 3 -300 -200 50 U 50 50 1 1 P
+		X R3 4 -200 -200 50 U 50 50 1 1 P
+		X R4 5 -100 -200 50 U 50 50 1 1 P
+		X R5 6 0 -200 50 U 50 50 1 1 P
+		X R6 7 100 -200 50 U 50 50 1 1 P
+		X R7 8 200 -200 50 U 50 50 1 1 P
+		X R8 9 300 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network10
+		//
+		IF [model] ENDS_WITH R_Network10 THEN
+		DRAW
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		S -550 -125 450 125 0 1 10 f
+		S -530 60 -470 -100 0 1 10 N
+		S -430 60 -370 -100 0 1 10 N
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		S 370 60 430 -100 0 1 10 N
+		P 2 0 1 0 -500 100 -500 60 N
+		P 4 0 1 0 -500 60 -500 90 -400 90 -400 60 N
+		P 4 0 1 0 -400 60 -400 90 -300 90 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		P 4 0 1 0 300 60 300 90 400 90 400 60 N
+		X common 1 -500 200 100 D 50 50 1 1 P
+		X R9 10 300 -200 100 U 50 50 1 1 P
+		X R10 11 400 -200 100 U 50 50 1 1 P
+		X R1 2 -500 -200 100 U 50 50 1 1 P
+		X R2 3 -400 -200 100 U 50 50 1 1 P
+		X R3 4 -300 -200 100 U 50 50 1 1 P
+		X R4 5 -200 -200 100 U 50 50 1 1 P
+		X R5 6 -100 -200 100 U 50 50 1 1 P
+		X R6 7 0 -200 100 U 50 50 1 1 P
+		X R7 8 100 -200 100 U 50 50 1 1 P
+		X R8 9 200 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network10_US
+		//
+		IF [model] ENDS_WITH R_Network10_US THEN
+		DRAW
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		S -550 -125 450 125 0 1 10 f
+		P 2 0 1 0 -500 -98 -500 -150 N
+		P 2 0 1 0 -400 -98 -400 -150 N
+		P 2 0 1 0 -300 -98 -300 -150 N
+		P 2 0 1 0 -200 -98 -200 -150 N
+		P 2 0 1 0 -100 -98 -100 -150 N
+		P 2 0 1 0 0 -98 0 -150 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 2 0 1 0 200 -98 200 -150 N
+		P 2 0 1 0 300 -98 300 -150 N
+		P 2 0 1 0 400 -98 400 -150 N
+		P 3 0 1 0 -400 90 -500 90 -500 58 N
+		P 3 0 1 0 -300 90 -400 90 -400 58 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 3 0 1 0 300 90 200 90 200 58 N
+		P 4 0 1 0 400 58 400 90 300 90 300 58 N
+		P 8 0 1 0 -500 58 -475 45 -525 19 -475 -7 -525 -33 -475 -59 -525 -85 -500 -98 N
+		P 8 0 1 0 -400 58 -375 45 -425 19 -375 -7 -425 -33 -375 -59 -425 -85 -400 -98 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		P 8 0 1 0 400 58 425 45 375 19 425 -7 375 -33 425 -59 375 -85 400 -98 N
+		X common 1 -500 200 100 D 50 50 1 1 P
+		X R9 10 300 -200 50 U 50 50 1 1 P
+		X R10 11 400 -200 50 U 50 50 1 1 P
+		X R1 2 -500 -200 50 U 50 50 1 1 P
+		X R2 3 -400 -200 50 U 50 50 1 1 P
+		X R3 4 -300 -200 50 U 50 50 1 1 P
+		X R4 5 -200 -200 50 U 50 50 1 1 P
+		X R5 6 -100 -200 50 U 50 50 1 1 P
+		X R6 7 0 -200 50 U 50 50 1 1 P
+		X R7 8 100 -200 50 U 50 50 1 1 P
+		X R8 9 200 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network11
+		//
+		IF [model] ENDS_WITH R_Network11 THEN
+		DRAW
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		C 400 90 10 0 1 0 F
+		S -550 -125 550 125 0 1 10 f
+		S -530 60 -470 -100 0 1 10 N
+		S -430 60 -370 -100 0 1 10 N
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		S 370 60 430 -100 0 1 10 N
+		S 470 60 530 -100 0 1 10 N
+		P 2 0 1 0 -500 100 -500 60 N
+		P 4 0 1 0 -500 60 -500 90 -400 90 -400 60 N
+		P 4 0 1 0 -400 60 -400 90 -300 90 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		P 4 0 1 0 300 60 300 90 400 90 400 60 N
+		P 4 0 1 0 400 60 400 90 500 90 500 60 N
+		X common 1 -500 200 100 D 50 50 1 1 P
+		X R9 10 300 -200 100 U 50 50 1 1 P
+		X R10 11 400 -200 100 U 50 50 1 1 P
+		X R11 12 500 -200 100 U 50 50 1 1 P
+		X R1 2 -500 -200 100 U 50 50 1 1 P
+		X R2 3 -400 -200 100 U 50 50 1 1 P
+		X R3 4 -300 -200 100 U 50 50 1 1 P
+		X R4 5 -200 -200 100 U 50 50 1 1 P
+		X R5 6 -100 -200 100 U 50 50 1 1 P
+		X R6 7 0 -200 100 U 50 50 1 1 P
+		X R7 8 100 -200 100 U 50 50 1 1 P
+		X R8 9 200 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network11_US
+		//
+		IF [model] ENDS_WITH R_Network11_US THEN
+		DRAW
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		C 400 90 10 0 1 0 F
+		S -550 -125 550 125 0 1 10 f
+		P 2 0 1 0 -500 -150 -500 -98 N
+		P 2 0 1 0 -400 -98 -400 -150 N
+		P 2 0 1 0 -300 -98 -300 -150 N
+		P 2 0 1 0 -200 -98 -200 -150 N
+		P 2 0 1 0 -100 -98 -100 -150 N
+		P 2 0 1 0 0 -98 0 -150 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 2 0 1 0 200 -98 200 -150 N
+		P 2 0 1 0 300 -98 300 -150 N
+		P 2 0 1 0 400 -98 400 -150 N
+		P 2 0 1 0 500 -98 500 -150 N
+		P 3 0 1 0 -400 90 -500 90 -500 58 N
+		P 3 0 1 0 -300 90 -400 90 -400 58 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 3 0 1 0 300 90 200 90 200 58 N
+		P 3 0 1 0 400 90 300 90 300 58 N
+		P 4 0 1 0 500 58 500 90 400 90 400 58 N
+		P 8 0 1 0 -500 58 -475 45 -525 19 -475 -7 -525 -33 -475 -59 -525 -85 -500 -98 N
+		P 8 0 1 0 -400 58 -375 45 -425 19 -375 -7 -425 -33 -375 -59 -425 -85 -400 -98 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		P 8 0 1 0 400 58 425 45 375 19 425 -7 375 -33 425 -59 375 -85 400 -98 N
+		P 8 0 1 0 500 58 525 45 475 19 525 -7 475 -33 525 -59 475 -85 500 -98 N
+		X common 1 -500 200 100 D 50 50 1 1 P
+		X R9 10 300 -200 50 U 50 50 1 1 P
+		X R10 11 400 -200 50 U 50 50 1 1 P
+		X R11 12 500 -200 50 U 50 50 1 1 P
+		X R1 2 -500 -200 50 U 50 50 1 1 P
+		X R2 3 -400 -200 50 U 50 50 1 1 P
+		X R3 4 -300 -200 50 U 50 50 1 1 P
+		X R4 5 -200 -200 50 U 50 50 1 1 P
+		X R5 6 -100 -200 50 U 50 50 1 1 P
+		X R6 7 0 -200 50 U 50 50 1 1 P
+		X R7 8 100 -200 50 U 50 50 1 1 P
+		X R8 9 200 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network12
+		//
+		IF [model] ENDS_WITH R_Network12 THEN
+		DRAW
+		C -600 90 10 0 1 0 F
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		C 400 90 10 0 1 0 F
+		S -650 -125 550 125 0 1 10 f
+		S -630 60 -570 -100 0 1 10 N
+		S -530 60 -470 -100 0 1 10 N
+		S -430 60 -370 -100 0 1 10 N
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		S 370 60 430 -100 0 1 10 N
+		S 470 60 530 -100 0 1 10 N
+		P 2 0 1 0 -600 100 -600 60 N
+		P 4 0 1 0 -600 60 -600 90 -500 90 -500 60 N
+		P 4 0 1 0 -500 60 -500 90 -400 90 -400 60 N
+		P 4 0 1 0 -400 60 -400 90 -300 90 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		P 4 0 1 0 300 60 300 90 400 90 400 60 N
+		P 4 0 1 0 400 60 400 90 500 90 500 60 N
+		X common 1 -600 200 100 D 50 50 1 1 P
+		X R9 10 200 -200 100 U 50 50 1 1 P
+		X R10 11 300 -200 100 U 50 50 1 1 P
+		X R11 12 400 -200 100 U 50 50 1 1 P
+		X R12 13 500 -200 100 U 50 50 1 1 P
+		X R1 2 -600 -200 100 U 50 50 1 1 P
+		X R2 3 -500 -200 100 U 50 50 1 1 P
+		X R3 4 -400 -200 100 U 50 50 1 1 P
+		X R4 5 -300 -200 100 U 50 50 1 1 P
+		X R5 6 -200 -200 100 U 50 50 1 1 P
+		X R6 7 -100 -200 100 U 50 50 1 1 P
+		X R7 8 0 -200 100 U 50 50 1 1 P
+		X R8 9 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network12_US
+		//
+		IF [model] ENDS_WITH R_Network12_US THEN
+		DRAW
+		C -600 90 10 0 1 0 F
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		C 400 90 10 0 1 0 F
+		S -650 -125 550 125 0 1 10 f
+		P 2 0 1 0 -600 -98 -600 -150 N
+		P 2 0 1 0 -500 -98 -500 -150 N
+		P 2 0 1 0 -400 -98 -400 -150 N
+		P 2 0 1 0 -300 -98 -300 -150 N
+		P 2 0 1 0 -200 -98 -200 -150 N
+		P 2 0 1 0 -100 -98 -100 -150 N
+		P 2 0 1 0 0 -98 0 -150 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 2 0 1 0 200 -98 200 -150 N
+		P 2 0 1 0 300 -98 300 -150 N
+		P 2 0 1 0 400 -98 400 -150 N
+		P 2 0 1 0 500 -98 500 -150 N
+		P 3 0 1 0 -500 90 -600 90 -600 58 N
+		P 3 0 1 0 -400 90 -500 90 -500 58 N
+		P 3 0 1 0 -300 90 -400 90 -400 58 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 3 0 1 0 300 90 200 90 200 58 N
+		P 3 0 1 0 400 90 300 90 300 58 N
+		P 4 0 1 0 500 58 500 90 400 90 400 58 N
+		P 8 0 1 0 -600 58 -575 45 -625 19 -575 -7 -625 -33 -575 -59 -625 -85 -600 -98 N
+		P 8 0 1 0 -500 58 -475 45 -525 19 -475 -7 -525 -33 -475 -59 -525 -85 -500 -98 N
+		P 8 0 1 0 -400 58 -375 45 -425 19 -375 -7 -425 -33 -375 -59 -425 -85 -400 -98 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		P 8 0 1 0 400 58 425 45 375 19 425 -7 375 -33 425 -59 375 -85 400 -98 N
+		P 8 0 1 0 500 58 525 45 475 19 525 -7 475 -33 525 -59 475 -85 500 -98 N
+		X common 1 -600 200 100 D 50 50 1 1 P
+		X R9 10 200 -200 50 U 50 50 1 1 P
+		X R10 11 300 -200 50 U 50 50 1 1 P
+		X R11 12 400 -200 50 U 50 50 1 1 P
+		X R12 13 500 -200 50 U 50 50 1 1 P
+		X R1 2 -600 -200 50 U 50 50 1 1 P
+		X R2 3 -500 -200 50 U 50 50 1 1 P
+		X R3 4 -400 -200 50 U 50 50 1 1 P
+		X R4 5 -300 -200 50 U 50 50 1 1 P
+		X R5 6 -200 -200 50 U 50 50 1 1 P
+		X R6 7 -100 -200 50 U 50 50 1 1 P
+		X R7 8 0 -200 50 U 50 50 1 1 P
+		X R8 9 100 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network13
+		//
+		IF [model] ENDS_WITH R_Network13 THEN
+		DRAW
+		C -600 90 10 0 1 0 F
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		C 400 90 10 0 1 0 F
+		C 500 90 10 0 1 0 F
+		S -650 -125 650 125 0 1 10 f
+		S -630 60 -570 -100 0 1 10 N
+		S -530 60 -470 -100 0 1 10 N
+		S -430 60 -370 -100 0 1 10 N
+		S -330 60 -270 -100 0 1 10 N
+		S -230 60 -170 -100 0 1 10 N
+		S -130 60 -70 -100 0 1 10 N
+		S -30 60 30 -100 0 1 10 N
+		S 70 60 130 -100 0 1 10 N
+		S 170 60 230 -100 0 1 10 N
+		S 270 60 330 -100 0 1 10 N
+		S 370 60 430 -100 0 1 10 N
+		S 470 60 530 -100 0 1 10 N
+		S 570 60 630 -100 0 1 10 N
+		P 2 0 1 0 -600 100 -600 60 N
+		P 4 0 1 0 -600 60 -600 90 -500 90 -500 60 N
+		P 4 0 1 0 -500 60 -500 90 -400 90 -400 60 N
+		P 4 0 1 0 -400 60 -400 90 -300 90 -300 60 N
+		P 4 0 1 0 -300 60 -300 90 -200 90 -200 60 N
+		P 4 0 1 0 -200 60 -200 90 -100 90 -100 60 N
+		P 4 0 1 0 -100 60 -100 90 0 90 0 60 N
+		P 4 0 1 0 0 60 0 90 100 90 100 60 N
+		P 4 0 1 0 100 60 100 90 200 90 200 60 N
+		P 4 0 1 0 200 60 200 90 300 90 300 60 N
+		P 4 0 1 0 300 60 300 90 400 90 400 60 N
+		P 4 0 1 0 400 60 400 90 500 90 500 60 N
+		P 4 0 1 0 500 60 500 90 600 90 600 60 N
+		X common 1 -600 200 100 D 50 50 1 1 P
+		X R9 10 200 -200 100 U 50 50 1 1 P
+		X R10 11 300 -200 100 U 50 50 1 1 P
+		X R11 12 400 -200 100 U 50 50 1 1 P
+		X R12 13 500 -200 100 U 50 50 1 1 P
+		X R13 14 600 -200 100 U 50 50 1 1 P
+		X R1 2 -600 -200 100 U 50 50 1 1 P
+		X R2 3 -500 -200 100 U 50 50 1 1 P
+		X R3 4 -400 -200 100 U 50 50 1 1 P
+		X R4 5 -300 -200 100 U 50 50 1 1 P
+		X R5 6 -200 -200 100 U 50 50 1 1 P
+		X R6 7 -100 -200 100 U 50 50 1 1 P
+		X R7 8 0 -200 100 U 50 50 1 1 P
+		X R8 9 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network13_US
+		//
+		IF [model] ENDS_WITH R_Network13_US THEN
+		DRAW
+		C -600 90 10 0 1 0 F
+		C -500 90 10 0 1 0 F
+		C -400 90 10 0 1 0 F
+		C -300 90 10 0 1 0 F
+		C -200 90 10 0 1 0 F
+		C -100 90 10 0 1 0 F
+		C 0 90 10 0 1 0 F
+		C 100 90 10 0 1 0 F
+		C 200 90 10 0 1 0 F
+		C 300 90 10 0 1 0 F
+		C 400 90 10 0 1 0 F
+		C 500 90 10 0 1 0 F
+		S -650 -125 650 125 0 1 10 f
+		P 2 0 1 0 -600 -98 -600 -150 N
+		P 2 0 1 0 -500 -98 -500 -150 N
+		P 2 0 1 0 -400 -98 -400 -150 N
+		P 2 0 1 0 -300 -98 -300 -150 N
+		P 2 0 1 0 -200 -98 -200 -150 N
+		P 2 0 1 0 -100 -98 -100 -150 N
+		P 2 0 1 0 0 -98 0 -150 N
+		P 2 0 1 0 100 -98 100 -150 N
+		P 2 0 1 0 200 -98 200 -150 N
+		P 2 0 1 0 300 -98 300 -150 N
+		P 2 0 1 0 400 -98 400 -150 N
+		P 2 0 1 0 500 -98 500 -150 N
+		P 2 0 1 0 600 -98 600 -150 N
+		P 3 0 1 0 -500 90 -600 90 -600 58 N
+		P 3 0 1 0 -400 90 -500 90 -500 58 N
+		P 3 0 1 0 -300 90 -400 90 -400 58 N
+		P 3 0 1 0 -200 90 -300 90 -300 58 N
+		P 3 0 1 0 -100 90 -200 90 -200 58 N
+		P 3 0 1 0 0 90 -100 90 -100 58 N
+		P 3 0 1 0 100 90 0 90 0 58 N
+		P 3 0 1 0 200 90 100 90 100 58 N
+		P 3 0 1 0 300 90 200 90 200 58 N
+		P 3 0 1 0 400 90 300 90 300 58 N
+		P 3 0 1 0 500 90 400 90 400 58 N
+		P 4 0 1 0 600 58 600 90 500 90 500 58 N
+		P 8 0 1 0 -600 58 -575 45 -625 19 -575 -7 -625 -33 -575 -59 -625 -85 -600 -98 N
+		P 8 0 1 0 -500 58 -475 45 -525 19 -475 -7 -525 -33 -475 -59 -525 -85 -500 -98 N
+		P 8 0 1 0 -400 58 -375 45 -425 19 -375 -7 -425 -33 -375 -59 -425 -85 -400 -98 N
+		P 8 0 1 0 -300 58 -275 45 -325 19 -275 -7 -325 -33 -275 -59 -325 -85 -300 -98 N
+		P 8 0 1 0 -200 58 -175 45 -225 19 -175 -7 -225 -33 -175 -59 -225 -85 -200 -98 N
+		P 8 0 1 0 -100 58 -75 45 -125 19 -75 -7 -125 -33 -75 -59 -125 -85 -100 -98 N
+		P 8 0 1 0 0 58 25 45 -25 19 25 -7 -25 -33 25 -59 -25 -85 0 -98 N
+		P 8 0 1 0 100 58 125 45 75 19 125 -7 75 -33 125 -59 75 -85 100 -98 N
+		P 8 0 1 0 200 58 225 45 175 19 225 -7 175 -33 225 -59 175 -85 200 -98 N
+		P 8 0 1 0 300 58 325 45 275 19 325 -7 275 -33 325 -59 275 -85 300 -98 N
+		P 8 0 1 0 400 58 425 45 375 19 425 -7 375 -33 425 -59 375 -85 400 -98 N
+		P 8 0 1 0 500 58 525 45 475 19 525 -7 475 -33 525 -59 475 -85 500 -98 N
+		P 8 0 1 0 600 58 625 45 575 19 625 -7 575 -33 625 -59 575 -85 600 -98 N
+		X common 1 -600 200 100 D 50 50 1 1 P
+		X R9 10 200 -200 50 U 50 50 1 1 P
+		X R10 11 300 -200 50 U 50 50 1 1 P
+		X R11 12 400 -200 50 U 50 50 1 1 P
+		X R12 13 500 -200 50 U 50 50 1 1 P
+		X R13 14 600 -200 50 U 50 50 1 1 P
+		X R1 2 -600 -200 50 U 50 50 1 1 P
+		X R2 3 -500 -200 50 U 50 50 1 1 P
+		X R3 4 -400 -200 50 U 50 50 1 1 P
+		X R4 5 -300 -200 50 U 50 50 1 1 P
+		X R5 6 -200 -200 50 U 50 50 1 1 P
+		X R6 7 -100 -200 50 U 50 50 1 1 P
+		X R7 8 0 -200 50 U 50 50 1 1 P
+		X R8 9 100 -200 50 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        Resistor network of voltage dividers.
+        Each resistor has the Ohmic value given as [value].
+    </Description>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x11_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x10_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x09_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x08_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x07_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x06_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x05_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x04_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x03_SIP
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Network_Dividers_x02_SIP
+    </eeschema_sch>
+    <Default_Values>
+        220 Ohm
+    </Default_Values>
+    <Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        IF ![ohm] THEN 
+        <Dialog type="error" title="Please enter a correct value">
+            Missing value for the resistors network component [name] at position ([xpos] | [ypos]). 
+            [value] is not a valid number, please correct that.
+        </Dialog>ENDIF
+    
+        //model - in KicadEeschema library the Pins are called Rn, where n={1,2,3, ... ,10,11} thes do NOT mean resistors, but pins. The resistors here are called Rna and Rnb.
+        .subckt rdivider_[individual] com1 com2 r1 r2 IF[R3]THENr3ENDIF IF[R4]THENr4ENDIF IF[R5]THENr5ENDIF IF[R6]THENr6ENDIF IF[R7]THENr7ENDIF IF[R8]THENr8ENDIF IF[R9]THENr9ENDIF IF[R10]THENr10ENDIF IF[R11]THENr11ENDIF
+        
+        R1a com1 r1 [ohm]
+        R1b com2 r1 [ohm]        
+        R2a com1 r2 [ohm]
+        R2b com2 r2 [ohm]
+        IF[R3]THEN
+            R3a com1 r3 [ohm]
+            R3b com2 r3 [ohm]
+        ENDIF
+        IF[R4]THEN
+            R4a com1 r4 [ohm]
+            R4b com2 r4 [ohm]
+        ENDIF
+        IF[R5]THEN
+            R5a com1 r5 [ohm]
+            R5b com2 r5 [ohm]
+        ENDIF
+        IF[R6]THEN
+            R6a com1 r6 [ohm]
+            R6b com2 r6 [ohm]
+        ENDIF
+        IF[R7]THEN
+            R7a com1 r7 [ohm]
+            R7b com2 r7 [ohm]
+        ENDIF
+        IF[R8]THEN
+            R8a com1 r8 [ohm]
+            R8b com2 r8 [ohm]
+        ENDIF
+        IF[R9]THEN
+            R9a com1 r9 [ohm]
+            R9b com2 r9 [ohm]
+        ENDIF
+        IF[R10]THEN
+            R10a com1 r10 [ohm]
+            R10b com2 r10 [ohm]
+        ENDIF
+        IF[R11]THEN
+            R11a com1 r11 [ohm]
+            R11b com2 r11 [ohm]
+        ENDIF
+        .ends
+        //component
+        X_[individual] [COM1] [COM2] [R1] [R2] IF[R3]THEN[R3]ENDIF IF[R4]THEN[R4]ENDIF IF[R5]THEN[R5]ENDIF IF[R6]THEN[R6]ENDIF IF[R7]THEN[R7]ENDIF IF[R8]THEN[R8]ENDIF IF[R9]THEN[R9]ENDIF IF[R10]THEN[R10]ENDIF IF[R11]THEN[R11]ENDIF rdivider_[individual]
+    </Spice>
+    <eeschema_symbol>
+		//
+		// R_Network_Dividers_x02_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x02_SIP THEN
+		DRAW
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		S -250 -200 150 200 0 1 10 f
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 -200 200 -200 133 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 100 -166 100 200 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 100 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 60 -133 60 -166 100 -166 N
+		X COM1 1 -200 300 100 D 50 50 1 1 P
+		X R1 2 -200 -300 100 U 50 50 1 1 P
+		X R2 3 0 -300 100 U 50 50 1 1 P
+		X COM2 4 100 300 100 D 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x03_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x03_SIP THEN
+		DRAW
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		S -250 -200 350 200 0 1 10 f
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 -200 200 -200 133 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 300 -166 300 200 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 300 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 300 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 260 -133 260 -166 300 -166 N
+		X COM1 1 -200 300 100 D 50 50 1 1 P
+		X R1 2 -200 -300 100 U 50 50 1 1 P
+		X R2 3 0 -300 100 U 50 50 1 1 P
+		X R3 4 200 -300 100 U 50 50 1 1 P
+		X COM2 5 300 300 100 D 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x04_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x04_SIP THEN
+		DRAW
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		S -450 -200 350 200 0 1 10 f
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -400 200 -400 133 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 300 -166 300 200 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 300 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 300 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 300 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 260 -133 260 -166 300 -166 N
+		X COM1 1 -400 300 100 D 50 50 1 1 P
+		X R1 2 -400 -300 100 U 50 50 1 1 P
+		X R2 3 -200 -300 100 U 50 50 1 1 P
+		X R3 4 0 -300 100 U 50 50 1 1 P
+		X R4 5 200 -300 100 U 50 50 1 1 P
+		X COM2 6 300 300 100 D 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x05_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x05_SIP THEN
+		DRAW
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		S -450 -200 550 200 0 1 10 f
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -400 200 -400 133 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 500 -166 500 200 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 500 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 500 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 500 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 500 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 460 -133 460 -166 500 -166 N
+		X COM1 1 -400 300 100 D 50 50 1 1 P
+		X R1 2 -400 -300 100 U 50 50 1 1 P
+		X R2 3 -200 -300 100 U 50 50 1 1 P
+		X R3 4 0 -300 100 U 50 50 1 1 P
+		X R4 5 200 -300 100 U 50 50 1 1 P
+		X R5 6 400 -300 100 U 50 50 1 1 P
+		X COM2 7 500 300 100 D 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x06_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x06_SIP THEN
+		DRAW
+		C -600 0 10 0 1 0 F
+		C -600 166 10 0 1 0 F
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -340 -166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		S -650 -200 550 200 0 1 10 f
+		S -620 133 -580 33 0 1 10 N
+		S -560 -133 -520 -33 0 1 10 N
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		P 2 0 1 0 -600 -200 -600 33 N
+		P 2 0 1 0 -600 200 -600 133 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 500 -166 500 200 N
+		P 3 0 1 0 -600 0 -540 0 -540 -33 N
+		P 3 0 1 0 -600 166 -400 166 -400 133 N
+		P 3 0 1 0 -540 -133 -540 -166 500 -166 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 500 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 500 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 500 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 500 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 460 -133 460 -166 500 -166 N
+		X COM1 1 -600 300 100 D 50 50 1 1 P
+		X R1 2 -600 -300 100 U 50 50 1 1 P
+		X R2 3 -400 -300 100 U 50 50 1 1 P
+		X R3 4 -200 -300 100 U 50 50 1 1 P
+		X R4 5 0 -300 100 U 50 50 1 1 P
+		X R5 6 200 -300 100 U 50 50 1 1 P
+		X R6 7 400 -300 100 U 50 50 1 1 P
+		X COM2 8 500 300 100 D 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x07_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x07_SIP THEN
+		DRAW
+		C -600 0 10 0 1 0 F
+		C -600 166 10 0 1 0 F
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -340 -166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 400 166 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		C 600 0 10 0 1 0 F
+		C 660 -166 10 0 1 0 F
+		S -650 -200 750 200 0 1 10 f
+		S -620 133 -580 33 0 1 10 N
+		S -560 -133 -520 -33 0 1 10 N
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		S 580 133 620 33 0 1 10 N
+		S 640 -133 680 -33 0 1 10 N
+		P 2 0 1 0 -600 -200 -600 33 N
+		P 2 0 1 0 -600 200 -600 133 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 600 -200 600 33 N
+		P 2 0 1 0 700 -166 700 200 N
+		P 3 0 1 0 -600 0 -540 0 -540 -33 N
+		P 3 0 1 0 -600 166 -400 166 -400 133 N
+		P 3 0 1 0 -540 -133 -540 -166 700 -166 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 700 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 700 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 700 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 700 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 400 166 600 166 600 133 N
+		P 3 0 1 0 460 -133 460 -166 700 -166 N
+		P 3 0 1 0 600 0 660 0 660 -33 N
+		P 3 0 1 0 660 -133 660 -166 700 -166 N
+		X COM1 1 -600 300 100 D 50 50 1 1 P
+		X R1 2 -600 -300 100 U 50 50 1 1 P
+		X R2 3 -400 -300 100 U 50 50 1 1 P
+		X R3 4 -200 -300 100 U 50 50 1 1 P
+		X R4 5 0 -300 100 U 50 50 1 1 P
+		X R5 6 200 -300 100 U 50 50 1 1 P
+		X R6 7 400 -300 100 U 50 50 1 1 P
+		X R7 8 600 -300 100 U 50 50 1 1 P
+		X COM2 9 700 300 100 D 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x08_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x08_SIP THEN
+		DRAW
+		C -800 0 10 0 1 0 F
+		C -800 166 10 0 1 0 F
+		C -600 0 10 0 1 0 F
+		C -600 166 10 0 1 0 F
+		C -540 -166 10 0 1 0 F
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -340 -166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 400 166 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		C 600 0 10 0 1 0 F
+		C 660 -166 10 0 1 0 F
+		S -850 -200 750 200 0 1 10 f
+		S -820 133 -780 33 0 1 10 N
+		S -760 -133 -720 -33 0 1 10 N
+		S -620 133 -580 33 0 1 10 N
+		S -560 -133 -520 -33 0 1 10 N
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		S 580 133 620 33 0 1 10 N
+		S 640 -133 680 -33 0 1 10 N
+		P 2 0 1 0 -800 -200 -800 33 N
+		P 2 0 1 0 -800 200 -800 133 N
+		P 2 0 1 0 -600 -200 -600 33 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 600 -200 600 33 N
+		P 2 0 1 0 700 -166 700 200 N
+		P 3 0 1 0 -800 0 -740 0 -740 -33 N
+		P 3 0 1 0 -800 166 -600 166 -600 133 N
+		P 3 0 1 0 -740 -133 -740 -166 700 -166 N
+		P 3 0 1 0 -600 0 -540 0 -540 -33 N
+		P 3 0 1 0 -600 166 -400 166 -400 133 N
+		P 3 0 1 0 -540 -133 -540 -166 700 -166 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 700 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 700 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 700 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 700 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 400 166 600 166 600 133 N
+		P 3 0 1 0 460 -133 460 -166 700 -166 N
+		P 3 0 1 0 600 0 660 0 660 -33 N
+		P 3 0 1 0 660 -133 660 -166 700 -166 N
+		X COM1 1 -800 300 100 D 50 50 1 1 P
+		X COM2 10 700 300 100 D 50 50 1 1 P
+		X R1 2 -800 -300 100 U 50 50 1 1 P
+		X R2 3 -600 -300 100 U 50 50 1 1 P
+		X R3 4 -400 -300 100 U 50 50 1 1 P
+		X R4 5 -200 -300 100 U 50 50 1 1 P
+		X R5 6 0 -300 100 U 50 50 1 1 P
+		X R6 7 200 -300 100 U 50 50 1 1 P
+		X R7 8 400 -300 100 U 50 50 1 1 P
+		X R8 9 600 -300 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x09_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x09_SIP THEN
+		DRAW
+		C -800 0 10 0 1 0 F
+		C -800 166 10 0 1 0 F
+		C -600 0 10 0 1 0 F
+		C -600 166 10 0 1 0 F
+		C -540 -166 10 0 1 0 F
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -340 -166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 400 166 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		C 600 0 10 0 1 0 F
+		C 600 166 10 0 1 0 F
+		C 660 -166 10 0 1 0 F
+		C 800 0 10 0 1 0 F
+		C 860 -166 10 0 1 0 F
+		S -850 -200 950 200 0 1 10 f
+		S -820 133 -780 33 0 1 10 N
+		S -760 -133 -720 -33 0 1 10 N
+		S -620 133 -580 33 0 1 10 N
+		S -560 -133 -520 -33 0 1 10 N
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		S 580 133 620 33 0 1 10 N
+		S 640 -133 680 -33 0 1 10 N
+		S 780 133 820 33 0 1 10 N
+		S 840 -133 880 -33 0 1 10 N
+		P 2 0 1 0 -800 -200 -800 33 N
+		P 2 0 1 0 -800 200 -800 133 N
+		P 2 0 1 0 -600 -200 -600 33 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 600 -200 600 33 N
+		P 2 0 1 0 800 -200 800 33 N
+		P 2 0 1 0 900 -166 900 200 N
+		P 3 0 1 0 -800 0 -740 0 -740 -33 N
+		P 3 0 1 0 -800 166 -600 166 -600 133 N
+		P 3 0 1 0 -740 -133 -740 -166 900 -166 N
+		P 3 0 1 0 -600 0 -540 0 -540 -33 N
+		P 3 0 1 0 -600 166 -400 166 -400 133 N
+		P 3 0 1 0 -540 -133 -540 -166 900 -166 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 900 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 900 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 900 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 900 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 400 166 600 166 600 133 N
+		P 3 0 1 0 460 -133 460 -166 900 -166 N
+		P 3 0 1 0 600 0 660 0 660 -33 N
+		P 3 0 1 0 600 166 800 166 800 133 N
+		P 3 0 1 0 660 -133 660 -166 900 -166 N
+		P 3 0 1 0 800 0 860 0 860 -33 N
+		P 3 0 1 0 860 -133 860 -166 900 -166 N
+		X COM1 1 -800 300 100 D 50 50 1 1 P
+		X R9 10 800 -300 100 U 50 50 1 1 P
+		X COM2 11 900 300 100 D 50 50 1 1 P
+		X R1 2 -800 -300 100 U 50 50 1 1 P
+		X R2 3 -600 -300 100 U 50 50 1 1 P
+		X R3 4 -400 -300 100 U 50 50 1 1 P
+		X R4 5 -200 -300 100 U 50 50 1 1 P
+		X R5 6 0 -300 100 U 50 50 1 1 P
+		X R6 7 200 -300 100 U 50 50 1 1 P
+		X R7 8 400 -300 100 U 50 50 1 1 P
+		X R8 9 600 -300 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x10_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x10_SIP THEN
+		DRAW
+		C -1000 0 10 0 1 0 F
+		C -1000 166 10 0 1 0 F
+		C -800 0 10 0 1 0 F
+		C -800 166 10 0 1 0 F
+		C -740 -166 10 0 1 0 F
+		C -600 0 10 0 1 0 F
+		C -600 166 10 0 1 0 F
+		C -540 -166 10 0 1 0 F
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -340 -166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 400 166 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		C 600 0 10 0 1 0 F
+		C 600 166 10 0 1 0 F
+		C 660 -166 10 0 1 0 F
+		C 800 0 10 0 1 0 F
+		C 860 -166 10 0 1 0 F
+		S -1050 -200 950 200 0 1 10 f
+		S -1020 133 -980 33 0 1 10 N
+		S -960 -133 -920 -33 0 1 10 N
+		S -820 133 -780 33 0 1 10 N
+		S -760 -133 -720 -33 0 1 10 N
+		S -620 133 -580 33 0 1 10 N
+		S -560 -133 -520 -33 0 1 10 N
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		S 580 133 620 33 0 1 10 N
+		S 640 -133 680 -33 0 1 10 N
+		S 780 133 820 33 0 1 10 N
+		S 840 -133 880 -33 0 1 10 N
+		P 2 0 1 0 -1000 -200 -1000 33 N
+		P 2 0 1 0 -1000 200 -1000 133 N
+		P 2 0 1 0 -800 -200 -800 33 N
+		P 2 0 1 0 -600 -200 -600 33 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 600 -200 600 33 N
+		P 2 0 1 0 800 -200 800 33 N
+		P 2 0 1 0 900 -166 900 200 N
+		P 3 0 1 0 -1000 0 -940 0 -940 -33 N
+		P 3 0 1 0 -1000 166 -800 166 -800 133 N
+		P 3 0 1 0 -940 -133 -940 -166 900 -166 N
+		P 3 0 1 0 -800 0 -740 0 -740 -33 N
+		P 3 0 1 0 -800 166 -600 166 -600 133 N
+		P 3 0 1 0 -740 -133 -740 -166 900 -166 N
+		P 3 0 1 0 -600 0 -540 0 -540 -33 N
+		P 3 0 1 0 -600 166 -400 166 -400 133 N
+		P 3 0 1 0 -540 -133 -540 -166 900 -166 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 900 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 900 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 900 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 900 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 400 166 600 166 600 133 N
+		P 3 0 1 0 460 -133 460 -166 900 -166 N
+		P 3 0 1 0 600 0 660 0 660 -33 N
+		P 3 0 1 0 600 166 800 166 800 133 N
+		P 3 0 1 0 660 -133 660 -166 900 -166 N
+		P 3 0 1 0 800 0 860 0 860 -33 N
+		P 3 0 1 0 860 -133 860 -166 900 -166 N
+		X COM1 1 -1000 300 100 D 50 50 1 1 P
+		X R9 10 600 -300 100 U 50 50 1 1 P
+		X R10 11 800 -300 100 U 50 50 1 1 P
+		X COM2 12 900 300 100 D 50 50 1 1 P
+		X R1 2 -1000 -300 100 U 50 50 1 1 P
+		X R2 3 -800 -300 100 U 50 50 1 1 P
+		X R3 4 -600 -300 100 U 50 50 1 1 P
+		X R4 5 -400 -300 100 U 50 50 1 1 P
+		X R5 6 -200 -300 100 U 50 50 1 1 P
+		X R6 7 0 -300 100 U 50 50 1 1 P
+		X R7 8 200 -300 100 U 50 50 1 1 P
+		X R8 9 400 -300 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+		//
+		// R_Network_Dividers_x11_SIP
+		//
+		IF [model] ENDS_WITH R_Network_Dividers_x11_SIP THEN
+		DRAW
+		C -1000 0 10 0 1 0 F
+		C -1000 166 10 0 1 0 F
+		C -800 0 10 0 1 0 F
+		C -800 166 10 0 1 0 F
+		C -740 -166 10 0 1 0 F
+		C -600 0 10 0 1 0 F
+		C -600 166 10 0 1 0 F
+		C -540 -166 10 0 1 0 F
+		C -400 0 10 0 1 0 F
+		C -400 166 10 0 1 0 F
+		C -340 -166 10 0 1 0 F
+		C -200 0 10 0 1 0 F
+		C -200 166 10 0 1 0 F
+		C -140 -166 10 0 1 0 F
+		C 0 0 10 0 1 0 F
+		C 0 166 10 0 1 0 F
+		C 60 -166 10 0 1 0 F
+		C 200 0 10 0 1 0 F
+		C 200 166 10 0 1 0 F
+		C 260 -166 10 0 1 0 F
+		C 400 0 10 0 1 0 F
+		C 400 166 10 0 1 0 F
+		C 460 -166 10 0 1 0 F
+		C 600 0 10 0 1 0 F
+		C 600 166 10 0 1 0 F
+		C 660 -166 10 0 1 0 F
+		C 800 0 10 0 1 0 F
+		C 800 166 10 0 1 0 F
+		C 860 -166 10 0 1 0 F
+		C 1000 0 10 0 1 0 F
+		C 1060 -166 10 0 1 0 F
+		S -1050 -200 1150 200 0 1 10 f
+		S -1020 133 -980 33 0 1 10 N
+		S -960 -133 -920 -33 0 1 10 N
+		S -820 133 -780 33 0 1 10 N
+		S -760 -133 -720 -33 0 1 10 N
+		S -620 133 -580 33 0 1 10 N
+		S -560 -133 -520 -33 0 1 10 N
+		S -420 133 -380 33 0 1 10 N
+		S -360 -133 -320 -33 0 1 10 N
+		S -220 133 -180 33 0 1 10 N
+		S -160 -133 -120 -33 0 1 10 N
+		S -20 133 20 33 0 1 10 N
+		S 40 -133 80 -33 0 1 10 N
+		S 180 133 220 33 0 1 10 N
+		S 240 -133 280 -33 0 1 10 N
+		S 380 133 420 33 0 1 10 N
+		S 440 -133 480 -33 0 1 10 N
+		S 580 133 620 33 0 1 10 N
+		S 640 -133 680 -33 0 1 10 N
+		S 780 133 820 33 0 1 10 N
+		S 840 -133 880 -33 0 1 10 N
+		S 980 133 1020 33 0 1 10 N
+		S 1040 -133 1080 -33 0 1 10 N
+		P 2 0 1 0 -1000 -200 -1000 33 N
+		P 2 0 1 0 -1000 200 -1000 133 N
+		P 2 0 1 0 -800 -200 -800 33 N
+		P 2 0 1 0 -600 -200 -600 33 N
+		P 2 0 1 0 -400 -200 -400 33 N
+		P 2 0 1 0 -200 -200 -200 33 N
+		P 2 0 1 0 0 -200 0 33 N
+		P 2 0 1 0 200 -200 200 33 N
+		P 2 0 1 0 400 -200 400 33 N
+		P 2 0 1 0 600 -200 600 33 N
+		P 2 0 1 0 800 -200 800 33 N
+		P 2 0 1 0 1000 -200 1000 33 N
+		P 2 0 1 0 1100 -166 1100 200 N
+		P 3 0 1 0 -1000 0 -940 0 -940 -33 N
+		P 3 0 1 0 -1000 166 -800 166 -800 133 N
+		P 3 0 1 0 -940 -133 -940 -166 1100 -166 N
+		P 3 0 1 0 -800 0 -740 0 -740 -33 N
+		P 3 0 1 0 -800 166 -600 166 -600 133 N
+		P 3 0 1 0 -740 -133 -740 -166 1100 -166 N
+		P 3 0 1 0 -600 0 -540 0 -540 -33 N
+		P 3 0 1 0 -600 166 -400 166 -400 133 N
+		P 3 0 1 0 -540 -133 -540 -166 1100 -166 N
+		P 3 0 1 0 -400 0 -340 0 -340 -33 N
+		P 3 0 1 0 -400 166 -200 166 -200 133 N
+		P 3 0 1 0 -340 -133 -340 -166 1100 -166 N
+		P 3 0 1 0 -200 0 -140 0 -140 -33 N
+		P 3 0 1 0 -200 166 0 166 0 133 N
+		P 3 0 1 0 -140 -133 -140 -166 1100 -166 N
+		P 3 0 1 0 0 0 60 0 60 -33 N
+		P 3 0 1 0 0 166 200 166 200 133 N
+		P 3 0 1 0 60 -133 60 -166 1100 -166 N
+		P 3 0 1 0 200 0 260 0 260 -33 N
+		P 3 0 1 0 200 166 400 166 400 133 N
+		P 3 0 1 0 260 -133 260 -166 1100 -166 N
+		P 3 0 1 0 400 0 460 0 460 -33 N
+		P 3 0 1 0 400 166 600 166 600 133 N
+		P 3 0 1 0 460 -133 460 -166 1100 -166 N
+		P 3 0 1 0 600 0 660 0 660 -33 N
+		P 3 0 1 0 600 166 800 166 800 133 N
+		P 3 0 1 0 660 -133 660 -166 1100 -166 N
+		P 3 0 1 0 800 0 860 0 860 -33 N
+		P 3 0 1 0 800 166 1000 166 1000 133 N
+		P 3 0 1 0 860 -133 860 -166 1100 -166 N
+		P 3 0 1 0 1000 0 1060 0 1060 -33 N
+		P 3 0 1 0 1060 -133 1060 -166 1100 -166 N
+		X COM1 1 -1000 300 100 D 50 50 1 1 P
+		X R9 10 600 -300 100 U 50 50 1 1 P
+		X R10 11 800 -300 100 U 50 50 1 1 P
+		X R11 12 1000 -300 100 U 50 50 1 1 P
+		X COM2 13 1100 300 100 D 50 50 1 1 P
+		X R1 2 -1000 -300 100 U 50 50 1 1 P
+		X R2 3 -800 -300 100 U 50 50 1 1 P
+		X R3 4 -600 -300 100 U 50 50 1 1 P
+		X R4 5 -400 -300 100 U 50 50 1 1 P
+		X R5 6 -200 -300 100 U 50 50 1 1 P
+		X R6 7 0 -300 100 U 50 50 1 1 P
+		X R7 8 200 -300 100 U 50 50 1 1 P
+		X R8 9 400 -300 100 U 50 50 1 1 P
+		ENDDRAW
+		ENDIF
+	
+
+    </eeschema_symbol>
+</Component>
+
+<poti_intro>
+    A potentiometer.
+	
+	This component can be animated. That is, the slider position moves at the expected position if the  component animation handler
+	is switched on.
+	
+	---- Value examples ----
+	A potentiometer has two parameters:
+	The first parameter is the resistance R in Ohm. That is a number larger than zero.
+	The second parameter is the slider position share S, where S must be a value greater than zero and smaller than 1.
+	(It is recommended to use at least 0.01 and at most 0.99 for S values. )
+	
+	-- Constant slider position example --
+	The value "R=4.7k S=0.01" would be a 4,7 kiloOhm Potentiometer, where the slider position is
+	nearly all down (1%) to the	lower connection of the potentiometer
+	and the value R=220 S=0.99 would be a 220 Ohm Potentiometer, where the slider is nearly all up (99%) to the upper connection.
+	
+	-- Time dependent slider position examples --
+	You can specify the slider not with one simple S parameter, but with a set of parameters, for example to define a sine wave.
+	-- sine wave example --
+	R=1000 s_type=sin s_mid=0.5 s_amplitude=0.49 frequency=2kHz t_delay=0ms damping=0 phase=0 
+	Defines a Potentiometer where the slider slides up and down in a sine wave:
+	The parameters are: 
+		1. R=1000 means the Ohm value is 1 kilo Ohm.
+		2. s_type=sin means that the slider shall move up and down in a sine wave
+		3. s_mid=0.5 means that the sinus wave shall move around the middle value 0.5
+		4. s_amplitude=0.49 means that the maximal difference ("amplitude") shall be 0.49. Therefor it moves between 0.01 and 0.99.
+		5. frequency=2kHz means that the slider shall move up and down 2000 times per second.
+		(6) t_delay=0 means that there is no time delay where the slider sine wave starts.  Optional parameter, default is 0.
+		(7) damping=0 means the damping factor in 1/s at which the sine waves amplitude is reduced. Optional parameter, default is 0.
+		(8) phase=0 means the phase in degrees at which the sin is turned at the beginning. Optional parameter, default is 0. 
+		
+	-- pulse example --
+	R=4.7k s_type=pulse s_low=0.2 s_high=0.8 t_low=1ms t_high=2ms t_rise=100us t_fall=200us t_delay=1ms
+	Defines a potentiometers where the slider slides up and down in a pulse between 20% and 80%:
+	The parameters are:
+		1. R=4.7k means that the Ohm value is 4,7 kilo Ohm.
+		2. s_type=pulse means that the slider value shall move up and down in a linear (pulse-like) wave.
+		(3) s_low=0.2 means that the lower value of that pulse is at 20%. Optional parameter, default is 0.01=1%
+		(4) s_high=0.8 means that the higher value of that pulse is at 80%. Optional parameter, default is 0,99=99%
+		5. t_low=1ms means that the lower value shall be held constant for 1 millisecond
+		6. t_high=2ms means that the higher value shall be held constant for 2 milliseconds
+		(7) t_rise=100us means that the time for the transition from low to high shall take 100 microseconds. Optional parameter, default is zero.
+		(8) t_fall=200us means that the time for the transition from high to loww shall tatke 200 microseconds. Optional parameter, default is zero.
+		info: the sum of parameters 5+6+7+8 make the period time. That is how you define the frequency of the pulse. Here it is 1ms+2ms+0,1ms+0.2ms=3,3ms
+		(9) t_delay=1ms means that there is 1ms delay before the slider starts moving.  Optional parameter, default is 0. 
+</poti_intro>
+
+<Component>
+    <Description>
+        INCLUDE poti_intro
+    </Description>
+    <eeschema_sch>
+        L Device:R_POT
+        ALIAS Device:R_POT_US
+    </eeschema_sch>
+	  <Default_Values>
+		R=220k S=0.35 // A potentiometer with 220 kilo Ohm and a slider position of 35% 
+        R=4.7k S=PULSE(0.2,0.8,1m,100u,200u,1m,3m) // Slider position moving up and down between 20%=0.2 and 80%=0.8 with <br>
+											  // 1ms delay, 2ms rise time, 3ms fall time, 4ms high time and <br>
+											 // a period time of 3ms, which results in a 1.7ms low time because 3ms-1ms-200us-100us=1.7ms
+		R=4.7k s_type=pulse s_low=0.2 s_high=0.8 t_low=1ms t_high=2ms t_rise=100us t_fall=200us t_delay=1ms // Slider position moving up and down between 20%=0.2 and 80%=0.8 with <br>
+											  // 1ms delay, 100us rise time, 200us fall time, 1ms low time, and 2ms high time, which results in <br>
+											 // a period time of 3.3ms, because 1ms+2ms+100us+200us=3.3ms
+		
+		R=1000 S=SIN(0.5,0.4,2k,1m,0,0) // Slider position moving up and down in a sine wave form around 0.5 and an amplitude of 0.4 (so between 0.1 and 0.9)<br>
+									   // with a frequency of 2kHz, a time delay of 1ms, 0 damping and 0 phase.
+		R=1000 s_type=sin s_mid=0.5 s_amplitude=0.49 frequency=2kHz t_delay=0ms damping=0 phase=0 // Potentiometer with R=1000 Ohm= 1k Ohm.<br>
+				// Slider position moving up and down in a sine wave form around 0.5 and an amplitude of 0.49 (so between 0.01 and 0.99)<br>
+				// with a frequency of 2kHz, a time delay of 0ms (which is no delay), 0 damping and 0 phase.
+    </Default_Values>
+    <eeschema_symbol>
+		
+		DEFINE [ohm13] AS_WORD_RIGHT OF:R IN:[value]
+        DEFINE [ohm13] AS_NUMBER OF:[ohm13]
+        
+        DEFINE [share] AS_WORD_RIGHT OF:S IN:[value]
+  
+		// ---- direct definition of the share value ----
+        IF [share] CONTAINS ( && [share] CONTAINS ) && [share] CONTAINS , THEN
+            DEFINE [share] AS_REPLACEMENT FROM:,TO: OF:[share]
+		ENDIF
+		
+        // -- dc slider type . constant value. --  
+		IF IS_NUMBER [share] THEN
+			DEFINE [s_low] AS_NUMBER OF:[share]
+			DEFINE [s_high] [s_low]
+            DEFINE [ohm12] AS_MATH_MUL OF:[ohm13] AND:[s_low]
+            DEFINE [ohm23] AS_MATH_SUB OF:[ohm13] AND:[ohm12]
+			
+        ENDIF
+		
+		// ---- indirect definition of the share value ----
+		DEFINE s_type AS_WORD_RIGHT OF:s_type  IN:[value]
+		
+		// -- pulse slider type --
+		IF [s_type] STARTS_WITH pulse THEN 
+			DEFINE [s_low] AS_WORD_RIGHT OF:s_low IN:[value]
+			DEFINE [s_low] AS_NUMBER OF:[s_low]
+			IF ![s_low] THEN DEFINE [s_low] 0.01 ENDIF
+			
+			DEFINE [s_high] AS_WORD_RIGHT OF:s_high IN:[value]
+			DEFINE [s_high] AS_NUMBER OF:[s_high]
+			IF ![s_high] THEN DEFINE [s_high] 0.99 ENDIF
+			
+			DEFINE [t_low] AS_WORD_RIGHT OF:t_low IN:[value]
+			DEFINE [t_low] AS_NUMBER OF:[t_low]
+			
+			DEFINE [t_high] AS_WORD_RIGHT OF:t_high IN:[value]
+			DEFINE [t_high] AS_NUMBER OF:[t_high]
+			
+			DEFINE [t_rise] AS_WORD_RIGHT OF:t_rise IN:[value]
+			DEFINE [t_rise] AS_NUMBER OF:[t_rise]
+			IF ![t_fall] THEN DEFINE [t_fall] 0 ENDIF 
+			
+			DEFINE [t_fall] AS_WORD_RIGHT OF:t_fall IN:[value]
+			DEFINE [t_fall] AS_NUMBER OF:[t_fall]
+			IF ![t_fall] THEN DEFINE [t_fall] 0 ENDIF
+			
+			DEFINE [t_delay] AS_WORD_RIGHT OF:t_delay IN:[value]
+			DEFINE [t_delay] AS_NUMBER OF:[t_delay]
+			IF ![t_delay] THEN DEFINE [t_delay] 0 ENDIF
+		
+			DEFINE [share] PULSE([s_low] [s_high] [t_delay] [t_rise] [t_fall] [t_low] [t_high])
+		ENDIF
+		// -- sine wave slider type --
+		IF [s_type] STARTS_WITH sin THEN
+			DEFINE [s_mid] AS_WORD_RIGHT OF:s_mid IN:[value]
+			DEFINE [s_mid] AS_NUMBER OF:[s_mid]
+			
+			DEFINE [s_amplitude] AS_WORD_RIGHT OF:s_amplitude IN:[value]
+			DEFINE [s_amplitude] AS_NUMBER OF:[s_amplitude]
+			
+			DEFINE [s_low] AS_MATH_SUB OF:[s_mid] AND:[s_amplitude]
+			DEFINE [s_high] AS_MATH_ADD OF:[s_mid] AND:[s_amplitude]
+			
+			DEFINE [frequency] AS_WORD_RIGHT OF:frequency IN:[value]
+			DEFINE [frequency] AS_NUMBER OF:[frequency]
+			
+			DEFINE [t_delay] AS_WORD_RIGHT OF:t_delay IN:[value]
+			DEFINE [t_delay] AS_NUMBER OF:[t_delay]
+			IF ![t_delay] THEN DEFINE [t_delay] 0 ENDIF
+			
+			DEFINE [damping] AS_WORD_RIGHT OF:[damping] IN:[value]
+			DEFINE [damping] AS_NUMBER OF:[damping]
+			IF ![damping] THEN DEFINE [damping] 0 ENDIF
+			
+			DEFINE [phase] AS_WORD_RIGHT OF:[phase] IN:[value]
+			DEFINE [phase] AS_NUMBER OF:[phase]
+			IF ![phase] THEN DEFINE [phase] 0 ENDIF
+			
+			DEFINE [share] SIN([s_mid] [s_amplitude] [frequency] [t_delay] [damping] [phase])
+		ENDIF
+		
+		
+		// -- postcheck: is share defined? and with all necessary parameters? --
+		// -- check share and s_type --
+		IF ![share] THEN
+			IF ![s_type] THEN 
+				// when neither s_type nor share is defined then the s_type missing (and share can not be calculated because of that)				
+				<Dialog type="error" title="slider moving type s_type not given for potentiometer">
+					The potentiometer [name] at position ([xpos] | [ypos]) misses the necessesary parameter called s_type:
+					The slider position called s_type is missing in the given value. That value is:
+					[value]
+					
+					It should either have ...
+					... a constant share such as: R=1k S=0.3
+					...or an s_type description such as: R=1000 s_type=sin s_mid=0.5 s_amplitude=0.4 frequency=2kHz 
+					Please look at the description or the example values to find out how to enter correct values.
+				</Dialog>
+			ELSE
+				// when s_type is defined, but share is not, then the user has typed an incorrect value of s_type
+				<Dialog type="error" title="s_type parameter of potentiometer not defined correctly">
+					The potentiometer [name] at position ([xpos] | [ypos]) misses a necessesary parameter:
+					the slider position moving type, shortly called s_type is not defined correctly.
+					It should be one either pulse or sine. But the given value [s_type] is not correct.
+					
+					Please look at the description or the example values to find out how to enter correct values.
+				</Dialog>
+			ENDIF
+		ENDIF
+		// ---- actual drawing ----- 
+		DRAW
+			X ~ 1 0 150 50 D 50 50 1 1 P
+			X ~ 2 150 0 50 L 50 50 1 1 P //<-middle pin
+			X ~ 3 0 -150 50 U 50 50 1 1 P
+			S -50 -100 50 100 0 1 10 N
+			IF ![animated] THEN
+				<Line 100 0 -40 0 #888888 2 1>
+				<Polygon_3  70 20 70 -20 50 0 #888888 2 1 #000080 2 1>
+				//P 2 0 1 0 100 0 60 0 N
+				//P 4 0 1 0 45 0 90 20 90 -20 45 0 F
+			ENDIF
+		ENDDRAW
+    </eeschema_symbol>
+    <animation>
+        DEFINE [volt12] AS_MATH_SUB OF:V[pin1] AND:V[pin2]
+        DEFINE [volt13] AS_MATH_SUB OF:V[pin1] AND:V[pin3]
+        DEFINE [midy] AS_MATH_DIV OF:[volt12] AND:[volt13]
+        DEFINE [midy] AS_MATH_MUL OF:[midy] AND:200
+        DEFINE [midy] AS_MATH_SUB OF:100 AND:[midy]
+        DEFINE [midy] AS_MATH_ROUND OF:[midy]
+		DEFINE [arry2] AS_MATH_ADD OF:[midy] AND:20
+		DEFINE [arry2] AS_MATH_ROUND OF:[arry2]
+		DEFINE [arry3] AS_MATH_SUB OF:[midy] AND:20
+		DEFINE [arry3] AS_MATH_ROUND OF:[arry3]
+         
+        S 50 [midy] 100 [midy] 0 1 0 N
+        S 100 0 100 [midy]  0 1 0 N
+		P 3 0 1 0 50 [midy] 70 [arry2] 70 [arry3] F
+    </animation>
+    <Spice>	   
+		IF [ohm13] && [share] THEN
+		//model
+			.subckt potentiometer_[individual] pin1 pin2 pin3
+				IF IS_NUMBER [share] THEN
+					R12 pin1 pin2 [ohm12]
+					R23 pin2 pin3 [ohm23]
+				ELSE
+					Vctrl ctrl 0 [share] )
+					R12 pin1 pin2 R='[ohm13]*V(ctrl,0)'
+					R23 pin2 pin3 R='[ohm13]*(1-V(ctrl,0))'
+				ENDIF
+			.ends
+			//component
+			X_[individual] [pin1] [pin2] [pin3] potentiometer_[individual]
+		ELSE
+			<Dialog type="error" title="Please enter a correct value">
+				Missing ohm value or share value for the potentiometer [name] at position ([xpos] | [ypos]). 
+				[value] is not a valid number, please correct that.
+				Please look at the description or the example values to find out how to enter correct values.
+			</Dialog>
+		ENDIF
+    </Spice>
+</Component>
+
+<Component>
+    <Description>
+        A Shunt resistor. This is a resistor with two additional connections, which may be connected for the use a voltmeter or similar device for measuring.
+    </Description>
+    <eeschema_sch>
+       L Device:R_Shunt
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:R_Shunt_US
+    </eeschema_sch>
+    <Default_Values>
+        1.0 Ohm // default value for a shunt resistor.
+    </Default_Values>
+    <Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        IF ![ohm] THEN 
+        <Dialog type="error" title="Please enter a correct value">
+            Missing ohm value for the shunt resistor [name] at position ([xpos] | [ypos]). 
+            [value] is not a valid number, please correct that.
+        </Dialog>ENDIF
+        //model 
+        .subckt rshunt_[individual] 1 2 3 4
+        R23 2 3 [ohm]
+        IF [1] EQUAL_TO [2] THENELSE V12 1 2 dc 0 ENDIF
+        IF [3] EQUAL_TO [4] THENELSE V34 3 4 dc 0 ENDIF
+        .ends
+        //component
+        X_[individual] [1] [2] [3] [4] rshunt_[individual]
+    </Spice>
+	<purchase>
+		<link>
+			<url>https://www.conrad.de/de/o/messwiderstaende-0241460.html</url>
+			<title>resistors for measuring</title>
+			<detail>overview of resistors for measuring purposes at conrad electronic<detail>
+		</link>
+</purchase>
+    <eeschema_symbol>
+		IF [model] ENDS_WITH R_Shunt_US THEN
+			DRAW
+				P 2 1 1 0 0 -100 50 -100 N
+				P 2 1 1 0 0 -90 0 -100 N
+				P 2 1 1 0 0 90 0 100 N
+				P 2 1 1 0 50 100 0 100 N
+				P 5 1 1 0 0 -30 40 -45 0 -60 -40 -75 0 -90 N
+				P 5 1 1 0 0 30 40 15 0 0 -40 -15 0 -30 N
+				P 5 1 1 0 0 90 40 75 0 60 -40 45 0 30 N
+				X 1 1 0 200 100 D 50 50 1 1 P
+				X 2 2 150 100 100 L 50 50 1 1 P
+				X 3 3 150 -100 100 L 50 50 1 1 P
+				X 4 4 0 -200 100 U 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+				S -40 -100 40 100 0 1 10 N
+				P 2 0 1 0 0 -100 50 -100 N
+				P 2 0 1 0 50 100 0 100 N
+				X 1 1 0 200 100 D 50 50 1 1 P
+				X 2 2 150 100 100 L 50 50 1 1 P
+				X 3 3 150 -100 100 L 50 50 1 1 P
+				X 4 4 0 -200 100 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+
+
+<Component>
+    <Description>
+        An operation amplifier, sometimes shortly called OpAmp or OPA. 
+        
+        The Spice simulation section is the one from the  very common OpAmp type LM741.
+	    That simulation section has a restricted license as shown below.
+        Therefor the spice-section of that component type is licensed in the same way as far as applicable:
+    </Description>
+    <purchase>
+        <url>www.reichelt.de/operationsverstaerker-1-fach-1-mhz-10--36v-dip-8-lm-741-cn-p187573.html</url>
+        <title>"lm741"</title>
+        <detail>"opAmp model LM741CN at Reichelt electronic"</detail>
+    </purchase>
+    <eeschema_sch>
+	    DEFINE [datasheet] www.cdn-reichelt.de/documents/datenblatt/A200/LM741-TI.pdf
+        L Device:Opamp_Dual_Generic
+    </eeschema_sch>
+    <eeschema_symbol>
+        IF [eeschema_u_n] EQUAL_TO 3 THEN // Block Unit C=3 is VCC/GND connection block
+			<SET_CONNECTION vcc_dual_generic_opamp -100 -300> 
+			<SET_CONNECTION gnd_dual_generic_opamp -100 300>
+			
+			<Line -100 -300 0 100 #000080 2 1>
+			<Line -100 300 0 -100 #000080 2 1>
+			<Rectangle -200 -200 400 400 #000080 2 1 #000080 1 0>
+			<Text -180 0   60 #808080 0 "dual_generic_opamp">
+			<Text -180 -160 60 #FF0000 0 "VCC">
+			<Text -180 160 60 #0000FF 0 "GND">
+			
+		ELSE //Block Units A=1 and B=2 are "normal" OpAmp-Blocks with 3 pins, that is without VCC/GND, so these are imported from VCC/GND connection block:
+		
+            // positive power supply:
+            <.PortSym GET_CONNECTION vcc_dual_generic_opamp>
+		    // negative power supply:
+            <.PortSym GET_CONNECTION gnd_dual_generic_opamp>
+            
+            // non-inverting input:
+            <.PortSym -300 -100 [pos] 0> 
+            <Line -300 -100 100 0 #000080 2 1>
+            <Line -180 -100 60 0 #800000 2 1>
+            <Line -150 -130 0 60 #800000 2 1>
+            // inverting input:
+            <.PortSym -300 100 [neg] 0> 
+            <Line -300 100 100 0 #000080 2 1>
+            <Line -180 100 60 0 #0000FF 2 1>
+            //output:
+            <.PortSym 300 0 [out] 180>
+            <Line 300 0 -100 0 #000080 2 1> 
+            //other drawing:
+            <Line -200 -200 0 400 #000080 2 1>
+            <Line -200 200 400 -200 #000080 2 1>
+            <Line 200 0 -400 -200 #000080 2 1>
+        ENDIF
+  	</eeschema_symbol>
+    <Spice>
+         *//////////////////////////////////////////////////////////////////////
+		* (C) National Semiconductor, Inc.
+		* Models developed and under copyright by:
+		* National Semiconductor, Inc.
+		
+		*/////////////////////////////////////////////////////////////////////
+		* Legal Notice: This material is intended for free software support.
+		* The file may be copied, and distributed; however, reselling the
+		* material is illegal
+		
+		*////////////////////////////////////////////////////////////////////
+		* For ordering or technical information on these models, contact:
+		* National Semiconductor's Customer Response Center
+		* 7:00 A.M.--7:00 P.M. U.S. Central Time
+		* (800) 272-9959
+		* For Applications support, contact the Internet address:
+		* amps-apps@galaxy.nsc.com
+    IF [eeschema_u_n] EQUAL_TO 3 THENELSE
+        *LM741 OP-AMP MACRO-MODEL
+		*             connections: non-inverting input
+		*             | inverting input
+		*             | | positive power supply
+		*             | | |  negative power supply
+		*             | | |  |  output
+		*             | | |  |  |
+		*             | | |  |  |
+		.SUBCKT LM741 1 2 99 50 28
+		*
+		*Features:
+		*Improved performance over industry standards
+		*Plug-in replacement for LM709,LM201,MC1439,748
+		*Input and output overload protection
+		*
+		****************INPUT STAGE**************
+		*
+		IOS 2 1 20N
+		*^Input offset current
+		R1 1 3 250K
+		R2 3 2 250K
+		I1 4 50 100U
+		R3 5 99 517
+		R4 6 99 517
+		Q1 5 2 4 QX
+		Q2 6 7 4 QX
+		*Fp2=2.55 MHz
+		C4 5 6 60.3614P
+		*
+		***********COMMON MODE EFFECT***********
+		*
+		I2 99 50 1.6MA
+		*^Quiescent supply current
+		EOS 7 1 POLY(1) 16 49 1E-3 1
+		*Input offset voltage.^
+		R8 99 49 40K
+		R9 49 50 40K
+		*
+		*********OUTPUT VOLTAGE LIMITING********
+		V2 99 8 1.63
+		D1 9 8 DX
+		D2 10 9 DX
+		V3 10 50 1.63
+		*
+		**************SECOND STAGE**************
+		*
+		EH 99 98 99 49 1
+		G1 98 9 5 6 2.1E-3
+		*Fp1=5 Hz
+		R5 98 9 95.493MEG
+		C3 98 9 333.33P
+		*
+		***************POLE STAGE***************
+		*
+		*Fp=30 MHz
+		G3 98 15 9 49 1E-6
+		R12 98 15 1MEG
+		C5 98 15 5.3052E-15
+		*
+		*********COMMON-MODE ZERO STAGE*********
+		*
+		*Fpcm=300 Hz
+		G4 98 16 3 49 3.1623E-8
+		L2 98 17 530.5M
+		R13 17 16 1K
+		*
+		**************OUTPUT STAGE**************
+		*
+		F6 50 99 POLY(1) V6 450U 1
+		E1 99 23 99 15 1
+		R16 24 23 25
+		D5 26 24 DX
+		V6 26 22 0.65V
+		R17 23 25 25
+		D6 25 27 DX
+		V7 22 27 0.65V
+		V5 22 21 0.18V
+		D4 21 15 DX
+		V4 20 22 0.18V
+		D3 15 20 DX
+		L3 22 28 100P
+		RL3 22 28 100K
+		*
+		***************MODELS USED**************
+		*
+		.MODEL DX D(IS=1E-15)
+		.MODEL QX NPN(BF=625)
+		*
+		.ENDS 
+		***************COMPONENT**************
+		X_[name] [pos] [neg] vcc_dual_generic_opamp gnd_dual_generic_opamp [out] LM741	 
+		ENDIF
+    </Spice>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fstmicroelectronics-ua741cd-linear-ic-operationsverstaerker-mehrzweck-soic-8-155643.html</url>
+			<title>741 type OpAmp</title>
+			<detail>ua741 standard operation amplifier at conrad electronic<detail>
+		</link>
+    </purchase>
+</Component>
+
+
+<Component>
+    <Description>
+        An operation amplifier, sometimes shortly called OpAmp. 
+        
+        The Spice section is the one from the LM741, which has a restricted license as shown below. Therefor the spice-section is licensed in the same way as far as applicable:
+    </Description>
+    <purchase>
+        <url>www.reichelt.de/operationsverstaerker-1-fach-1-mhz-10--36v-dip-8-lm-741-cn-p187573.html</url>
+        <title>"lm741"</title>
+        <detail>"opAmp model LM741CN at Reichelt electronic"</detail>
+    </purchase>
+    <eeschema_sch>
+        L Device:Opamp_Quad_Generic
+    </eeschema_sch>
+    <eeschema_symbol>
+    
+        IF [eeschema_u_n] EQUAL_TO 5 THEN // Block Unit E=5 is VCC/GND connection block
+			<SET_CONNECTION vcc_quad_generic_opamp -100 -300> 
+			<SET_CONNECTION gnd_quad_generic_opamp -100 300>
+			
+			<.PortSym -100 -300 [src_pos] 0>
+			<.PortSym -100 300  [src_neg] 0>
+			<Line -100 -300 0 100 #000080 2 1>
+			<Line -100 300 0 -100 #000080 2 1>
+			<Rectangle -200 -200 400 400 #000080 2 1 #000080 1 0>
+			<Text -180 0   60 #808080 0 "quad_generic_opamp">
+			<Text -180 -160 60 #FF0000 0 "VCC">
+			<Text -180 160 60 #0000FF 0 "GND">
+			
+		ELSE //Block Units A=1 and B=2 are "normal" OpAmp-Blocks with 3 pins, that is without VCC/GND, so these are imported from VCC/GND connection block:
+		
+            // positive power supply:
+            <.PortSym GET_CONNECTION vcc_quad_generic_opamp>
+		    // negative power supply:
+            <.PortSym GET_CONNECTION gnd_quad_generic_opamp>
+            
+            // non-inverting input:
+            <.PortSym -300 -100 [pos] 0> 
+            <Line -300 -100 100 0 #000080 2 1>
+            <Line -180 -100 60 0 #800000 2 1>
+            <Line -150 -130 0 60 #800000 2 1>
+            // inverting input:
+            <.PortSym -300 100 [neg] 0> 
+            <Line -300 100 100 0 #000080 2 1>
+            <Line -180 100 60 0 #0000FF 2 1>
+            //output:
+            <.PortSym 300 0 [out] 180>
+            <Line 300 0 -100 0 #000080 2 1> 
+            //other drawing:
+            <Line -200 -200 0 400 #000080 2 1>
+            <Line -200 200 400 -200 #000080 2 1>
+            <Line 200 0 -400 -200 #000080 2 1>
+        ENDIF
+  	</eeschema_symbol>
+    <Spice>
+        *//////////////////////////////////////////////////////////////////////
+		* (C) National Semiconductor, Inc.
+		* Models developed and under copyright by:
+		* National Semiconductor, Inc.
+		
+		*/////////////////////////////////////////////////////////////////////
+		* Legal Notice: This material is intended for free software support.
+		* The file may be copied, and distributed; however, reselling the
+		* material is illegal
+		
+		*////////////////////////////////////////////////////////////////////
+		* For ordering or technical information on these models, contact:
+		* National Semiconductor's Customer Response Center
+		* 7:00 A.M.--7:00 P.M. U.S. Central Time
+		* (800) 272-9959
+		* For Applications support, contact the Internet address:
+		* amps-apps@galaxy.nsc.com
+        IF [eeschema_u_n] EQUAL_TO 5 THEN
+            R_[name]_SRC [src_pos] [src_neg] 1E12
+        ELSE
+            *LM741 OP-AMP MACRO-MODEL
+            *             connections: non-inverting input
+            *             | inverting input
+            *             | | positive power supply
+            *             | | |  negative power supply
+            *             | | |  |  output
+            *             | | |  |  |
+            *             | | |  |  |
+            .SUBCKT LM741 1 2 99 50 28
+            *
+            *Features:
+            *Improved performance over industry standards
+            *Plug-in replacement for LM709,LM201,MC1439,748
+            *Input and output overload protection
+            *
+            ****************INPUT STAGE**************
+            *
+            IOS 2 1 20N
+            *^Input offset current
+            R1 1 3 250K
+            R2 3 2 250K
+            I1 4 50 100U
+            R3 5 99 517
+            R4 6 99 517
+            Q1 5 2 4 QX
+            Q2 6 7 4 QX
+            *Fp2=2.55 MHz
+            C4 5 6 60.3614P
+            *
+            ***********COMMON MODE EFFECT***********
+            *
+            I2 99 50 1.6MA
+            *^Quiescent supply current
+            EOS 7 1 POLY(1) 16 49 1E-3 1
+            *Input offset voltage.^
+            R8 99 49 40K
+            R9 49 50 40K
+            *
+            *********OUTPUT VOLTAGE LIMITING********
+            V2 99 8 1.63
+            D1 9 8 DX
+            D2 10 9 DX
+            V3 10 50 1.63
+            *
+            **************SECOND STAGE**************
+            *
+            EH 99 98 99 49 1
+            G1 98 9 5 6 2.1E-3
+            *Fp1=5 Hz
+            R5 98 9 95.493MEG
+            C3 98 9 333.33P
+            *
+            ***************POLE STAGE***************
+            *
+            *Fp=30 MHz
+            G3 98 15 9 49 1E-6
+            R12 98 15 1MEG
+            C5 98 15 5.3052E-15
+            *
+            *********COMMON-MODE ZERO STAGE*********
+            *
+            *Fpcm=300 Hz
+            G4 98 16 3 49 3.1623E-8
+            L2 98 17 530.5M
+            R13 17 16 1K
+            *
+            **************OUTPUT STAGE**************
+            *
+            F6 50 99 POLY(1) V6 450U 1
+            E1 99 23 99 15 1
+            R16 24 23 25
+            D5 26 24 DX
+            V6 26 22 0.65V
+            R17 23 25 25
+            D6 25 27 DX
+            V7 22 27 0.65V
+            V5 22 21 0.18V
+            D4 21 15 DX
+            V4 20 22 0.18V
+            D3 15 20 DX
+            L3 22 28 100P
+            RL3 22 28 100K
+            *
+            ***************MODELS USED**************
+            *
+            .MODEL DX D(IS=1E-15)
+            .MODEL QX NPN(BF=625)
+            *
+            .ENDS 
+            ***************COMPONENT**************
+            X_[name] [pos] [neg] vcc_quad_generic_opamp gnd_quad_generic_opamp [out] LM741	 
+        ENDIF
+    </Spice>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fstmicroelectronics-ua741cd-linear-ic-operationsverstaerker-mehrzweck-soic-8-155643.html</url>
+			<title>741 type OpAmp</title>
+			<detail>ua741 standard operation amplifier at conrad electronic<detail>
+		</link>
+    </purchase>
+</Component>
+
+<Component>
+    <Description>
+        A MOSFET with N-Channel, shortly called "NMOS".
+        Default parameters, as in ngspice manual, chapter 11 "MOSFETs"
+    </Description>
+   	 <link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fmosfets-5104021.html%3Ftfo_ATT_LOV_MODEL_TRANSISTORS%3DN-Kanal</url>
+			<title>N-channel mosfets</title>
+			<detail>overview of n-channel mosfets at conrad electronic<detail>
+		</link>
+    <eeschema_sch>
+        L Device:Q_NMOS_DGS
+        ALIAS Device:Q_NMOS_DSG Device:Q_NMOS_GDS Device:Q_NMOS_GSD Device:Q_DUAL_NMOS_G1S2G2D2S1D1 Device:Q_DUAL_NMOS_S1G1D2S2G2D1
+    </eeschema_sch>
+    <eeschema_symbol>
+        DRAW
+            C 65 0 111 0 1 10 N
+            C 100 -70 11 0 1 0 F
+            C 100 70 11 0 1 0 F
+            P 2 0 1 0 2 0 10 0 N
+            P 2 0 1 0 30 -70 100 -70 N
+            P 2 0 1 10 30 -50 30 -90 N
+            P 2 0 1 0 30 0 100 0 N
+            P 2 0 1 10 30 20 30 -20 N
+            P 2 0 1 0 30 70 100 70 N
+            P 2 0 1 10 30 90 30 50 N
+            P 2 0 1 0 100 -70 100 -100 N
+            P 2 0 1 0 100 -70 100 0 N
+            P 2 0 1 0 100 100 100 70 N
+            P 3 0 1 10 10 75 10 -75 10 -75 N
+            P 4 0 1 0 40 0 80 15 80 -15 40 0 F
+            P 4 0 1 0 100 -70 130 -70 130 70 100 70 N
+            P 4 0 1 0 110 20 115 15 145 15 150 10 N
+            P 4 0 1 0 130 15 115 -10 145 -10 130 15 N
+            X D 1 100 200 100 D 50 50 1 1 P
+            X G 2 -200 0 200 R 50 50 1 1 I
+            X S 3 100 -200 100 U 50 50 1 1 P
+        ENDDRAW
+    </eeschema_symbol>
+    <Spice>
+        .model mdl_MOSN NMOS level=8 version=3.3.0
+        M_[name] [D] [G] [S] [S] mdl_MOSN
+    </Spice>
+</Component>
+
+<Component>
+    <Description>
+        A MOSFET with P-Channel, shortly called "PMOS"
+        Equivalent parameter as for NMOS in ngspice manual, chapter 11 "MOSFETs"
+    </Description>
+     <purchase>
+	 <link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fmosfets-5104021.html%3Ftfo_ATT_LOV_MODEL_TRANSISTORS%3DP-Kanal</url>
+			<title>P-channel mosfets</title>
+			<detail>overview of p-channel mosfets at conrad electronic<detail>
+		</link>
+    </purchase>
+    <eeschema_sch>
+        L Device:Q_PMOS_DGS
+        ALIAS Device:Q_PMOS_DSG Device:Q_PMOS_GDS Device:Q_PMOS_GSD Device:Q_PMOS_SDG Device:Q_PMOS_SGD Device:Q_DUAL_PMOS_G1S2G2D2S1D1 Device:Q_DUAL_PMOS_S1G1D2S2G2D1
+    </eeschema_sch>
+    <Spice>
+        .model MOSP PMOS level=8 version=3.3.0
+        M_[name] [D] [G] [S] [S] MOSP
+    </Spice>
+    <eeschema_symbol>
+		DRAW
+			C 65 0 111 0 1 10 N
+			C 100 -70 11 0 1 0 F
+			C 100 70 11 0 1 0 F
+			P 2 0 1 0 2 0 10 0 N
+			P 2 0 1 0 30 -70 100 -70 N
+			P 2 0 1 10 30 -50 30 -90 N
+			P 2 0 1 0 30 0 100 0 N
+			P 2 0 1 10 30 20 30 -20 N
+			P 2 0 1 0 30 70 100 70 N
+			P 2 0 1 10 30 90 30 50 N
+			P 2 0 1 0 100 -70 100 -100 N
+			P 2 0 1 0 100 -70 100 0 N
+			P 2 0 1 0 100 100 100 70 N
+			P 3 0 1 10 10 75 10 -75 10 -75 N
+			P 4 0 1 0 90 0 50 -15 50 15 90 0 F
+			P 4 0 1 0 100 -70 130 -70 130 70 100 70 N
+			P 4 0 1 0 110 -20 115 -15 145 -15 150 -10 N
+			P 4 0 1 0 130 -15 115 10 145 10 130 -15 N
+			X D 1 100 200 100 D 50 50 1 1 P
+			X G 2 -200 0 200 R 50 50 1 1 I
+			X S 3 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+    </eeschema_symbol>
+</Component>
+    
+<Component>
+    <Description>
+        A Bipolar Transistor, NPN type
+    </Description>
+    <purchase>
+	<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Ff%2Fnpn-transistor-1724865.html</url>
+			<title>NPN-transistors</title>
+			<detail>overview of npn type bipolar transistors at conrad electronic<detail>
+		</link>
+    </purchase>
+    <eeschema_sch>
+        L Device:Q_NPN_BCE
+        ALIAS Device:Q_NPN_BEC Device:Q_NPN_CBE Device:Q_NPN_CEB Device:Q_NPN_EBC Device:Q_NPN_ECB Device:Q_DUAL_NPN_NPN_E1B1C2E2B2C1
+    </eeschema_sch>
+    <Spice>
+     .model BJT_NPN NPN
+     Q_NPN_[name] [C] [B] [E] BJT_NPN
+    </Spice>
+    <eeschema_symbol>
+		DRAW
+		C 50 0 111 0 1 10 N
+		P 2 0 1 0 25 25 100 100 N
+		P 3 0 1 0 25 -25 100 -100 100 -100 N
+		P 3 0 1 20 25 75 25 -75 25 -75 N
+		P 5 0 1 0 50 -70 70 -50 90 -90 50 -70 50 -70 F
+		X B 1 -200 0 225 R 50 50 1 1 I
+		X C 2 100 200 100 D 50 50 1 1 P
+		X E 3 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A Bipolar Transistor, PNP type
+    </Description>
+    <purchase>
+	<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Ff%2Fpnp-transistor-1724874.html</url>
+			<title>PNP-transistors</title>
+			<detail>overview of pnp type bipolar transistors at conrad electronic<detail>
+		</link>
+    </purchase>
+    <eeschema_sch>
+        L Device:Q_PNP_BCE
+        ALIAS Device:Q_PNP_BEC Device:Q_PNP_CBE Device:Q_PNP_CEB Device:Q_PNP_EBC Device:Q_PNP_ECB Device:Q_DUAL_PNP_PNP_C1B1B2C2E2E1 Device:Q_DUAL_PNP_PNP_E1B1C2E2B2C1
+    </eeschema_sch>
+    <Spice>
+        .model BJT_PNP PNP
+        Q_PNP_[name] [C] [B] [E] BJT_PNP
+    </Spice>
+    <eeschema_symbol>
+		DRAW
+		C 50 0 111 0 1 10 N
+		P 2 0 1 0 25 25 100 100 N
+		P 3 0 1 0 25 -25 100 -100 100 -100 N
+		P 3 0 1 20 25 75 25 -75 25 -75 N
+		P 5 0 1 0 90 -70 70 -90 50 -50 90 -70 90 -70 F
+		X B 1 -200 0 225 R 50 50 1 1 I
+		X C 2 100 200 100 D 50 50 1 1 P
+		X E 3 100 -200 100 U 50 50 1 1 P
+		ENDDRAW
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        IF[language]EQUAL_TO"de"THEN Eine Sicherung. Nicht ruecksetzbar.
+        Der gegebene Wert ist der Wert des Stromes in Ampere, bei welcher die Sicherung ausloest.        
+        Idealisiertes modell is unabhaengig von der Temperatur und hat keine Zeitverzoegerung (ausser der Zeitverzoegerung durch die Berechnung, welche i.d.R. sehr klein ist).
+        ELSE A Fuse. Not resettable.
+        The value given is the current value in Ampere, at which this fuse interrupts.
+        Idealized model is independent of temperature and has no time delay (except the time step of calculation, which usually is very small).
+        ENDIF
+    </Description>
+    <purchase>
+        <link>
+            <url>www.conrad.com/p/mta-blade-fuse-839701</url>
+            <title>IF[language]EQUAL_TO"de"THEN"Flachsicherung"ELSE"Blade fuse"ENDIF</title>
+            <detail>IF[language]EQUAL_TO"de"THEN"Flachsicherung mit max 7.5A bei Conrad Electronic. Andere Ampere-Werte auswaehlbar."ELSE"Blade fuse with max 7.5A at conrad electronic. Other Ampere values can be selected."</detail>
+        </link>
+        <link>
+            <url>www.conrad.com/c/fuses-c17392</url>
+            <title>IF[language]EQUAL_TO"de"THEN"Uebersicht"ELSE"Overview"ENDIF</title>
+            <detail>IF[language]EQUAL_TO"de"THEN"Uebersicht Sicherungen und Zubehoer bei Conrad Electronic"ELSE"Overview of Fuses at Conrad Electronic"ENDIF</detail>
+        </link>
+    </purchase>
+    <eeschema_sch>
+        L Device:Fuse
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:Fuse_Small
+    </eeschema_sch>
+        <purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fsicherungen-17392.html</url>
+			<title>Overview of fuses</title>
+			<detail>Overview of fuses at conrad electronic<detail>
+		</link>
+      </purchase>
+		
+    <Spice>
+        DEFINE [max_amp] AS_NUMBER OF:[value]
+      IF[max_amp]THENELSE
+        DEFINE [max_amp]    AS_WORD_RIGHT OF:imax IN:[value]
+        DEFINE [time_irupt] AS_WORD_RIGHT OF:time IN:[value]
+        DEFINE [i2t]        AS_WORD_RIGHT OF:i2t  IN:[value]
+        IF [max_amp]    THEN DEFINE [max_amp]    AS_NUMBER OF:[max_amp]    ENDIF
+        IF [time_irupt] THEN DEFINE [time_irupt] AS_NUMBER OF:[time_irupt] ENDIF
+        IF [i2t]        THEN DEFINE [i2t]        AS_NUMBER OF:[i2t]        ENDIF
+      ENDIF
+        IF [max_amp] THEN
+            IF [max_amp] HIGHER_THAN 0 THENELSE
+                <Dialog type="warning" title="Please enter a correct value for [name]">The value of fuse [name] at position  ([xpos] | [ypos]) should be higher than 0, but is [max_amp]</Dialog>
+            ENDIF
+        ELSE
+            <Dialog type="error" title="Please enter a correct value for [name]"> Missing threshold current value for fuse [name] at position ([xpos] | [ypos]): Please give that fuse a numeric value. That value will be the current in Ampere, at which the fuse interrupts.
+            
+            Alterntively, you can define the maximal current value in ampere (imax) and either the time delay to interrupt(time) or the i2t value (i2t), separated by spaces, for example:
+            imax=5 time=2e-3 
+            (Here the maximal current is 5A and the maximal overcurrent time is 2x10⁻³s=2ms. 
+            That overtime does not reset, but "heals" gradually in the times where there is no overcurrent)
+            other example:
+            imax=2.3 i2t=0.2
+            (Here the maximal current is 2.3A and the i2t=0.2A²s, but be aware that the use of i2t is nonlinear and is known to cause exceptions in some circuit simulations in ngspice.)
+            </Dialog> 
+        ENDIF
+      //Model:
+      .subckt fuse_[name] pa pb 
+      .param tau=0.63
+      .model si1 sw ron=1E9 roff=0.5 vt=tau //ron=resistance AFTER the fuse interrupts in Ohm. roff=resistance BEFORE the fuse interrupts in Ohm
+      //switch to turn off current
+      s1 pa pb moff 0 si1 
+      
+      IF [i2t] IS_NUMBER && [i2t] HIGHER_THAN 0 THEN
+        R_time mpre moff 1
+        C_time moff 0 [i2t]
+        //                |<-- hold -->|         |<------- set ------->|  
+        BVS_fuse mpre 0 V=V(moff) >= tau ? 0.64 : abs(I(s1)) > [max_amp] ? (abs(I(s1))-[max_amp])**2 : 0
+        
+      ELSEIF [time_irupt] IS_NUMBER && [time_irupt] HIGHER_THAN 0 THEN
+        R_time mpre moff 1
+        C_time moff 0 [time_irupt]
+        //                |<------- set ------->| || |<-- hold -->|
+        BVS_fuse mpre 0 V=(abs(I(s1)) > [max_amp] || V(moff) > tau) ? 1 : 0
+      ELSE
+        //                |<------- set ------->| || |<-- hold -->|
+        BVS_fuse moff 0 V=(abs(I(s1)) > [max_amp] || V(moff) > tau) ? 1 : 0
+      ENDIF ENDIF
+      .ends
+      //Component   
+      X_[name] [pin1] [pin2] fuse_[name]
+    </Spice>
+    <eeschema_symbol>
+		IF [model] ENDS_WITH Small THEN
+			DRAW
+			S -50 20 50 -20 0 1 0 N
+			P 2 0 1 0 -50 0 50 0 N
+			X ~ 1 -100 0 50 R 50 50 1 1 P
+			X ~ 2 100 0 50 L 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+			S -30 -100 30 100 0 1 10 N
+			P 2 0 1 0 0 100 0 -100 N
+			X ~ 1 0 150 50 D 50 50 1 1 P
+			X ~ 2 0 -150 50 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        (EN)A Fuse. Resettable.
+        The value given is the current value in Ampere, at which this fuse interrupts.
+        Resets itself, when the voltage drop over this fuse is smaller than or equal to v_reset.
+        Idealized model is independent of temperature and has no time delay (except the time step of calculation, which usually is very small).
+    
+        (DE)Eine Sicherung. Ruecksetzbar.
+        Der gegebene Wert ist der Wert des Stromes in Ampere, bei welcher die Sicherung ausloest.        
+        Setzt sich zurueck, wenn der Spannungsabfall ueber dieser Sicherung geringer oder gleich v_reset ist.
+        Idealisiertes modell ist unabhaengig von der Temperatur und hat keine Zeitverzoegerung (ausser der Zeitverzoegerung durch die Berechnung, welche i.d.R. sehr klein ist).
+    </Description>
+    <eeschema_sch>
+        L Device:Polyfuse
+    </eeschema_sch>
+    <eeschema_sch>
+       L Device:Polyfuse_Small  
+    </eeschema_sch>
+     <purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fsicherungen-17392.html</url>
+			<title>Overview of fuses</title>
+			<detail>Overview of fuses at conrad electronic<detail>
+		</link>
+      </purchase>
+      <Default_Values>
+          imax=8.5A vreset=3250mV Ron=1E9 Ohm Roff=0.5Ohm
+      </Default_Values>
+    <Spice>
+      IF IS_NUMBER [value] THEN
+        DEFINE [max_amp] [value]
+        
+        DEFINE [v_reset] 0.1
+        DEFINE [Ron] 1M  // = 1E9
+        DEFINE [Roff] 0.1
+      ELSE
+        DEFINE [max_amp] AS_WORD_RIGHT OF:imax=IN:[value]
+        DEFINE [max_amp] AS_NUMBER OF:[max_amp]
+        
+        DEFINE [v_reset] AS_WORD_RIGHT OF:vreset=IN:[value]
+        DEFINE [v_reset] AS_NUMBER OF:[v_reset]
+        
+        DEFINE [Ron] AS_WORD_RIGHT OF:Ron IN:[value]
+        DEFINE [Ron] AS_NUMBER OF:[Ron]
+        
+        DEFINE [Roff] AS_WORD_RIGHT OF:Roff IN:[value]
+        DEFINE [Roff] AS_NUMBER OF:[Roff]
+      ENDIF
+      IF [max_amp] && [v_reset] && [Ron] && [Roff] THENELSE
+        <Dialog type="error" title="Please enter a correct value"> 
+            Missing interrupt current value for polyfuse [name] at position ([xpos] | [ypos]):
+            you can either just enter a number in ampere, for example:
+            8.5
+            (Here the interrupt current is 8.5A, and the reset voltage has the default value of 0.1V) 
+            
+            or you can write the maximal ampere and the reset voltage, for example:
+            imax=16 vreset=3250m Ron=1E9 Roff=0.5
+            (Here the interrupt current is 16A, and the reset voltage is 3250mV=3.250V)
+        </Dialog>
+      ENDIF
+      
+      //Model:
+      .subckt fuse_[name] pa pb 
+      .param v_reset=IF[v_reset]THEN[v_reset]ELSE0.1ENDIF //fuse resets when voltage drop over this component in V <= v_reset
+      .model si1 sw vt=0.5 ron=[Ron] roff=[Roff]  //ron=resistance AFTER the fuse interrupts in Ohm. roff=resistance BEFORE the fuse interrupts in Ohm
+      
+      //switch to turn off current
+      s1 pa pb m1 0 si1 
+      //                  |<---- set --------->| || (|<-hold-->| && |<------not reset------->|)
+      BVS_polyfuse m1 0 V=abs(I(s1)) > [max_amp] || (V(m1) > 0.5 && abs(V(pa)-V(pb)) > v_reset) ? 1 : 0
+      .ends
+      //Component   
+      X_[name] [pin1] [pin2] fuse_[name]
+    </Spice>
+    <eeschema_symbol>
+		IF [model] ENDS_WITH Small THEN
+			DRAW
+			S -20 50 20 -50 0 1 0 N
+			P 2 0 1 0 0 100 0 -100 N
+			P 4 0 1 0 -40 50 -40 30 40 -30 40 -50 N
+			X ~ 1 0 100 25 D 50 50 1 1 P
+			X ~ 2 0 -100 25 U 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+			S -30 100 30 -100 0 1 10 N
+			P 2 0 1 0 0 100 0 -100 N
+			P 4 0 1 0 -60 100 -60 60 60 -60 60 -100 N
+			X ~ 1 0 150 50 D 50 50 1 1 P
+			X ~ 2 0 -150 50 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+<Component>
+    <Description>
+        An antenna with one pin. If a numeric value is given, then the maximal amplitude of the antennas signal is that value in volts. If no value is given, then the maximal amplitude is 1 Volt.
+        The Voltage of this one-pin-antenna is created from ground node to the one pin. So this antenna contains a finite "isolation resistance" to ground.
+        
+        This model consists of four voltage sources, which generate a voltage which looks like noise in a transient analysis, and a resistor to simulate a finite resistance to ground. Might match well to some antennas in some surrounding circuits, but there will definitely be some other cases where this model does not fit well. A model of white noise would fit better to a real antenna, however we were not able to create a working white noise model in the spice section. The user can get something that looks similar to white noise in a transient analysis by setting the parameter "base_time" to a value similar to the timestep of the simulation (which is already set by default).
+    </Description>
+    <eeschema_sch>
+        L Device:Antenna
+    </eeschema_sch>
+    <Default_Values>
+        100mV // amplitude of the antenna signal
+    </Default_Values>
+    <Spice>
+     .subckt device_antenna_1pin_[name] pin
+     //independen parameters: relatively easy to change them correctly
+     .param base_time=[timestep] // for the frequencies of the noise
+     .param isolation_ohms=1E6
+     
+     .param amplitude=IF[value] IS_NUMBER THEN[value]ELSE1ENDIF //maximal voltage amplitude, in positive and negative direction
+     
+     //dependent parameters: change these only if you know what you do:
+     .param frq1=1/base_time
+     .param frq2=sqrt(3)/base_time
+     .param frq3=sqrt(5)/base_time
+     .param frq4=sqrt(7)/base_time
+     .param vi=amplitude/4
+     R_isolation 0 1 isolation_ohms
+     V1 1 2   sin(0 vi frq1)
+     V2 2 3   sin(0 vi frq2)
+     V3 3 4   sin(0 vi frq3)
+     V4 4 pin sin(0 vi frq4)
+    .ends
+    X_[name] [A] device_antenna_1pin_[name]
+    </Spice>
+    <eeschema_symbol>
+    (symbol "Antenna_0_1"
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0 -3.81)
+        )
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.27 2.54)
+          (xy 0 -2.54)
+          (xy -1.27 2.54)
+        )
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+    )
+(symbol "Antenna_1_1"
+      (pin input line (at 0 -5.08 90) (length 2.54)
+        (name "A" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+    )
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        An antenna with one pin and a shield. If a numeric value is given, then the maximal amplitude of the antennas signal is that value in volts. If no value is given, then the maximal amplitude is 1 Volt.
+        The Voltage of this pin-antenna is created from ground node to the pin [A]. So this antenna contains a finite "isolation resistance" to ground.
+        
+        The shield's electrical model consists of a resistance and a capacitance.
+        The antenna's model consists of four voltage sources, which generate a noise, and a resistor to simulate a finite resistance to ground. Might match well to some antennas in some surrounding circuits, but there will definitely be some other cases where this model does not fit well. A model of white noise would fit better to a real antenna, however we were not able to create a working white noise model in the spice section. The user can get something roughly similar to white noise by setting the parameter "base_time" to a value similar to the timestep of the simulation (which is already set by default).
+        
+        The Antenna might also be printed on a PCB, a chip. Here the chip is seen as a shield for that antenna. Therefor the model Device:Antenna_Chip is included here too.
+    </Description>
+    <eeschema_sch>
+        L Device:Antenna_Shield
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Antenna_Chip
+    </eeschema_sch>
+    <Default_Values>
+        100mV 	
+    </Default_Values>
+	<eeschema_symbol>
+		IF [model] ENDS_WITH Chip THEN
+			DRAW
+			P 2 0 1 10 -100 0 -100 -25 N
+			P 2 0 1 10 -100 0 -50 0 N
+			P 2 0 1 10 50 0 100 0 N
+			P 2 0 1 10 50 50 50 -50 N
+			P 2 0 1 0 100 -25 100 0 N
+			P 2 0 1 10 100 275 100 -75 N
+			P 3 0 1 10 -50 50 -50 -50 -50 0 N
+			P 3 0 1 10 150 275 100 75 50 275 N
+			P 5 0 1 10 -25 50 25 50 25 -50 -25 -50 -25 50 N
+			X FEED 1 -100 -100 100 U 50 50 1 1 I
+			X PCB_Trace 2 100 -100 100 U 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+			A -1 -73 32 -882 1242 0 1 0 N 0 -105 -20 -45
+			A 1 -73 32 -918 558 0 1 0 N 0 -105 20 -45
+			C 30 -75 7 0 1 0 F
+			P 2 0 1 0 0 -100 0 0 N
+			P 2 0 1 10 0 200 0 -150 N
+			P 2 0 1 0 30 -75 100 -75 N
+			P 2 0 1 0 100 -100 100 -75 N
+			P 3 0 1 10 50 200 0 0 -50 200 N
+			X A 1 0 -200 100 U 50 50 1 1 I
+			X Shield 2 100 -200 100 U 50 50 1 1 I
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+	
+    <Spice>
+     .subckt device_antenna_shield_[individual] pin shield
+     //independen parameters: relatively easy to change them correctly
+     .param base_time=[timestep] // for the frequencies of the noise
+     .param isolation_ohms=1E9 //once between ground and antenna, once between antenna and shield
+     .param capacitance_shield=1u
+     .param amplitude=IF[value] IS_NUMBER THEN[value]ELSE1ENDIF //maximal voltage amplitude, in positive and negative direction
+     
+     //dependent parameters: change these only if you know what you do:
+     .param frq1=1/base_time
+     .param frq2=sqrt(3)/base_time
+     .param frq3=sqrt(5)/base_time
+     .param frq4=sqrt(7)/base_time
+     .param vi=amplitude/4
+     //model of antenna:
+     R_isolation 0 1 isolation_ohms
+     V1 1 2   sin(0 vi frq1)
+     V2 2 3   sin(0 vi frq2)
+     V3 3 4   sin(0 vi frq3)
+     V4 4 pin sin(0 vi frq4)
+     //model of shield:
+     R_shield pin shield 1E6
+     C_shield pin shield 1u
+     .ends
+    X_[individual] IF[A] && [Shield]THEN [A] [Shield] ELSEIF [PCB_Trace] && [FEED]THEN [PCB_Trace] [FEED] ELSE<Dialog type="error">wrong pinnames for antenna model [model]. Can not simulate that</Dialog>ENDIFENDIF device_antenna_shield_[individual]
+    </Spice>
+</Component>
+
+<Component>
+    <Description>
+        An antenna with two connections. If a numeric value is given, then the maximal amplitude of the antenna's signal is that value in volts. If no value is given, then the maximal amplitude is 1 Volt.
+        The Voltage of this two-pins-antenna is created from one pin to the other pin. No internal connection to ground.
+        
+        This model consists of four voltage sources, which generate a noise between the pins. Might match well to some antennas in some surrounding circuits, but there will definitely be some other cases where this model does not fit well. A model of white noise would fit better to a real antenna, however we were not able to create a working white noise model in the spice section. The user can get something roughly similar to white noise by setting the parameter "base_time" to a value similar to the timestep of the simulation (which is already set by default).
+    </Description>
+    <eeschema_sch>
+        L Device:Antenna_Dipole
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Antenna_Loop
+    </eeschema_sch>
+    <Default_Values>
+        100mV // amplitude of the antenna signal
+    </Default_Values>
+    <Spice>
+     .subckt device_antenna_2pin_[name] pin1 pin2
+     //independen parameters: relatively easy to change them correctly
+     
+     .param base_time=[timestep] //for the frequencies of the noise
+     //maximal voltage amplitude that this antenna can deliver in positive or negative direction.
+     .param amplitude=IF[value] IS_NUMBER THEN[value]ELSE1ENDIF
+     
+     //dependent parameters: change these only if you know what you do:
+     .param frq1=1/base_time
+     .param frq2=sqrt(3)/base_time
+     .param frq3=sqrt(5)/base_time
+     .param frq4=sqrt(7)/base_time
+     .param vi=amplitude/4
+     //model of antenna:
+     R_coil pin1 rl 1
+     L_coil rl lv 1u
+     //model of shield:
+     V1 lv 12   sin(0 vi frq1)
+     V2 12 23   sin(0 vi frq2)
+     V3 23 34   sin(0 vi frq3)
+     V4 34 pin2 sin(0 vi frq4)
+    .ends
+    X_[name] [pin1] [pin2] device_antenna_2pin_[name]
+    </Spice>
+    <eeschema_symbol>
+		IF [model] ENDS_WITH Loop THEN
+			DRAW
+			P 7 0 1 10 100 -150 100 -100 200 0 50 150 -100 0 0 -100 0 -150 N
+			X ~ 1 0 -200 100 U 50 50 1 1 I
+			X ~ 2 100 -200 100 U 50 50 1 1 I
+			ENDDRAW
+		ELSE
+			DRAW
+			P 8 0 1 10 100 -150 100 -100 200 -100 200 -50 -100 -50 -100 -100 0 -100 0 -150 N
+			X ~ 1 0 -200 100 U 50 50 1 1 I
+			X ~ 2 100 -200 100 U 50 50 1 1 I
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>

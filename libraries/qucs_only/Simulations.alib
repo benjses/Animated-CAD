@@ -1,0 +1,24 @@
+<Component>
+	<Description>
+		Qucs-transient-analysis block. Ignored.
+	</Description>
+	<qucs_sch> 
+	   .TR [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [type] [type_v] [start] [start_v]
+	   [stop] [stop_v] [number] [number_v] [intm] [intm_v] [order] [order_v] [inistep] [inistep_v] 
+	   [minstep] [minstep_v] [maxiter] [maxiter_v] [reltol] [reltol_v] [abstol] [abstol_v] [vntol] [vntol_v] 
+	   [temp] [temp_v] [ltereltol] [ltereltol_v] [lteabstol] [lteabstol_v] [ltefactor] [ltefactor_v] 
+	   [solver] [solver_v] [relaxtsr] [relaxtsr_v] [initialdc] [initialdc_v] [maxstep] [maxstep_v]
+	</qucs_sch>
+	<qucs_symbol>IGNORE</qucs_symbol>
+
+	// attention: the normal defition of transient analyses in spice is different than this.
+	// - there the timestep is defined, here we have only the number of timesteps available
+	// - there the parameters are simply listed next to each other, here we have a function with arguments
+	<Spice>
+		IF[type]EQUAL_TO"lin"THEN
+			.tran(start =[start]; end= [stop]; number=[number])
+		ELSE
+			IGNORE
+		ENDIF
+	</Spice>
+</Component>

@@ -1,0 +1,678 @@
+// this library contains several standard components - but mostly deprecated, should use of the numerated libraries like "01 basic components.alib"
+// 
+// All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+// Licensed under the WTFPL unless specified differently in the component or if contradicting other licenses
+
+
+<Component>
+	<Description>
+		This resistor model is deprecated, please use the one in the library "01 basic components" instead.
+		An ideal Resistor. Ignores temperature effects.
+		[name] is the name of the component
+		[value] is resistance in Ohm
+		IF [tcf] THEN [tcf] is an ignored value (temperature in degC)
+        ENDIFIF [tcf1] THEN [tcf1] is another ignored value (temperature coeff 1) 
+		ENDIFIF [tcf2] THEN [tcf2] is another ignored value (temperature coeff 2) 
+		ENDIFIF [nomT] THEN [nomT] is another ignored value (nominal temperature) 
+		ENDIFIF [smbl] THEN [smbl] is the symbol type. ("european" or "US" symbol) 
+		ENDIFIF [pin1] THEN [pin1] is the first connection node. The one from which technical current comes from. 
+		ENDIFIF [pin2] THEN [pin2] is the second connection node. The one to which technical current flows to. 
+		ENDIFIF [footprint] THEN [footprint] is a footprint on a layout board. 
+		ENDIFIF [datasheet] THEN [datasheet] is a link to the datasheet.ENDIF
+	</Description>
+	<qucs_sch>
+		R [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [value] [value_v] [tcf] [tcf_v] [tcf1] [tcf1_v] [tcf2] [tcf2_v] [nomT] [nomT_v] [smbl] [smbl_v]
+	</qucs_sch>
+	<eeschema_sch>
+		L Device:R
+		ALIAS Device:R_Small Device:R_US  Device:R_Small_US
+	</eeschema_sch>
+	<eeschema_sch>
+		L Device:R_Variable
+		ALIAS Device:R_Variable_US
+	</eeschema_sch>
+	<eeschema_sch>
+        L Device:Heater
+    </eeschema_sch>
+	<Default_Values>
+        100 // Resistor value with 100 Ohm
+		1.5k // Resistor value with 1500 Ohm 
+		1,5k // Resistor value with 1500 Ohm 
+		2.2e4 // Resistor value with 2.2x10^4= 22000 Ohm = 22 Kilo Ohm 
+		1M  // Resistor value with 1 <b>Mega</b>Ohm = 1 Million Ohm
+		1m  // Resistor value with 1 <b>Milli</b>Ohm 
+		//+= 1/1000 Ohm = 0,001 Ohm
+    </Default_Values>
+	<Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        IF [ohm] THEN
+            DEFINE [value] AS_NULL
+        ELSE
+            <Dialog title="missing ohm value for [name]" type="error" dimension="450x100"> 
+                The resistor named [name] at ([xpos] | [ypos]) has an invalid value, "[value]".
+                Please enter a number at that place.
+            </Dialog>
+        ENDIF
+        R_[name] [pin1] [pin2] [ohm]
+	</Spice>
+	<qucs_symbol>
+		IF [smbl] EQUAL_TO "US" THEN
+			<Line -18 0 3 -9 #000080 2 1>
+			<Line -15 -9 6 18 #000080 2 1>
+			<Line -9 9 6 -18 #000080 2 1>
+			<Line -3 -9 6 18 #000080 2 1>
+			<Line 3 9 6 -18 #000080 2 1>
+			<Line 9 -9 6 18 #000080 2 1>
+			<Line 15 9 3 -9 #000080 2 1>
+		ELSE
+			<Rectangle -18 -9 36 18 #000080 2 1 #000080 1 0>
+		ENDIF
+		<Line -30 0 12 0 #000080 2 1>
+		<Line 30 0 -12 0 #000080 2 1>
+		<.PortSym -30 0 [pin1] 0>
+		<.PortSym 30 0 [pin2] 0>
+	</qucs_symbol>
+	<purchase>
+        <link>
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fmosfets-5104021.htmlhttps%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fwiderstaende-17441.html</url>
+            <title>IF[language] EQUAL_TO "de" THEN Uebersicht WiderstaendeELSEOverview of resistorsENDIF</title>
+			<detail>IF[language] EQUAL_TO "de" THEN Auswahl an Widerstaenden verschiedener Bauformen bei Conrad Electronic ELSECollection of resistors of different types at Conrad ElectronicENDIF</detail>
+        </link>
+        <link>
+            <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fpotentiometer-17440.html</url>
+           <title>IF[language] EQUAL_TO "de" THEN Uebersicht PotentiometerELSEOverview of potentiometersENDIF</title>
+			<detail>IF[language] EQUAL_TO "de" THEN Auswahl an Potentiometern verschiedener Bauformen bei Conrad Electronic ELSECollection of potentiometers of different types at Conrad ElectronicENDIF</detail>
+        </link>
+	</purchase>
+    <eeschema_symbol>
+	IF [model] EQUAL_TO pspice:R THEN
+	
+    (rectangle (start -1.016 3.81) (end 1.016 -3.81)
+      (stroke (width 0) (type default) (color 0 0 0 0))
+      (fill (type none))
+    )
+
+    (pin passive line (at 0 6.35 270) (length 2.54)
+      (name "~" (effects (font (size 1.27 1.27))))
+      (number "1" (effects (font (size 1.27 1.27))))
+    )
+    (pin passive line (at 0 -6.35 90) (length 2.54)
+      (name "~" (effects (font (size 1.27 1.27))))
+      (number "2" (effects (font (size 1.27 1.27))))
+    )
+  
+
+	ELSE IF [model] CONTAINS R_Small THEN
+		DRAW
+		S -30 70 30 -70 0 1 8 N
+		X ~ 1 0 100 30 D 50 50 1 1 P
+		X ~ 2 0 -100 30 U 50 50 1 1 P
+		ENDDRAW	
+	ELSE
+      (rectangle (start -1.016 -2.54) (end 1.016 2.54)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+	  IF [model] CONTAINS Heater THEN
+		  (polyline
+			(pts
+			  (xy -1.016 1.524)
+			  (xy 1.016 1.524)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 1.016 -1.524)
+			  (xy -1.016 -1.524)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 1.016 -0.508)
+			  (xy -1.016 -0.508)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		  (polyline
+			(pts
+			  (xy 1.016 0.508)
+			  (xy -1.016 0.508)
+			)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		  )
+		)
+	ENDIF
+      (pin passive line (at 0 3.81 270) (length 1.27)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 0 -3.81 90) (length 1.27)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+    ENDIF
+	ENDIF
+    </eeschema_symbol>
+</Component>
+
+<Component>
+<Description>
+An inductor. There are two ways to create this component:
+
+Option A: an ideal coil, with only a henry value. In that case just enter that value for example "22m" 
+
+Option B: give a coil with ohmic resistance
+    you can enter a value such as "henry=1m ohm=20m" to create a coil with an internal series resistor to make a realistic coil.
+
+</Description>	
+<qucs_sch>
+L [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [value] [value_v] [iniamp] [iniamp_v]
+</qucs_sch>
+<eeschema_sch>
+    L Device:L
+</eeschema_sch>
+<eeschema_sch>
+    L Device:L_Small
+</eeschema_sch>
+<eeschema_sch>
+    L Device:L_Core_Ferrite
+</eeschema_sch>
+<eeschema_sch>
+    L Device:L_Core_Ferrite_Small
+</eeschema_sch>
+<eeschema_sch>
+    L Device:L_Core_Iron
+</eeschema_sch>
+<eeschema_sch>
+    L Device:L_Core_Iron_Small
+</eeschema_sch>
+
+<Default_Values>
+	22m // ideal coil with 22mH
+	henry=1m ohm=20m // non-ideal but realistic coil with inductance of 1mH and an internal series resistance of 20 milli Ohm.
+</Default_Values>
+<Spice>
+    DEFINE [datasheet] asset.conrad.com/media10/add/160267/c1/-/en/001385270DS01/datasheet/1385270-wuerth-elektronik-we-fcl-744866223-line-choke-22-mh-200-m-25-a-1-pcs.pdf
+    DEFINE [henry] AS_NUMBER OF:[value]
+	IF [iniamp] THEN DEFINE [iniamp] AS_NUMBER OF:[iniamp] ENDIF
+	
+    IF [henry] THEN
+        L_[name] [1] [2] [henry] IF [iniamp] THENIC=[iniamp]ENDIF 
+    ELSE
+        DEFINE [henry] AS_WORD_RIGHT OF:henry IN:[value]
+        DEFINE [henry] AS_NUMBER OF:[henry]
+        
+        DEFINE [ohm] AS_WORD_RIGHT OF:ohm IN:[value]
+        DEFINE [ohm] AS_NUMBER OF:[ohm]
+        
+        DEFINE [volt] AS_WORD_RIGHT OF:volt IN:[value]
+        DEFINE [volt] AS_NUMBER OF:[volt]
+        
+        IF [henry] || [ohm] || [volt] THEN
+    
+    // ---- model ----
+    .subckt coil_[individual] pos neg
+        //coil                          
+        IF[henry] THEN L_[individual] pos IF [ohm] THEN high ELSEIF [volt] THEN low ELSE neg ENDIF ENDIF [henry] ENDIF
+        //induction resistance             |<---- positive connection ---->| |<--- negative connection --->|
+        IF[ohm]THEN R_[individual] IF[henry]THEN high ELSE pos ENDIF IF[volt]THEN low ELSE neg ENDIF [ohm] ENDIF
+        //inducing dc voltage:              |<---- positive connection --------------------------------->|
+        IF[volt]THEN V_[individual] IF[ohm] THEN low ELSEIF [henry] THEN high ELSE pos ENDIF ENDIF neg DC [volt] ENDIF
+    .ends
+        // ---- component ----
+    X_coil_[individual] [1] [2] coil_[individual]
+        
+        ELSE
+            <Dialog title="missing Henry value for coil [name]" type="error" dimension="450x150"> 
+            The coil is simulated as an inductor by default. But the coil named [name] at ([xpos] | [ypos]) has an invalid value, "[value]".
+            This component expects an L value in Henry. 
+            Please enter a number at that place, or a text such as "henry=20m ohm=0.3"
+            </Dialog>
+        ENDIF
+    ENDIF 
+</Spice>
+<qucs_symbol>
+	<Rectangle -18 -9 36 18 #000080 2 1 #000080 1 1>
+	<Line -30 0 12 0 #000080 2 1>
+	<Line 30 0 -12 0 #000080 2 1>
+	<.PortSym -30 0 [1] 0>
+	<.PortSym 30 0 [2] 0>
+</qucs_symbol>
+<purchase>
+     <link>
+	     <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Finduktivitaeten-spulen-drosseln-0218132.html</url>
+		 <title>overview of coils</title>
+		 <detail>overview of coils at conrad electronic</detail>
+	 </link>
+</purchase>
+    <eeschema_symbol>
+		IF [model] ENDS_WITH Small THEN
+			(symbol "L_Small_0_1"
+			  (arc (start 0 -2.032) (mid 0.5058 -1.524) (end 0 -1.016)
+				(stroke (width 0) (type default))
+				(fill (type none))
+			  )
+			  (arc (start 0 -1.016) (mid 0.5058 -0.508) (end 0 0)
+				(stroke (width 0) (type default))
+				(fill (type none))
+			  )
+			  (arc (start 0 0) (mid 0.5058 0.508) (end 0 1.016)
+				(stroke (width 0) (type default))
+				(fill (type none))
+			  )
+			  (arc (start 0 1.016) (mid 0.5058 1.524) (end 0 2.032)
+				(stroke (width 0) (type default))
+				(fill (type none))
+			  )
+			)
+			(symbol "L_Small_1_1"
+			  (pin passive line (at 0 2.54 270) (length 0.508)
+				(name "~" (effects (font (size 1.27 1.27))))
+				(number "1" (effects (font (size 1.27 1.27))))
+			  )
+			  (pin passive line (at 0 -2.54 90) (length 0.508)
+				(name "~" (effects (font (size 1.27 1.27))))
+				(number "2" (effects (font (size 1.27 1.27))))
+			  )
+			)
+		ELSE
+			DRAW
+				A 0 -75 25 -899 899 0 1 0 N 0 -100 0 -50
+				A 0 -25 25 -899 899 0 1 0 N 0 -50 0 0
+				A 0 25 25 -899 899 0 1 0 N 0 0 0 50
+				A 0 75 25 -899 899 0 1 0 N 0 50 0 100
+				X 1 1 0 150 50 D 50 50 1 1 P
+				X 2 2 0 -150 50 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+    </eeschema_symbol>
+</Component>
+
+<Component>
+<Description>
+An ideal Capacitor 
+[value] is the capacity in Farad
+[inivolt] is the initial voltage in Volt
+   (Warning: Depending on the ngspice version, an initial condition may not work but be set to zero.
+    Since this is an internal problem in spice and also appears in other applications than CNS (also found in
+    qucs 0.0.21) the CNS can not solve this problem from spice. You might want to simulate the initial value by an external current source instead.)
+[smbl] is the symbol type. but ignored, because symbol is defined in Symbol section
+</Description>
+<qucs_sch>
+C [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [value] [value_v] [inivolt] [inivolt_v] [smbl] [smbl_v]
+</qucs_sch>
+<eeschema_sch>
+    L pspice:CAP
+</eeschema_sch>
+<eeschema_sch>
+    L Device:C
+    ALIAS Device:C_Small Device:CP Device:CP_Small Device:CP1 Device:CP1_Small
+</eeschema_sch>
+<eeschema_sch>
+    L Device:CTRIM
+    ALIAS Device:CTRIM_Small
+</eeschema_sch>
+<eeschema_sch>
+    L Device:C_Variable
+</eeschema_sch>
+<Spice>
+    DEFINE [farad] AS_NUMBER OF:[value]
+    IF [inivolt] THEN DEFINE [inivolt] AS_NUMBER OF:[inivolt]ENDIF 
+	IF [farad] THEN
+        DEFINE [value] AS_NULL
+    ELSE
+        DEFINE [farad] AS_WORD_RIGHT OF:farad IN:[value]
+        DEFINE [farad] AS_NUMBER OF:[farad]
+        DEFINE [inivolt] AS_WORD_RIGHT OF:inivolt IN:[value]
+        DEFINE [inivolt] AS_NUMBER OF:[inivolt]
+    ENDIF
+    IF ![farad] THEN
+        <Dialog title="missing Farad value for [name]" type="error" dimension="450x150"> 
+            The capacitor named [name] at ([xpos] | [ypos]) has an invalid value, "[value]".
+            This component expects an C value in Farad. 
+            Please enter a number at that place.
+        </Dialog>
+    ENDIF
+    C_[name] [pin1] [pin2] [farad] IF[inivolt]THENic=[inivolt]ENDIF
+</Spice>
+<qucs_symbol>
+IF [smbl] EQUAL_TO "polar" THEN
+	<Rectangle -6 -11 3 22 #000080 2 1 #000080 1 0>
+	<Text -11 -9 12 #FF0000 0 "+">
+ELSE
+	<Line -4 -11 0 22 #000080 2 1>
+ENDIF
+	<Line 4 -11 0 22 #000080 2 1>
+	<Line -30 0 26 0 #000080 2 1>
+	<Line 30 0 -26 0 #000080 2 1>
+	<.PortSym 30 0 [pin1] 0>
+	<.PortSym -30 0 [pin2] 0>
+</qucs_symbol>
+    <purchase>
+		<link>
+		    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fc%2Fkondensatoren-17428.html</url>
+		    <title>IF[language] EQUAL_TO "de" THEN Uebersicht Kondensatoren ELSE Overview of capacitors ENDIF</title>
+            <detail>IF[language] EQUAL_TO "de" THEN Auswahl an Kondensatoren verschiedener Bauarten bei Conrad.de ELSE Overview of capacitors of various types at Conrad electronicENDIF</detail> 
+		</link>
+	</purchase>
+    <eeschema_symbol>
+	IF [model] EQUAL_TO C_Variable THEN
+    (symbol "C_Variable_0_1"
+      (polyline
+        (pts
+          (xy -2.032 -0.762)
+          (xy 2.032 -0.762)
+        )
+        (stroke (width 0.508) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -2.032 0.762)
+          (xy 2.032 0.762)
+        )
+        (stroke (width 0.508) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.27 2.54)
+          (xy -1.27 -2.54)
+        )
+        (stroke (width 0.3048) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.27 2.54)
+          (xy 0.508 2.286)
+        )
+        (stroke (width 0.3048) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.27 2.54)
+          (xy 1.524 1.778)
+        )
+        (stroke (width 0.3048) (type default))
+        (fill (type none))
+      )
+    )
+	(symbol "C_Variable_1_1"
+      (pin passive line (at 0 3.81 270) (length 3.048)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 0 -3.81 90) (length 3.048)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+    )
+	ELSE 
+		IF [model] CONTAINS C_Small THEN
+			DRAW
+			P 2 0 1 13 -60 -20 60 -20 N
+			P 2 0 1 12 -60 20 60 20 N
+			X ~ 1 0 100 80 D 50 50 1 1 P
+			X ~ 2 0 -100 80 U 50 50 1 1 P
+			ENDDRAW
+		ELSE
+			DRAW
+			P 2 0 1 20 -80 -30 80 -30 N
+			P 2 0 1 20 -80 30 80 30 N
+			X ~ 1 0 150 110 D 50 50 1 1 P
+			X ~ 2 0 -150 110 U 50 50 1 1 P
+			ENDDRAW
+		ENDIF
+	ENDIF
+	
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+<Description>
+A MOSFET. creation according to ngspice Users Manual Version "30 plus" chapter 11.2.4 "MOS Level 6"
+[type]   = Polarity of Mosfet type. If "nfet" then N-Channel, if "pfet" then P-Channel.
+[V_to]   = zero-bias threshold voltage
+[Kp]     = transconductance in A / V² (not used for runnability)
+[Gamma]  = bulk threshold in V^(1/2)
+[Phi]    = surface potential
+[Lambda] = channel-length modulation parameter in 1/V
+[R_d]    = drain ohmic resistance
+[R_s]    = source ohmic resistance
+[R_g]    = gate ohmic resistance  (not used: TODO include rg and test)
+[I_s]    = bulk junction saturation current
+[N]      = bulk junction emission coeff (not used)
+[W]      = width of the channel
+[L]      = length of the channel
+[L_d]    = lateral diffusion length (not used)
+[T_ox]   = thickness of oxide layer
+[C_gso]  = overlap capacitance per meter of channel width between gate and source in F/m
+[C_gdo]  = overlap capacitance per meter of channel width between gate and drain in F/m
+[C_gbo]  = overlap capacitance per meter of channel width between gate and bulk in F/m
+[C_bd]   = zero bias junction capacity between bulk and drain
+[C_bs]   = zero bias junction capacity between bulk and source
+[P_b]    = bulk junction potential
+[M_j]    = bulk junction bottom grading coefficient
+[F_c]    = bulk junktion forward-bias depletion capacitance coefficient
+[C_jsw]  = zero-bias bulk juction periphery/sidewall capacitance per meter of juction perimeter in F/m
+[M_jsw]  = bulk juction periphery/sidewall grading coefficient
+[T_t]    = bulk transit time (not used: Todo include tt and test)
+[N_sub]  = substrate bulk doping density in 1/cm³ (not used for runnability)
+[N_ss]   = surface state density in 1/cm²
+[Tp_g]   = gate material type: "0" for alumina, "-1" for same as bulk, "1" for opposite to bulk
+[U_o]    = surface mobility in (cm²) / Vs
+[R_sh]   = drain and source diffusion sheet resistance in Ohm per square
+[N_rd]   = nuber of equivalent drain squares
+[N_rs]   = number of equivalent source squares
+[C_j]    = zero-bias bulk juction bottom capacitance per square meter of juction area in F/m²
+[J_s]    = bulk juction saturation current per square meter of juction area in A/m²
+[A_d]    = drain diffusion area in m²
+[A_s]    = source diffusion area in m²
+[P_d]    = drain junction perimeter
+[P_s]    = source junction perimeter
+[K_f]    = flicker noise coefficient (not used for runnability)
+[A_f]    = flicker nosie exponent    (not used for runnability)
+[F_fe]   = flicker noise frequency exponent (not used)
+[Temp]   = simulation temperature in °C (not used)
+[T_nom]  = parameter measurement temperature in °C
+</Description>
+<qucs_sch>
+_MOSFET [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [type] [type_v] [V_to] [V_to_v]
+[Kp] [Kp_v] [Gamma] [Gamma_v] [Phi] [Phi_v] [Lambda] [Lambda_v] [R_d] [R_d_v] [R_s] [R_s_v] [R_g] [R_g_v]
+[I_s] [I_s_v] [N] [N_v] [W] [W_v] [L] [L_v] [L_d] [L_d_v] [T_ox] [T_ox_v] [C_gso] [C_gso_v]
+[C_gdo] [C_gdo_v] [C_gbo] [C_gbo_v] [C_bd] [C_bd_v] [C_bs] [C_bs_v] [P_b] [P_b_v] [M_j] [M_j_v] [F_c] [F_c_v]
+[C_jsw] [C_jsw_v] [M_jsw] [M_jsw_v] [T_t] [T_t_v] [N_sub] [N_sub_v] [N_ss] [N_ss_v] [Tp_g] [Tp_g_v] [U_o] [U_o_v] [R_sh] [R_sh_v]
+[N_rd] [N_rd_v] [N_rs] [N_rs_v] [C_j] [C_j_v] [J_s] [J_s_v] [A_d] [A_d_v] [A_s] [A_s_v] [P_d] [P_d_v] [P_s] [P_s_v] [K_f] [K_f_v]
+[A_f] [A_f_v] [F_fe] [F_fe_v] [Temp] [Temp_v] [T_nom] [T_nom_v] 
+</qucs_sch>
+<Spice>
+.model M_MDL_[name] IF [type] EQUAL_TO "nfet" THEN nmos ENDIF IF [type] EQUAL_TO "pfet" THEN pmos ENDIF
++ level=6
+//+ vto=[V_to] gamma=[Gamma] phi=[Phi] lambda=[Lambda] rd=[R_d] rs=[R_s] cbd=[C_bd] cbs=[C_bs]
+//+ is=[I_s] pb=[P_b] cgso=[C_gso] cgdo=[C_gdo] cgbo=[C_gbo] rsh=[R_sh] cj=[C_j] mj=[M_j] fc=[F_c] cjsw=[C_jsw]
+//+ mjsw=[M_jsw] js=[J_s] tox=[T_ox] nss=[N_ss] tpg=[Tp_g] uo=[U_o] tnom=[T_nom]
+
+M_[name] [d] [g] [s] [s] M_MDL_[name]
++ l=[L] w=[W] ad=[A_d] as=[A_s] pd=[P_d] ps=[P_s] nrd=[N_rd] nrs=[N_rs]
+</Spice>
+<qucs_symbol>
+<Line -30 0 15 0 #000080 2 1>
+<Line -15 -10 0 20 #000080 2 1>
+<Line -10 -12 0 5 #000080 2 1>
+<Line 0 -30 0 20 #000080 2 1>
+<Line -10 -10 10 0 #000080 2 1>
+<Line 0 30 0 -20 #000080 2 1>
+<Line -10 10 10 0 #000080 2 1>
+<Line -10 12 0 -5 #000080 2 1>
+<Line -10 -15 0 5 #000080 2 1>
+<Line 0 15 0 -15 #000080 2 1>
+<Line 0 0 -10 0  #000080 2 1>
+<Line -10 -2 0 5 #000080 2 1>
+
+<Line 0 -10 10 0 #000080 2 1>
+<Line 10 -10 0 4 #000080 2 1>
+<Line 10 10 0 -4 #000080 2 1>
+<Line 0 10 10 0 #000080 2 1>
+
+IF [type] EQUAL_TO "nfet" THEN
+	<Line -8 0 4 -4 #000080 2 1>
+	<Line -8 0 4 4 #000080 2 1>
+	<Polygon3 5 5 15 5 10 -5 #000080 2 1 #000080 2 1> 
+	<Line 5 -5 10 0 #000080 2 1>
+ENDIF
+IF [type] EQUAL_TO "pfet" THEN
+	<Line -2 0 -4 -4 #000080 2 1>
+	<Line -2 0 -4 4 #000080 2 1>
+	<Polygon3 5 -5 15 -5 10 5 #000080 2 1 #000080 2 1>
+	<Line 5 5 10 0 #000080 2 1>
+ENDIF
+
+<.PortSym -30 0 [g] 0>
+<Text -25 0 12 #0000FF 0 "G" > >
+<.PortSym 0 -30 [d] 270>
+<Text -8 -25 12 #0000FF 0 "D" >
+<.PortSym 0 30 [s] 90>
+<Text -8 25 12 #0000FF 0 "S">
+</qucs_symbol>
+</Component>
+
+<Component>
+<Description>
+A bipolar junction transistor.
+Component created according to ngspice user manual version "30 plus" chapter 8 "BJTs" and
+"Principles of Semiconductor Devices" chapter 5.6.3 "Spice model" see also https://ecee.colorado.edu/~bart/book/book/chapter5/pdf/ch5_6_3.pdf
+[I_s]   = Transport saturation current in A
+[N_f]   = Forward current emission coefficient
+[N_r]   = Reverse current emission coefficient 
+[I_kf]  = Corner for forward beta current roll-off in A 
+[I_kr]  = Corner for reverse beta high current roll-off in A 
+[V_af]  = Forward Early voltage in V 
+[V_ar]  = Reverse Early voltage in V  
+[I_se]  = B-E leakage saturation current in A
+[N_e]   = B-E leakage emission coefficient
+[I_sc]  = B-C leakage saturation current in A
+[N_c]   = B-C leakage emission coefficient
+[B_f]   = Ideal maximum forward beta
+[B_r]   = Ideal maximum reverse beta
+[R_bm]  = Minimum base resistance at high currents in Ohm
+[I_rb]  = Current where base resistance halfway to its min value in A
+[R_c]   = Collector resistance in Ohm
+[R_e]   = Emitter resistance in Ohm
+[R_b]   = Zero bias base resistance in Ohm
+[C_je]  = B-E zero-bias depletion capacitance
+[V_je]  = B-E built-in potential
+[M_je]  = B-E junction exponetial factor
+[C_jc]  = B-C zero-bias depletion capacitance in F
+[V_jc]  = B-C built-in potential in V
+[M_jc]  = B-C junction exponential factor
+[X_cjc] = Fraction of B-C depletion capacitance connected to internal base node
+[C_js]  = Zero-bias collector-substrate capacitance in F
+[V_js]  = Substrate junction built-in potential
+[M_js]  = Substrate junction exponential factor
+[F_c]   = Coefficient for forward-bias depletion capacitance formula
+[T_f]   = Ideal forward transit time in s
+[X_T_f] = Coefficient for bias dependence of T_f
+[V_T_f] = Voltage describing VBC dependence of T_f in V
+[I_T_f] = High-current parameter for effect on TF in A
+[T_r]   = (unused)
+[Temp]  = (unused)
+[K_f]   = Flicker-noise coefficient 
+[A_f]   = Flicker-noise exponent
+[F_fe]  = (unused)
+[K_b]   = (unused)
+[A_b]   = (unused)
+[F_b]   = (unused)
+[P_tf]  = (unused)
+[X_tb]  = Forward and reverse beta temperature exponent
+[X_ti]  = Temperature exponent for effext on I_s
+[E_g]   = Energy gap for temperature effect on I_s in eV
+[T_nom] = Parameter measurement temperature in degrees Celsius
+[Area]  = (unused) 
+</Description>
+<qucs_sch>
+_BJT [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [type] [type_v] [I_s] [I_s_v] [N_f] [N_f_v]
+[N_r] [N_r_v] [I_kf] [I_kf_v] [I_kr] [I_kr_v] [V_af] [V_af_v] [V_ar] [V_ar_v] [I_se] [I_se_v] [N_e] [N_e_v]
+[I_sc] [I_sc_v] [N_c] [N_c_v] [B_f] [B_f_v] [B_r] [B_r_v] [R_bm] [R_bm_v] [I_rb] [I_rb_v] [R_c] [R_c_v] [R_e] [R_e_v]
+[R_b] [R_b_v] [C_je] [C_je_v] [V_je] [V_je_v] [M_je] [M_je_v] [C_jc] [C_jc_v] [V_jc] [V_jc_v] [M_jc] [M_jc_v] 
+[X_cjc] [X_cjc_v] [C_js] [C_js_v] [V_js] [V_js_v] [M_js] [M_js_v] [F_c] [F_c_v] [T_f] [T_f_v] [X_T_f] [X_T_f_v] [V_T_f]
+[V_T_f_v] [I_T_f] [I_T_f_v] [T_r] [T_r_v] [Temp] [Temp_v] [K_f] [K_f_v] [A_f] [A_f_v] [F_fe] [F_fe_v] [K_b] [K_b_v]
+[A_b] [A_b_v] [F_b] [F_b_v] [P_tf] [P_tf_v] [X_tb] [X_tb_v] [X_ti] [X_ti_v] [E_g] [E_g_v] [T_nom] [T_nom_v]
+[Area] [Area_v]
+</qucs_sch>
+<Spice>
+.model Q_MDL_[name] [type]
++ (is=[I_s] nf=[N_f] nr=[N_r] ikf=[I_kf] ikr=[I_kr] vaf=[V_af] var=[V_ar] ise=[I_se] ne=[N_e] isc=[I_sc] nc=[N_c] 
++ bf=[B_f] br=[B_r] rbm=[R_bm] irb=[I_rb] rc=[R_c] re=[R_e] rb=[R_b] cje=[C_je] vje=[V_je] mje=[M_je]
++ cjc=[C_jc] vjc=[V_jc] mjc=[M_jc] xcjc=[X_cjc] cjs=[C_js] vjs=[V_js] mjs=[M_js] fc=[F_c] 
++ tf=[T_f] xtf=[X_T_f] vtf=[V_T_f] itf=[I_T_f] kf=[K_f] af=[A_f] xtb=[X_tb] xti=[X_ti] eg=[E_g] tnom=[T_nom]
++ )
+
+Q_[name] [C] [B] [E] Q_MDL_[name] 
+</Spice>
+<qucs_symbol>
+<Line -30 0 20 0 #000080 2 1>
+<Line -10 -15 0 30 #000080 2 1>
+<Line 0 -30 0 15  #000080 2 1>
+<Line 0 -15 -10 10 #000080 2 1>
+<Line -10 5 10 10 #000080 2 1>
+<Line 0 15 0 15 #000080 2 1>
+<.PortSym -30 0 [B] 0>
+<.PortSym 0 -30 [C] 270>
+<.PortSym 0 30 [E] 90>
+</qucs_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Diode from Spice-library. Contains the default ngspice parameters,
+		see ngspice Users Manual Version "30 plus" chapter 7 "Diodes".
+	</Description>
+	<qucs_sch>
+		DIODE_SPICE [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] [dl] [dl_v] [dl2] [dl2_v] [dl3] [dl3_v] [dl4] [dl4_v] [dl5] [dl5_v]
+	</qucs_sch>
+	<qucs_symbol>
+		<Line -10 -10 0 20 #000080 2 1>
+		<Line 10 0 -20 10 #000080 2 1>
+		<Line 10 0 -20 -10 #000080 2 1>
+		<Line 10 -10 0 20 #000080 2 1>
+		<Line -30 0 20 0 #000080 2 1>
+		<Line 30 0 -20 0 #000080 2 1>
+		<.PortSym -30 0 [A] 0>
+		<.PortSym 30 0 [K] 0>
+	</qucs_symbol>
+	<eeschema_sch>
+		L pspice:DIODE
+	</eeschema_sch>
+	<eeschema_symbol>
+		// ATTENTION: The default Symbol from KiCad Eeschema version 5.1.2 is wrong: 
+		// The Kathode[K] and Anode[A] are switched
+		// Because of this, the following own Diode Symbol for Eeschema is created:
+		<.PortSym -200 0 [A] 0>
+		<.PortSym 200 0 [K] 0>
+		<Line -200 0 100 0 #0000F0 2 1>
+		<Line 200 0 -100 0 #0000F0 2 1>
+		<Line 100 -100 0 200 #0000F0 2 1>
+		<Line -100 -100 0 200 #0000F0 2 1>
+		<Line -100 -100 200 100 #0000F0 2 1>
+		<Line -100 100 200 -100 #0000F0 2 1>
+	</eeschema_symbol>
+	<Spice>
+	.model DIODE_[name]_SPICE D
+	IF [dl] THEN+ [dl]ENDIF
+	IF [dl2] THEN+ [dl2]ENDIF
+	IF [dl3] THEN+ [dl3]ENDIF
+	IF [dl4] THEN+ [dl4]ENDIF
+	IF [dl5] THEN+ [dl5]ENDIF
+	//IF [value] THENIF [value] EQUAL_TO "DIODE" THENELSE+ [value]ENDIF
+	D_[name] [A] [K] DIODE_[name]_SPICE
+	</Spice>
+</Component>

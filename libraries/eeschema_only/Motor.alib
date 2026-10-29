@@ -1,0 +1,290 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way. Unless specified otherwise, the following texts for each component are public domain.
+
+// The following relay models have a spice model, which is idealized. Please be aware of the fact that the real model 
+// might work in similar way as the idealized ones in some circuits, but also might differ from the model in other circuits.
+
+<Component>
+    <Description>
+        A DC-Motor. There are two ways to simulate that motor:
+        A: Either you simply give a numeric value for this component, then it is simulated by a coil with that numeric induction value in Henry.
+        B: Or you can define L=... R=... U=... where L is the Henry value, R is the internal resistance in Ohm and U is the dc voltage in Volt that is induced by this motor/generator. In this case you can define one or more of these mentioned parameters. If you define more than one parameter, then the components representing these parameters are placed in series to each other.
+        C: Additionally to the previous options, you can specify the nominal current I_N of this motor. That parameter I_N is used in the animation, to determine the rotation speed.
+        Example A (simply a value)
+        If you set value to "100u" then the motor is simulated by a coil with hundred micro henry.
+        
+        Example B1 (a combination of R L V):
+        If you set value to "R=10 L=20m V=5", then the motor is simulated by a combination of resistor, inductor, and voltage source in series:
+        conn+                                                              conn-                          
+        (+)------|Resistor=10Ohm|--|Inductor=20mH|--|VoltageSource=5V|-------(-)
+        
+        Example B2 (a combination of R L, but without V)
+        If you set value to "R=11 L=21m ", then the motor is simulated by a combination of resistor and inductor in series, the voltage source is not part of the model:
+        conn+                                        conn-                          
+        (+)------|Resistor=11Ohm|--|Inductor=21mH|----(-)  
+    </Description>
+    <Default_Values>
+        L=22mH R=10 Ohm  I_N=0.5A
+    </Default_Values>
+    <eeschema_sch>
+        L Motor:Motor_DC
+        ALIAS Motor:Motor_DC_ALT
+    </eeschema_sch>
+		<purchase>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fgleichstrommotoren-1101101.html</url>
+				<title>IF [language] EQUAL_TO de THEN Uebersicht Gleichstrommotoren ELSE Overview DC motors ENDIF</title>
+				<detail>IF [language] EQUAL_TO de THENEine Auswahl an Gleichstrommotoren bei Conrad Electronic. Darunter eine Beschreibung.ELSEA collection of DC motors at Conrad Electronic.ENDIF</detail>
+			</link>
+	</purchase>
+    <eeschema_symbol>
+        DRAW
+            C 0 -60 117 0 0 10 N
+            P 4 0 0 0 -50 -170 -50 -200 50 -200 50 -170 N
+            P 4 0 0 0 -50 50 -50 80 50 80 50 50 N
+            P 5 0 0 0 -50 -130 -50 20 0 -80 50 20 50 -130 N
+            P 2 0 1 0 0 80 0 100 N
+            X + 1 0 200 100 D 50 50 1 1 P
+            X - 2 0 -300 100 U 50 50 1 1 P
+        ENDDRAW
+    </eeschema_symbol>
+	<animation>
+		IF  IS_NUMBER [I_N] THEN
+			DEFINE [motor_speed] AS_MATH_DIV OF:I[+] AND:[I_N] // motor speed = actual current / nominal current- Usual ranges from -1 to 1.
+			
+			DRAW
+				IF [motor_speed] HIGHER_THAN 0.5 THEN
+					P 8 0 1 0  30 170  80 110  65 100  105 95  105 130  90 120  40 180  30 170 F // first positive arrow
+					IF [motor_speed] HIGHER_THAN 0.8 THEN 
+						P 8 0 1 0   110 90  110 30  90 30  115 00  140 30  120 30  120 80  110 80 F // second positive arrow
+					ENDIF
+				ELSE
+					IF [motor_speed] LOWER_THAN -0.5 THEN
+						P 8 0 1 0 -30 170 -80 110 -65 100 -105 95 -105 130 -90 120 -40 180 -30 170 F
+						IF [motor_speed] LOWER_THAN -0.8 THEN
+							P 8 0 1 0  -110 90 -110 30 -90 30 -115 00 -140 30 -120 30 -120 80 -110 80 F // second positive arrow
+						ENDIF
+					ENDIF
+				
+				ENDIF
+				
+			ENDDRAW
+		ENDIF
+	</animation>
+    <Spice>
+		// animation parameter: nominal current:
+		DEFINE [I_N] AS_WORD_RIGHT OF:I_N IN:[value]
+		IF ![I_N] THEN DEFINE [I_N] AS_WORD_RIGHT OF:In IN:[value] ENDIF // also allow "In" as nominal current
+		IF ![I_N] THEN DEFINE [I_N] 1.0 ENDIF// default value I_N=1.0A 
+		DEFINE [I_N] AS_NUMBER OF:[I_N]		
+	
+		// main parameters: henry value (and serial parasite ohm and farad values) of the motor:
+        DEFINE [henry] AS_NUMBER OF:[value]
+        IF [henry] THEN
+            L_[name] [+] [-] [henry] 
+        ELSE
+            DEFINE [henry] AS_WORD_RIGHT OF:L IN:[value]
+            DEFINE [henry] AS_NUMBER OF:[henry]
+            
+            DEFINE [ohm] AS_WORD_RIGHT OF:R IN:[value]
+            DEFINE [ohm] AS_NUMBER OF:[ohm]
+            
+            DEFINE [volt] AS_WORD_RIGHT OF:U IN:[value]
+            DEFINE [volt] AS_NUMBER OF:[volt]
+            
+            IF [henry] || [ohm] || [volt] THEN
+     
+        // ---- model ----
+        .subckt motor_[individual] pos neg
+            //motor coil                          
+            IF[henry] THEN L_[individual] pos IF [ohm] THEN high ELSEIF [volt] THEN low ELSE neg ENDIF ENDIF [henry] ENDIF
+            //induction resistance             |<---- positive connection ---->| |<--- negative connection --->|
+            IF[ohm]THEN R_[individual] IF[henry]THEN high ELSE pos ENDIF IF[volt]THEN low ELSE neg ENDIF [ohm] ENDIF
+            //inducing dc voltage:              |<---- positive connection --------------------------------->|
+            IF[volt]THEN V_[individual] IF[ohm] THEN low ELSEIF [henry] THEN high ELSE pos ENDIF ENDIF neg DC [volt] ENDIF
+        .ends
+         // ---- component ----
+        X_motor_[individual] [+] [-] motor_[individual]
+            
+            ELSE
+                <Dialog title="missing Henry value for motor [name]" type="error" dimension="450x150"> 
+                The dc motor is simulated as an inductor by default. But the motor named [name] at ([xpos] | [ypos]) has an invalid value, "[value]".
+                This component expects an L value in Henry. 
+                Please enter a number at that place.
+                </Dialog>
+            ENDIF
+        ENDIF 
+        
+    </Spice>
+</Component>
+
+<Component>
+    <Description>
+        An AC-Motor. Simulated by a coil. You can specify the induction value in Henry.
+    </Description>
+		<purchase>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fdrehstrommotoren-wechselstrommotoren-1230012.html%3Ftfo_productType%3DWechselstrommotor</url>
+				<title>1-Phase AC Motors</title>
+				<detail>IF [language] EQUAL_TO de THEN Eine Auswahl an Einphasen-Wechselstrom-Motoren bei Conrad Electronic. Darunter eine Beschreibung. ELSE An overview of one phase AC motors at Conrad Electronic.</detail>
+			</link>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fdrehstrommotoren-wechselstrommotoren-1230012.html%3Ftfo_productType%3DDrehstrommotor</url>
+				<title>3-Phase AC Motors</title>
+				<detail>IF [language] EQUAL_TO de THEN Eine Auswahl an Drehstrom-Motoren bei Conrad Electronic. Darunter eine Beschreibung. ELSE An overview of three phase AC motors at Conrad Electronic.</detail>
+			</link>
+	</purchase>
+    <eeschema_sch>
+        L Motor:Motor_AC
+    </eeschema_sch>
+    <Default_Values>
+        22mH
+    </Default_Values>
+    <Spice>
+        DEFINE [henry] AS_NUMBER OF:[value]
+        IF ![henry] THEN
+            <Dialog title="missing Henry value for motor [name]" type="error" dimension="450x150"> 
+              The ac motor is modeled by an inductor. But the motor named [name] at ([xpos] | [ypos]) has an invalid value, "[value]".
+              This component expects an L value in Henry. 
+              Please enter a number at that place.
+            </Dialog>
+        ENDIF
+        L_[name] [pin1] [pin2] [henry] 
+    </Spice>
+    <eeschema_symbol>
+   
+      (circle (center 0 -1.524) (radius 3.2512)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -7.62)
+          (xy 0 -7.112)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -4.7752)
+          (xy 0 -5.1816)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 1.7272)
+          (xy 0 2.0828)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.032)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (pin passive line (at 0 5.08 270) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 0 -7.62 90) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A servo motor. Simulated by a motor coil and a subcircuit that PWM-driven subcircuit that activates the motor.
+        You need to give it a value that specifies the Henry value of the motor coil.
+        
+        The subcircuit that activates the motor is activated by switching the pwm signal to high for some time, or by driving a PWM signal, and deactivates again by switching to low for some time. The time can be varied by changing the resistance and capacitance of R_enable and C_enable.
+        
+    </Description>
+    <eeschema_sch>
+        L Motor:Motor_Servo
+        ALIAS Motor:Motor_Servo_AirTronics Motor:Motor_Servo_Futaba_J Motor:Motor_Servo_Grapner_JR Motor:Motor_Servo_Hitec Motor:Motor_Servo_JR Motor:Motor_Servo_Robbe
+    </eeschema_sch>
+		<purchase>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Frc-servos-1207063.html</url>
+				<title>IF[language]EQUAL_TOdeTHENUebersicht Modellbau-ServosELSEOverview RC-ServosENDIF</title>
+				<detail>IF[language]EQUAL_TOdeTHENEine Uebersicht an Servomotoren und Zubehoer fuer Modellbau Anwendungen mit kleiner LeistungELSEOverview Servo motors and additional components for model building purposesENDIF</detail>
+			</link>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fschrittmotoren-servomotoren-1101151.html%3Ftfo_productType%3DServomotor</url>
+				<title>IF[language]EQUAL_TOdeTHENUebersicht Industrie-ServosELSEOverview industrial servosENDIF</title>
+				<detail>IF[language]EQUAL_TOdeTHENEine Uebersicht an Servomotoren fuer industrielle Anwendungen mit grosser LeistungELSEOverview Servo motors for industrial applicationsENDIF</detail>
+			</link>
+	</purchase>
+    <Default_Values>
+        22mH
+    </Default_Values>
+    <Spice>
+        // ---- parameters ----
+         DEFINE [henry] AS_NUMBER OF:[value]
+            IF ![henry] THEN
+            <Dialog title="missing Henry value for motor [name]" type="error" dimension="450x150"> 
+              The servo motor is modeled by an inductor (and a circuit to drive the motor). But the motor named [name] at ([xpos] | [ypos]) has an invalid value, "[value]".
+              This component expects an L value in Henry. 
+              Please enter a number at that place.
+            </Dialog>
+            ENDIF
+        // ---- model ----
+        .subckt servo_motor_[individual] pwm pos neg
+            //motor coil
+            L_[individual] pos mid [henry]
+            // enabling of the motor
+            M_enable mid enable neg neg MDL_MOS_[individual] //transistor that enables the motor
+            R_enable enable pwm 1M //series resistance
+          C_enable enable neg 1m  //capacitor keeps enabling open for some time after pwm signal.
+            //sub-models
+            .model MDL_MOS_[individual] NMOS (vto=0.2 kp=.17 rd=0  is=.04p  )
+        .ends
+         // ---- component ----
+        X_servo_motor_[individual] [PWM] [+] [-] servo_motor_[individual]
+    </Spice>
+    <eeschema_symbol>
+		DRAW
+		A 125 0 76 1132 -1132 0 1 0 N 95 70 95 -70
+		A 267 142 37 1173 -273 0 1 0 N 250 175 300 125
+		C 125 0 7 0 1 0 N
+		C 125 0 56 0 1 0 N
+		C 235 110 5 0 1 0 N
+		C 255 130 5 0 1 0 N
+		C 275 150 5 0 1 0 N
+		P 2 0 1 0 95 -70 80 -70 N
+		P 2 0 1 0 95 -70 90 -55 N
+		P 2 0 1 0 95 70 75 70 N
+		P 2 0 1 0 95 70 90 55 N
+		P 2 0 1 0 250 175 100 50 N
+		P 2 0 1 0 300 125 165 -40 N
+		P 5 0 1 10 200 140 -200 140 -200 -140 250 -140 250 60 N
+		X PWM 1 -300 100 100 R 50 50 1 1 P
+		X + 2 -300 0 100 R 50 50 1 1 P
+		X - 3 -300 -100 100 R 50 50 1 1 P
+		ENDDRAW
+    </eeschema_symbol>
+</Component>
+//L Motor:Stepper_Motor_bipolar
+
+//L Motor:Stepper_Motor_unipolar_5pin
+
+//L Motor:Stepper_Motor_unipolar_6pin
+
+//L Motor:Fan
+//ALIAS Motor:FAN_ALT Motor:FAN_IEC60617 
+
+//L Motor:Fan_3pin
+//ALIAS Motor:Fan_PC_Chassis Motor:Fan_Tacho
+
+//L Motor:Fan_4pin
+//ALIAS Motor:Fan_CPU_4pin Motor:Fan_Tacho_PWM
+
+//

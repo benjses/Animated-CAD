@@ -1,0 +1,117 @@
+
+
+
+// in flipflops.alib are the series ending with the numbers: 73,74,76,109,112,114,273
+// in logic.alib are the series ending with the numbers: 00,02,04
+
+// so still TODO are following components:
+
+// NAND gate with open collector, similar to 00 series in logic.alib (NRND=Not recommended for new design)
+// L 74xx:74LS01
+// L 74xx:74LS03
+
+// inverter gate with open collector, similar to 04 series in logic.alib
+// L 74xx:74LS05
+// ALIAS 74xx:74LS06 74xx:74LS06N
+
+
+
+// hex buffer (open drain) 
+// L 74xx:74LCX07
+
+// inverter with schmitt trigger
+// L 74xx:HC14
+// ALIAS 74xx:74LS14 74xx:74AHC14 74xx:74HCT14 74xx:74AHCT14
+
+//inverter without schmitt trigger
+// L 74xx:74LV14
+
+// L 74xx:74HC244
+// ALIAS 74xx:74AHC244 74xx:74HCT244 74xx:74AHCT244
+
+// L 74xx:74LS244
+
+// L 74xx:HC374
+// ALIAS 74xx:74LS374 74xx:74AHC374 74xx:74HCT374 74xx:74AHCT374
+
+// L 74xx:74LS123
+// ALIAS 74xx:74HC123 74xx:74AHC123 74xx:74HCT123 74xx:74AHCT123
+
+// L 74xx:74LS137
+// ALIAS 74xx:74HC137 74xx:74AHC137 74xx:74HCT137 74xx:74AHCT137
+
+// L 74xx:74LS145
+// ALIAS 74xx_IEEE:7445  //(in external library 74xx_IEEE)
+
+//shift register:
+// L 74xx:74LS164
+// ALIAS 74xx:74HC164 74xx:74AHC164 74xx:74HCT164 74xx:74AHCT164
+
+// decoder/multiplexer:
+// L 74xx:74LS237
+// ALIAS 74xx:74HC237 74xx:74AHC237 74xx:74HCT237 74xx:74AHCT237
+
+// 8-bit buffer / Line driver 3-state (240=inverting, 244=normal)
+// L 74xx:74L240
+// ALIAS 74xx:74HC240 74xx:74AHC240 74xx:74HCT240 74xx:74AHCT240
+// L 74xx:74LS244
+// ALIAS 74xx:74HC244 74xx:74AHC244 74xx:74HCT244 74xx:74AHCT244
+
+// octal bus transcievers
+// L 74xx:74LS245
+// ALIAS 74xx:74HC245 74xx:74AHC245 74xx:74HCT245 74xx:74AHCT245
+
+// L74xx:74LS374
+// ALIAS 74xx:74HC374 74xx:74AHC374 74xx:74HCT374 74xx:74AHCT374
+// (model might extend the existing model for 273 series in flipflops.alib, because it is very similar. Only mr->oe)
+
+// 8 bit buffer/ line driver:
+// L 74xx:74LS541
+// ALIAS 74xx:74HC541 74xx:74AHC541 74xx:74HCT541 74xx:74AHCT541
+
+// 8 bit Register, 3-state outputs
+// L 74xx:74LS574
+// ALIAS 74xx:74HC574 74xx:74AHC574 74xx:74HCT574 74xx:74AHCT574
+// (model might extend the existing model for 273 series in flipflops.alib, because it is very similar. Only mr->oe)
+
+// 8 bit serial in/out shift Register
+// L 74xx:74LS595
+// ALIAS 74xx:74HC595 74xx:74AHC595 74xx:74HCT595 74xx:74AHCT595
+// L 74xx:74LS596
+// ALIAS 74xx:74HC596 74xx:74AHC596 74xx:74HCT596 74xx:74AHCT596
+
+//  8bit binary counter
+// L 74xx:74LS590
+// ALIAS 74xx:74HC590 74xx:74AHC590 74xx:74HCT590 74xx:74AHCT590
+// ALIAS 74xx:74HC590A
+
+// 8 bit shift register
+// L 74xx:74LS595
+// ALIAS 74xx:74HC595 74xx:74AHC595 74xx:74HCT595 74xx:74AHCT595
+// L 74xx:74LS596
+// ALIAS 74xx:74HC596 74xx:74AHC596 74xx:74HCT596 74xx:74AHCT596
+
+// 7 stage binary ripply counter
+// L 74HC:74LS4024
+// ALIAS 74xx:74HC4024 74xx:74AHC4024 74xx:74HCT4024 74xx:74AHCT4024
+
+// 8 channel analog multiplexer / demultiplexer
+// L 74HC:74LS4024
+// ALIAS 74xx:74HC4024 74xx:74AHC4024 74xx:74HCT4024 74xx:74AHCT4024
+
+// 8 channel analog multiplexer
+// L 74HC:74LS4051
+// ALIAS 74xx:74HC4051 74xx:74AHC4051 74xx:74HCT4051 74xx:74AHCT4051
+
+// Hex non inverting buffer with schmitt trigger
+// L 74HC:74LS7014
+// ALIAS 74xx:74HC7014 74xx:74AHC7014 74xx:74HCT7014 74xx:74AHCT7014
+// (similar to 74xx14 series)
+
+
+
+// L74xx:74CBLV3257
+
+// L74xx:74CBTLV3861
+
+

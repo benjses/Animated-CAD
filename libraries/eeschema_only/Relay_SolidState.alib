@@ -1,0 +1,258 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+//TODO This model needs parameters to define the input diode and the output characteristics:
+//  It contains a distinction for the outtype: 
+//     npn type (uni-directional DC-optocouplers)
+//     2mos2d type (bi-directional DC-optocouplers)
+//     1mos1d type(unidirectional DC-optocoupler)
+//     diac types (incl.zcdiac) for diac-types (AC- optocouplers) keep themselves set as long as the diac is not turned off itself.
+//  but further distinction between the models is not yet done. so the models would be more precise, if they had:
+//     some parameters for the input diode, such as Voltages at which it starts conducting or ends conducting
+//     some parameters for the output, probably different parameters for different output-forms
+//     some parameters for the effect, which the input has on the output
+//     overcurrent simulation, could be done via fuses as for electromechanical relays as in Relay.alib
+
+// -> So for the users: Please be aware that there are the differences between the real components and the idealized model
+// -> So for the jurists: this library is presented AS IS. We are not liable of any consequences resulting from it in any way.
+// -> So for the helping hands: there is still a lot TODO in this library to make more realistic models:
+//      Someone who has a more realistic model which also works reliably in ngspice is very welcome to add it to the library
+//      also you may of course contact us.
+
+<Component>
+    <Description>
+        A solid-state relay.
+    </Description>
+    <eeschema_sch>
+        L Relay_SolidState:34.81-7048
+        ALIAS Relay_SolidState:34.81-9024
+        DEFINE [outtype] npn 
+    </eeschema_sch>
+    
+    <eeschema_sch>
+        //Finder
+        L Relay_SolidState:34.81-8240
+        //
+        ALIAS Relay_SolidState:FOD420 Relay_SolidState:FOD4208 Relay_SolidState:FOD4216 Relay_SolidState:FOD4218 
+        ALIAS Relay_SolidState:FODM3011 Relay_SolidState:FODM3012 Relay_SolidState:FODM3022 Relay_SolidState:FODM3023 Relay_SolidState:FODM3052 Relay_SolidState:FODM3053
+        //Fairchildsemi
+        ALIAS Relay_SolidState:MOC3010M Relay_SolidState:MOC3011M Relay_SolidState:MOC3012M Relay_SolidState:MOC3020M Relay_SolidState:MOC3021M Relay_SolidState:MOC3022M Relay_SolidState:MOC3023M
+        ALIAS Relay_SolidState:MOC3051M Relay_SolidState:MOC3052M
+        //sharp-world
+        ALIAS Relay_SolidState:S102S01 Relay_SolidState:S112S01 Relay_SolidState:S116S01 
+        ALIAS Relay_SolidState:S202S01 Relay_SolidState:S212S01 Relay_SolidState:S216S01 
+        //toshiba
+        ALIAS Relay_SolidState:TLP160G Relay_SolidState:TLP160J
+        
+        DEFINE [outtype] diac
+    </eeschema_sch>
+    
+    <eeschema_sch>
+        //Fairchildsemi
+        L Relay_SolidState:MOC3031M
+        ALIAS Relay_SolidState:MOC3032M Relay_SolidState:MOC3033M Relay_SolidState:MOC3041M Relay_SolidState:MOC3042M Relay_SolidState:MOC3043M 
+        ALIAS Relay_SolidState:MOC3061M Relay_SolidState:MOC3062M Relay_SolidState:MOC3063M 
+        ALIAS Relay_SolidState:MOC3081M Relay_SolidState:MOC3082M Relay_SolidState:MOC3083M 
+        ALIAS Relay_SolidState:MOC3162M Relay_SolidState:MOC3163M 
+        //sharp-world
+        ALIAS Relay_SolidState:S102S02 Relay_SolidState:S112S02 Relay_SolidState:S116S02
+        ALIAS Relay_SolidState:S202S02 Relay_SolidState:S212S02 Relay_SolidState:S216S02 
+        //toshiba
+        ALIAS Relay_SolidState:TLP161G Relay_SolidState:TLP161J
+        DEFINE [outtype] zcdiac 
+    </eeschema_sch>
+    
+    <eeschema_sch>
+        L Relay_SolidState:ASSR-1218
+        ALIAS Relay_SolidState:CPC1017N Relay_SolidState:LAA110 Relay_SolidState:LBB110 
+        //toshiba
+        ALIAS Relay_SolidState:TLP175A Relay_SolidState:TLP222A Relay_SolidState:TLP222A-2 Relay_SolidState:TLP3123 Relay_SolidState:TLP3542
+        
+        DEFINE [outtype] 2mos2d
+    </eeschema_sch>
+    
+    <eeschema_sch>
+        L Relay_SolidState:TLP3543
+        ALIAS Relay_SolidState:TLP3544 Relay_SolidState:TLP3545 Relay_SolidState:TLP3546
+        
+        DEFINE [outtype] 2mos2d_mid
+    </eeschema_sch>
+    
+    <eeschema_sch>
+        L Relay_SolidState:CPC1002N
+        DEFINE [outtype] 1mos1d   
+    </eeschema_sch>
+    <eeschema_sch>
+        L Relay_SolidState:TLP141G //octopart
+        ALIAS Relay_SolidState:TLP148G //toshiba
+     </eeschema_sch>
+     <eeschema_symbol>
+    DRAW
+        S -200 150 200 -150 0 1 10 f
+        X inpos 1 -300 100 100 R 50 50 1 1 P
+        X inneg 2 -300 -100 100 R 50 50 1 1 P
+        X outup 3 300 100 100 L 50 50 1 1 P 
+        X outdn 4 300 -100 100 L 50 50 1 1 P
+        
+        //in-diode:
+        P 2 0 1 10 -150 -25 -100 -25 N
+        P 3 0 1 0 -200 100 -125 100 -125 25 N
+        P 3 0 1 0 -125 -25 -125 -100 -200 -100 N        
+        P 4 0 1 10 -125 -25 -150 25 -100 25 -125 -25 N
+        //arrows from in to out
+        P 5 0 1 0 -75 -20 -25 -20 -40 -25 -40 -15 -25 -20 N
+        P 5 0 1 0 -75 20 -25 20 -40 15 -40 25 -25 20 N
+        
+        IF ![outtype]THEN <ERROR>outtype is not defined for Relay_SolidState model [model]</ERROR>ENDIF
+        IF [outtype] EQUAL_TO 1mos1d THEN
+            P 2 0 1 8 40 30 40 -30 N
+            P 2 0 1 0 55 -30 110 -30 N
+            P 2 0 1 0 55 30 110 30 N
+            P 2 0 1 0 110 -30 110 -55 N
+            P 2 0 1 0 110 30 110 55 N
+            P 2 0 1 0 135 15 165 15 N
+            P 3 0 1 14 60 -25 60 -35 60 -35 N
+            P 3 0 1 14 60 5 60 -5 60 -5 N
+            P 3 0 1 14 60 35 60 25 60 25 N
+            P 3 0 1 0 65 0 110 0 110 -30 N
+            P 3 0 1 0 110 -55 110 -100 200 -100 N
+            P 3 0 1 0 110 55 110 100 200 100 N
+            P 4 0 1 0 70 0 90 5 90 -5 70 0 N
+            P 4 0 1 0 110 -55 150 -55 150 55 110 55 N
+            P 4 0 1 0 150 15 135 -15 165 -15 150 15 N
+        ELSEIF [outtype] STARTS_WITH 2mos2d THEN
+            P 2 0 1 8 40 -25 40 -85 N
+            P 2 0 1 8 40 85 40 25 N
+            P 2 0 1 14 60 -20 60 -30 N
+            P 2 0 1 0 110 0 150 0 N
+            P 2 0 1 0 135 -65 165 -65 N
+            P 2 0 1 0 135 65 165 65 N
+            P 2 0 1 0 150 0 150 -100 N
+            P 2 0 1 0 150 0 150 100 N
+            P 3 0 1 14 60 -80 60 -90 60 -90 N
+            P 3 0 1 14 60 -50 60 -60 60 -60 N
+            P 3 0 1 14 60 30 60 20 60 20 N
+            P 3 0 1 14 60 60 60 50 60 50 N
+            P 3 0 1 14 60 90 60 80 60 80 N
+            P 3 0 1 0 65 -55 110 -55 110 -25 N
+            P 3 0 1 0 65 55 110 55 110 25 N
+            P 4 0 1 0 65 -85 110 -85 110 -100 200 -100 N
+            P 4 0 1 0 65 -25 110 -25 110 25 65 25 N
+            P 4 0 1 0 65 85 110 85 110 100 200 100 N
+            P 4 0 1 0 70 -55 90 -50 90 -60 70 -55 N
+            P 4 0 1 0 70 55 90 60 90 50 70 55 N
+            P 4 0 1 0 150 -65 135 -35 165 -35 150 -65 N
+            P 4 0 1 0 150 65 135 35 165 35 150 65 N
+            IF[outtype] CONTAINS _mid THEN
+                X outmid 5 300 0 100 L 50 50 1 1 P
+                P 2 0 1 0 150 0 200 0 N
+            ENDIF
+        ELSEIF [outtype] CONTAINS diac THEN //diacs at output:
+            P 2 0 1 0 75 25 145 25 N
+            P 2 0 1 0 90 -100 90 -25 N
+            P 2 0 1 0 90 -100 200 -100 N
+            P 2 0 1 0 90 100 90 25 N
+            P 2 0 1 0 90 100 200 100 N
+            P 2 0 1 10 105 -25 35 -25 N
+            P 4 0 1 10 60 -25 85 25 35 25 60 -25 F
+            P 4 0 1 10 120 25 95 -25 145 -25 120 25 F  
+            IF [outtype] CONTAINS zcd THEN //ZCD-symbol
+                P 5 0 1 0 -35 -45 -35 -115 50 -115 50 -45 -35 -45 N //frame
+                P 4 0 1 0 -25 -60 -10 -60 -25 -100 -10 -100 N
+                P 4 0 1 0 0 -65 5 -60 10 -60 15 -65 N 
+                P 5 0 1 0 15 -95 10 -100 5 -100 0 -95 0 -65 N
+                P 7 0 1 0 25 -60 25 -100 35 -100 40 -95 40 -65 35 -60 25 -60 N //D  
+                P 3 0 1 0 75 -25 60 -55 50 -55 N //diagonal 
+                //connection lines:
+                P 2 0 1 0 5 -45 5 100 N
+                P 2 0 1 0 5 100 90 100 N
+                P 2 0 1 0 90 -100 50 -100 N
+            ENDIF
+        ELSEIF [outtype] EQUAL_TO npn THEN
+            P 2 0 1 0 100 25 175 100 N
+            P 2 0 1 0 175 -100 100 -25 F
+            P 2 0 1 0 175 -100 200 -100 N
+            P 2 0 1 0 175 100 200 100 N
+            P 3 0 1 20 100 75 100 -75 100 -75 N
+            //P 5 0 1 0 120 -65 140 -45 160 -85 120 -65 120 -65 F
+            P 2 0 1 0 150 -75 120 -75 N
+            P 2 0 1 0 150 -75 150 -45 N
+        ELSE<Dialog type="error"> There is no drawing section for [model], with the outtype [outtype]<Dialog>
+        ENDIF ENDIF ENDIF ENDIF
+    ENDDRAW
+    </eeschema_symbol>
+    <Spice>
+        //---- subckt ----
+        .subckt solidrelay_[individual] inpos inneg outup outdn IF[outtype]CONTAINS_midTHENoutmid ENDIF
+        //parameters:
+        .param ohm_in=IF[R_in]THEN[R_in]ELSE 1 ENDIF
+        .param ampere_on=IF[I_on]THEN[I_on]ELSE 1m ENDIF
+        //input:
+         .model mdl_Din D is=2e-14 rs=ohm_in
+         Din inpos inmid mdl_Din
+         Vmeas_in inmid inneg DC 0
+        //center 
+ //       Bset isset 0 V=(I(Din))> ampere_on ? 1 : 0
+        Rpos inpos outup 1E9
+        Rneg inneg outdn 1E9
+        //output:
+        Rup outmid outup 1E9
+        Rdn outmid outdn 1E9
+        //mosfets replaced by switches, because mosfet parameters are unknown. TODO mosfet models for known types
+        IF [outtype] EQUAL_TO 1mos1d THEN
+            .model mdl_Dout D
+            Dout outdn outup mdl_Dout
+            .model mdl_wset csw ron=1.0 roff=1E9 it=ampere_on
+            Wset outdn outup Vmeas_in mdl_wset
+            
+        ELSEIF [outtype] EQUAL_TO 2mos2d THEN 
+            .model mdl_wset csw ron=1.0 roff=1E9 it=ampere_on    
+            Wset outup outdn Vmeas_in mdl_wset
+
+        ELSEIF [outtype] EQUAL_TO 2mos2d_mid THEN
+            .model mdl_Dout D
+            .model mdl_wset csw ron=1.0 roff=1E9 it=ampere_on
+            
+            DoutU outmid outup mdl_Dout
+            DoutD outmid outdn mdl_Dout
+            
+            WoutU outmid outup Vmeas_in mdl_wset
+            WoutD outmid outdn Vmeas_in mdl_wset
+            
+        ELSEIF [outtype] CONTAINS diac THEN //diac normal and zero-crossing diac. TODO  model for zcdiac!
+            .model mdl_Dout D  
+            
+            //measuring devices:
+            Vmeas outmeas outdn DC 0
+            
+            //diodes:
+            DoutL outmeas outmid mdl_Dout
+            DoutR outmid outmeas mdl_Dout
+            //switches 
+            .param ampere_hold_pos=IF[I_hold]THEN[I_hold]ELSE 1m ENDIF
+            .param ampere_hold_neg=-1*ampere_hold_pos
+            .model mdl_wdiac_pos csw ron=1.0 roff=1E9 it=ampere_hold_pos
+            .model mdl_wdiac_neg csw ron=1E9 roff=1.0 it=ampere_hold_neg
+            //switches
+            WoutI outmid outup Vmeas_in mdl_wdiac_pos //input switch: activates output when input is set.
+            WoutL outmid outup Vmeas   mdl_wdiac_pos  //output switch 1: keeps activated as long as diodes are going.
+            WoutR outmid outup Vmeas   mdl_wdiac_neg  //output switch 2: same.
+        ELSEIF [outtype] EQUAL_TO npn THEN
+            .model mdl_Qout npn
+            Qout outup outbase outdn mdl_Qout
+            B_outbase outbr outdn V=(10*I(Din))
+            R outbr outbase 1
+        ELSE <Dialog type="error">There is no spice-simulation section for [model], with the outtype [outtype]</Dialog>
+        ENDIF ENDIF ENDIF ENDIF ENDIF
+        .ends
+        //---- component ----
+        X_[individual] [inpos] [inneg] [outup] [outdn] IF[outtype]CONTAINS_midTHEN[outmid]ENDIF solidrelay_[individual]
+    </Spice>
+</Component>
+
+
+
+
+
+
+
+

@@ -1,0 +1,216 @@
+Documentation for .alib files
+=============================
+
+".alib" stands for advanced library or AMizer library, which ever you prefer.
+It contains descriptions of electric components, and is optimized for working with the Aquaeduct Modelizer (short "AMizer")
+
+".alib"-files are to some degree similar to ".lib"-files which are described for example under the following link:
+https://qucs-help.readthedocs.io/de/latest/internal.html#library-file-format
+ 
+However, it is a different and independent format: As you might guess by the name "advanced library",
+the new format has some advantages over the standard ".lib"-format, which are:
+- .alib allows to make logical expressions (see section "Logical expressions" below)
+- .alib allows to use variables (see section "Variables")
+- they contain all needed information to describe a component,
+	 so no more dragging incomplete information from different files
+- they are compatible to multiple kind of schematic files, that are also supported by AMizer 
+	
+
+First Line of the Document
+==========================
+The first line must declare for which type of .sch files the following document is written.
+If the first line contains "qucs" then AMizer knows it as a library for Qucs.
+If the first line contains "eeschema" then AMizer knows it as a library for KiCad's EESCHEMA 
+
+Variables
+=========
+TODO describe
+
+Logical expressions
+===================
+Amizer allows to logical expressions in the Sections:
+	for graphics (<qucs_symbol>,<eeschema_symbol>) and 
+	for spice-modeling (<Spice>)
+
+To create a logical expression you need the logic words:
+	WHEN  (starts the expression)
+	THEN
+	ELSE (optional)
+	ENDIF (ends the expression) 
+	
+WHEN has the same functionality as "if" in other languages. WHEN is chosen because it is longer than "IF" and
+so an unwanted letter combination "IF" in some word can occur more often. This is relevant here, because all
+these logic words may occur just inside of a word and work nevertheless.
+
+For example this string works fine:
+	"WHENsome_true_statementTHENdo_sthELSEdo_sth_elseENDIF"  
+	(and it will be transformed to: "do_sth")
+Also this string works fine:
+	"WHEN some_true_statement THEN do_sth ELSE do_sth_else ENDIF" 
+		(will be transformed to " do_sth ". Note that here are also two spaces. However, in the most cases these spaces
+		are irrelevant for the further process.) 
+	
+In order to make some statement between IF and THEN you can either use one of the following comparators
+	String comparators:
+		EQUAL_TO
+		UNEQUAL_TO
+		STARTS_WITH
+		ENDS_WITH
+	Numerical comparators: (transform both numbers before and after that comparator to float and compare) 
+		EQUAL_OR_HIGHER_THAN
+		EQUAL_OR_LOWER_THAN
+		HIGHER_THAN
+		LOWER_THAN
+
+So if you want to compare numerical values, it is often a bad idea to use EQUAL_TO
+For example let's imagine a variable [k] which holds the value 1000
+"WHEN [k] EQUAL_TO 1000.0 THEN equal ELSE unequal ENDIF"  
+->will return " unequal " also for [k]="1000" since it is a different String.
+-> but will return " equal " for [k]="[1000.0]" or for [k]=""[1000.0]"", since brackets and apostrophes are ignored.
+-> also will return" equal " for [k]=" 1000.0 " because leading and trailing whitespaces are ignored.
+but 
+"WHEN
+	 WHEN [k] HIGHER_THAN 999.9 THEN 
+	 	 WHEN [k] LOWER_THAN 1000.1 THEN nearly equal 
+	 	 ELSE higher 
+	 	 ENDIF
+	 ELSE lower
+	 ENDIF
+ENDIF"  
+-> will return " lower\n	 " for all [k]<999.9
+               " higher\n  	 " for all [k]>1000.1
+			   " nearly )equal\n	 	" else
+(Of course, you may also remove all the whitespace in this example and get the return also without whitespace,
+but this example this would be more difficult to understand without whitespace)
+		
+
+Section: qucs_sch
+=================
+Each Component of an .alib-file which is made for Qucs-Components has a new section in the line between the
+markers <qucs_sch> and </qucs_sch>
+In this section is the output line described which comes from a qucs schematics, a .sch-file*.
+Usually this section holds several words** which are enclosed in cornered brackets "[" and "]"
+These words define what is written in their place.
+The words can either define variables which may be used for creating their spice-model (See below, in "Section: Spice")
+or they define the position of a node (See below, in "Section: Symbol").
+
+Since the input format of qucs is very strict and does not allow logical Elements,
+this section is not analyzed logically
+
+* Not all sch-files are for qucs or compatible to that. For example, KiCad's EESCHEMA also uses
+.sch files to describe their schematic, but uses a different format. 
+** These "words" can also just be one character or a combination of caracters. It just needs to be unique string to
+define the variable. It may NOT contain white Spaces; Underscore lines "_" are allowed.
+
+
+additional info to qucs_sch:
+----------------------------
+For Qucs files there are two following constraints to make the alib-file compatible to QUCS-output:
+
+1: the first nine elements are always the type, followed by eight place holders:
+These place holders must always be "[name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate]" 
+
+DO NOT replace these place holders by a value. AMizer finds out itself which value is filled for these place holders.
+
+for example a simple Resistor starts with:
+R [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate] 
+
+The first element is the ngspice type of the component. In this example "R" for resistor. For other types see "ngspice element types" in ngspice manual
+[name] is name of the component
+[active] defines whether this component is active (1) or not active (0)
+[xpos] is the x position of the center of the component
+[ypos] is the y position of the center of the component. Center is where relative Coordinates of the component are (0|0)
+[xtext] is the relative x-coordinate of the text for this component
+[ytext] is the relative y-coordinate of the text for this component
+[mirrorx] defines whether this component is mirrored on the x-axis. Is either 0 or 1.
+[rotate] defines how often this component is turned counter clockwise. Is either 0 or 1 or 2 or 3.
+
+
+After these first basic informations there may follow additional informations.
+These additional informations are specific for each type of component.
+If there is a word for example [xy] and a second word with the same identifier plus the ending "_v" ,
+(in this example [xy_v]) then this second word defines whether the first word shall be shown on the schematics:
+if [xy_v] is 1, then [xy] is shown
+if [xy_v] is 0, then [xy] is not shown. 
+other values are not accepted.
+
+Section: eeschema_sch
+=======================
+For KiCad's eeschema the description can be placed(1) in between of the markers <eeschema_sch> and </eeschema_sch>.
+A such description is similar to the eeschema schematic file, or to the eeschema -cache.lib-file.
+As in these files, a component is descibed in some lines, where the first letter of each line describes
+what the rest of that line does:
+	When the first letter is an upper "L",
+		then the next word is supposed to be the type of the component
+	When the first letter is an upper "F",
+		then a number should follow and the descriptor of what is described in the Field of that number
+	Other letters are not allowed and not needed.
+		(For example P is always position, that does not need to be stated again.)
+
+
+For example, the Resistor from eeschema's pspice-library can be described as follows.
+(The comments after the searched value are allowed in code, but make the interpreter a bit slower.)
+<eeschema_sch>
+L pspice:R		  // Declaration: You may use either ":" or "_" to separate "pspice" and "R". 
+F 0 "[name]"        // Fields: 
+F 1 "[value]"       //         The position of each field may be omitted in the description, ...
+F 2 "[footprint]"   //         ... because it is always of the same format and does not ...
+F 3 [datasheet]   //         ... need to be stated again.
+</eeschema_sch>
+
+Note that F0, F1 and F2 have some apostrophes around their following variables, but F3 does not in this example:
+By surrounding that variable by apostrophes, you can make sure that the leading and trailing apostrophe are removed
+from the value behind that variable
+
+(1) "can be placed" means, that such a description is useful, but not necessary:
+TODO: beschreibe, was passiert, wenn die description vorhanden ist und wenn nicht!
+
+Section: Spice
+==============
+".alib" contains a section for SPICE-modelling described in the lines between the markers <Spice> and </Spice> :
+This section MAY NOT contain just a model, as the same section in ".lib" files,
+but it contains also the text which defines a component:
+To use variable values for creating the SPICE-model of a component, the "words" from the <qucs_sch> section are used,
+see above. Also the connections from the <Symbol> section are used, see below
+
+logical selections for spice:
+-----------------------------
+in contrary to .lib-files the .alib-file may contain logical operations, and the AMizer is able to solve these:
+So you can use statements out of the buzzwords IF THEN ELSE ENDIF
+
+For example, you may write the following line:
+	some other text, IF [var01] EQUALS "hello" THEN var01 is hello ELSE var01 is not hello ENDIF ,more other text
+and AMizer will replace that line by: 
+	some other text, var01 is hello ,more other text
+or by:
+	some other text, var01 is not hello ,more other text
+
+An other example, you may also write:
+	some other text, IF [var02] THENvar02 existsELSEvar02 doesn't existENDIF, more other text
+and AMizer will replace that line by:
+	some other text, var02 exists, more other text
+or by
+	some other text, var02 doesn't exist,more other text
+depending on whether var02 is defined as a variable that is not empty and not "null". 
+
+ATTENTION: Be aware that before and after each of these buzzwords there must be an empty space, 
+a new line or a tab is not sufficient!
+
+additional info to Spice section:
+---------------------------------
+if a text of the Spice section is between "ifval" markers <ifval> and </ifval>
+then this part will only be written, if the (first) word between these markers describes a numerical value.
+The markers themselves will not be written. 
+
+Section: Symbol
+===============
+The <Symbol> section is similar to ".lib", but the connections are defined in cornered brackets "[" and "]".
+These connections have a unique word which are used to build their SPICE Model, see section above.
+The AMizer algorithm which finds out the drawing elements and the connections searches by lines so please
+make an own line for each drawing element or connection.
+
+Not used Sections
+=================
+It does not contain a <DefaultSymbol>, every described component shall have its own and unique symbol.
+Also the <Model> section is not needed here, since in ".lib" files the <Model> describes a netlist for Qucsator.
+Qucsator is not used in AMizer, AMizer uses SPICE.

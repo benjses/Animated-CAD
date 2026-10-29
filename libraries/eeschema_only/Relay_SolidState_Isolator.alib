@@ -1,0 +1,229 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+<Component>
+    <Description>
+        Isolator.
+    </Description>
+    <eeschema_sch>
+        L Isolator:4N25
+        ALIAS Isolator:4N26
+        DEFINE [rel_CTR] 1
+    </eeschema_sch>
+    <eeschema_sch>
+        L Isolator:4N27
+        ALIAS Isolator:4N28
+        DEFINE [rel_CTR] 0.5
+    </eeschema_sch>
+    <Spice>
+        // ---- subckt ----
+        * 6-pin DIP: pin #1   #2   #4   #5   #6
+        *		          |    |    |    |    |
+        .subckt A4N25     pin1 pin2 pin4 pin5 pin6 rel_CTR=[rel_CTR]
+        *		Motorola	pid=4N25
+        *		88-01-04 pwt
+        *		88-01-18 pwt	rework Cje approximation
+
+        * The data sheet used for this model is from Motorola: it was the most
+        * complete for DC and switching parameters, and is was easy to find the
+        * component IR-LED and phototransistor as separate devices for further
+        * specifications.
+        *
+        d_MainLED	pin1 pin2	MainLED
+        d_PhotoLED	pin1 1		PhotoLED .001
+        v_PhotoLED	1 pin2		0
+        *
+        f_TempComp	0 2		v_PhotoLED 1.7
+        r_TempComp	2 0		TempComp {rel_CTR}
+        *
+        g_BaseSrc	5 6 2 0		.9
+        q_PhotoBJT	5 6 4	PhotoBJT
+        r_C		5 pin5		.1
+        r_B		6 pin6		.1
+        r_E		4 pin4		.1
+        *
+        * Since active devices dominate pin-to-pin capacitance on each "side" of the
+        * optocoupler, isolation is modeled by identical capacitances and resistances
+        * linked to a common point; this gives isolation of .5pF and 1E+11 ohms
+        c_1		pin1 7		.4p
+        r_1		pin1 7		.12T
+        c_2		pin2 7		.4p
+        r_2		pin2 7		.12T
+        c_4		pin4 7		.4p
+        r_4		pin4 7		.12T
+        c_5		pin5 7		.4p
+        r_5		pin5 7		.12T
+        c_6		pin6 7		.4p
+        r_6		pin6 7		.12T
+        *
+        * Similar to Motorola MLED15.
+        .model MainLED  D(Is=10.01e-21 Rs=2.049 Ikf=11.84 N=1.053 Xti=3 Cjo=40p M=.34 
+        +                Vj=.75 Isr=30n Nr=3.8 Bv=6 Ibv=100u Tt=.5u)
+
+        * Models photon generation: same as MainLED except no AC effects, no breakdown.
+        .model PhotoLED D(Is=1.1p Rs=.66 Ikf=30m N=1.9 Xti=3 Cjo=0   M=.34 Vj=.75
+        +		Isr=30n Nr=3.8 Bv=0 Tt=0)
+
+        * Temperature compensation for system: 1.38x @ -55'C, .54x @ +100'C, all @ 10mA
+        * Note: the photo BJT has its own temperature corrections, which must be kept
+        * as the transistor is electrically available.
+        .model TempComp	RES(R=1 Tc1=-11.27m Tc2=43.46u)
+        *
+        * Similar to Motorola MDR3050; Hfe=325 @ Ic=500uA, Vce=5V
+        * Use beta variation (w/Parts) to model change in current-transfer ratio (CTR).
+        * Hand adjust reverse beta (Br) to match saturation characteristics.
+        * Set Isc to model dark current.
+        * Hand adjust Cjc to match fall time @ Ic=10mA (which yields rise time, too).
+        * Hand adjust reverse transit-time (Tr) to match storage time @ Ic=10mA.
+        * Delay time set by LED I-V and C-V characteristics; set Cje to 25% of Cjc,
+        * inspection of phototransistor chip layouts show the emitter area is 20%-25%
+        * that of the collector area.  The same layouts show that base resistance is
+        * made negligible by design; also, the operating currents are small.
+        * Hand adjust forward transit-time (Tf) to match MDR3050 pulse data.  Check
+        * against 4N25 frequency response (Fig 11, 12).
+        .model PhotoBJT NPN(Is=10f Xti=3 Vaf=60
+        +		Bf=400 Ne=3.75 Ise=580p Ikf=.26 Xtb=1.5
+        +		Br=.04 Nc=2    Isc=3.5n
+        +		Cjc=10p  Mjc=.3333 Vjc=.75 Tr=88u
+        +		Cje=2.5p Mje=.3333 Vje=.75 Tf=1.5n)
+        .ends
+        // ---- component ----
+        X_[individual] [pin1] [pin2] [pin4] [pin5] [pin6] A4N25
+    </Spice>
+    <eeschema_symbol>
+      (rectangle (start -5.08 3.81) (end 5.08 -3.81)
+        (stroke (width 0.254) (type default) (color 0 0 0 0))
+        (fill (type background))
+      )
+      (polyline
+        (pts
+          (xy -3.81 -0.635)
+          (xy -2.54 -0.635)
+        )
+        (stroke (width 0.254) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 2.667 -1.397)
+          (xy 3.81 -2.54)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 2.667 -1.143)
+          (xy 3.81 0)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 3.81 -2.54)
+          (xy 5.08 -2.54)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 3.81 0)
+          (xy 5.08 0)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 2.667 -0.254)
+          (xy 2.667 -2.286)
+          (xy 2.667 -2.286)
+        )
+        (stroke (width 0.3556) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -5.08 -2.54)
+          (xy -3.175 -2.54)
+          (xy -3.175 2.54)
+          (xy -5.08 2.54)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -3.175 -0.635)
+          (xy -3.81 0.635)
+          (xy -2.54 0.635)
+          (xy -3.175 -0.635)
+        )
+        (stroke (width 0.254) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 3.683 -2.413)
+          (xy 3.429 -1.905)
+          (xy 3.175 -2.159)
+          (xy 3.683 -2.413)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 5.08 2.54)
+          (xy 1.905 2.54)
+          (xy 1.905 -1.27)
+          (xy 2.54 -1.27)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -0.635 -0.508)
+          (xy 0.635 -0.508)
+          (xy 0.254 -0.635)
+          (xy 0.254 -0.381)
+          (xy 0.635 -0.508)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -0.635 0.508)
+          (xy 0.635 0.508)
+          (xy 0.254 0.381)
+          (xy 0.254 0.635)
+          (xy 0.635 0.508)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+      (pin passive line (at -7.62 2.54 0) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at -7.62 -2.54 0) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 7.62 -2.54 180) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "4" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 7.62 0 180) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "5" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 7.62 2.54 180) (length 2.54)
+        (name "~" (effects (font (size 1.27 1.27))))
+        (number "6" (effects (font (size 1.27 1.27))))
+      )
+    </eeschema_symbol>
+</Component>

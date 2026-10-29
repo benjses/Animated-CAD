@@ -1,0 +1,50 @@
+<Component>
+    <Description>
+    IF [language] EQUAL_TO de THEN
+        Ein Metall-Oxid-Halbleiter-Feldeffekttransistor, kurz MOSFET.
+        Dieses Bauteil hat vier verbindungen, aber zwei davon - bulk und source - sind am gemeinsamen Pin.
+    ELSE
+        A metal oxide semiconducting field effect transistor, short MOSFET.
+        This component has four connections, but two of them - bulk and source - are on the same pin.
+    ENDIF
+    </Description>
+    <eagle_sch>
+        L FET_N
+    </eagle_sch>
+    <eagle_symbol>
+			<pin name="G" x="-10.16" y="0" length="middle"/>
+			<pin name="D" x="5.08" y="12.7" length="middle" rot="R270"/>
+			<pin name="S" x="5.08" y="-12.7" length="middle" rot="R90"/>
+			<pin name="B" x="5.08" y="-12.7" length="point" rot="R90"/> // bulk connection, on same position as source.
+			<wire x1="-1.016" y1="5.08" x2="-1.016" y2="0" width="0.254" layer="94"/>
+			<wire x1="-1.016" y1="0" x2="-1.016" y2="-5.08" width="0.254" layer="94"/>
+			<wire x1="1.27" y1="5.842" x2="1.27" y2="4.064" width="0.254" layer="94"/>
+			<wire x1="1.27" y1="4.064" x2="1.27" y2="-4.064" width="0.254" layer="94"/>
+			<wire x1="1.27" y1="-4.064" x2="1.27" y2="-6.096" width="0.254" layer="94"/>
+			<wire x1="5.08" y1="4.064" x2="1.27" y2="4.064" width="0.254" layer="94"/>
+			<wire x1="5.08" y1="4.064" x2="5.08" y2="7.62" width="0.1524" layer="94"/>
+			<wire x1="5.08" y1="-4.064" x2="5.08" y2="-7.62" width="0.1524" layer="94"/>
+			<wire x1="4.572" y1="-4.064" x2="1.27" y2="-4.064" width="0.254" layer="94"/>
+			<wire x1="4.572" y1="-4.064" x2="3.81" y2="-3.302" width="0.254" layer="94"/>
+			<wire x1="4.572" y1="-4.064" x2="3.81" y2="-4.826" width="0.254" layer="94"/>
+			<wire x1="4.572" y1="-4.064" x2="5.08" y2="-4.064" width="0.254" layer="94"/>
+			<wire x1="-5.08" y1="0" x2="-1.016" y2="0" width="0.254" layer="94"/>
+			//<circle x="2.032" y="0" radius="7.228965625" width="0.254" layer="94"/>
+    </eagle_symbol>
+    <Spice>
+        .model MDL_NFET nmos (vto=2 kp=4 rd=21.2m is=10p )
+        M_[name] [D] [G] [S] [B] MDL_NFET
+    </Spice>
+</Component>
+
+<Component>
+    <Description>
+        A ground flag. Every circuit needs at least one of these in order to define which node is at the reference potential, at zero volt.
+    </Description>
+    <eagle_sch>
+        L GND
+    </eagle_sch>
+    <Spice>
+     [0] connect 0
+    </Spice>
+</Component>

@@ -1,0 +1,470 @@
+// All texts are presented AS IS and the provider of this library does not provide any liability for any consequences resulting from using it in any way.
+// library for digital components, such as AND-Gates. 
+// Contains components, which are for the 74xx and 74xGxx-libraries in EEschema 
+// The following component descriptions are idealized descriptions of logic components.
+// They do not rely on the (most often restricted) informations from the suppliers of these components.
+// Therefor, this library is in public domain: you may use it, change it, copy it, share it, even sell it.
+// written by Benedikt Sessler for Circuit Navigation System.
+
+<Component>
+	<Description>
+		74HC00 2-input NAND gate.
+		This component has an external power source block (Unit 5 or unit E).
+		You can set the power block to supply this component by 
+		giving the power block the same value as you give to the component.
+	</Description>
+	<eeschema_sch>
+		L 74xx:74HC00
+		ALIAS 74xx:74LS00 74xx:74LS01 74xx:7400 74xx:74HCT00
+		F0 [name]
+		F1 [value] 
+		F2 [footprint] 
+		F3 [datasheet] 
+	</eeschema_sch>
+	<eeschema_symbol>
+		IF [eeschema_u_n] EQUAL_TO 5 THEN // Block Unit E =5 is VCC/GND connection block
+			<SET_CONNECTION [value]_vcc 0 -500> 
+			<SET_CONNECTION [value]_gnd 0 500> 
+
+			<.PortSym 0 -500 [pin_vcc] 0><Line 0 -500 0 200 #000080 2 1>
+			<.PortSym 0 500 [pin_gnd] 0><Line 0 500 0 -200  #000080 2 1>
+			<Rectangle -200 -300 400 600 #000080 2 1 #000080 1 0>
+
+
+			<Text -150 -40 60 #888888 0 [value]>
+			<Text -150  40 60 #888888 0 "Source">
+			<Text -60 -230 60 #888888 0 "VCC">
+			<Text -60  230 60 #888888 0 "GND">
+		ELSE 
+			// get distant connections from above:
+			<.PortSym GET_CONNECTION [value]_vcc>
+			<.PortSym GET_CONNECTION [value]_gnd>
+			
+			//normal drawing:
+			// Common part for 2-input logic elements:
+			<Rectangle -200 -120 400 240 #000080 2 1 #000080 1 0>
+			<.PortSym -300 -100 [pinA] 0><Line -300 -100 100 0 #000080 2 1>
+			<.PortSym -300 100 [pinB] 0><Line -300 100 100 0 #000080 2 1>
+			<.PortSym 300 0 [pout] 0><Line 300 0 -100 0 #000080 2 1>
+			// Individual part:
+			<Text -150 -60 60 #000080 0 "NAND">
+			<Text -150 10 50 #888888 0 "74xx00">
+        ENDIF
+	</eeschema_symbol>
+	<Spice>
+        IF [eeschema_u_n] EQUAL_TO 5 THEN 
+			R_[individual] [pin_vcc] [pin_gnd] 1e6
+		ELSE
+			// Model - Declaration:
+			.subckt 74HC00 inA inB vpos vneg out
+			.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+			.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+			
+			//Model - NAND:
+			//name drain gate source bulk type
+			mospHA out   inA  vpos   vpos mdl_MOSP
+			mospHB out   inB  vpos   vpos mdl_MOSP
+			mosnLA nab   inA  vneg   vneg mdl_MOSN
+			mosnLB out   inB  nab    nab  mdl_MOSN
+			
+			.ends
+			// component
+			X_[name] [pinA] [pinB] [value]_vcc [value]_gnd [pout] 74HC00
+        ENDIF
+	</Spice>
+</Component>
+
+<Component>
+	<Description>
+		74HC02 2-input NOR gate.
+		This component has an external power source block (Unit 5 or unit E).
+		You can set the power block to supply this component by 
+		giving the power block the same value as you give to the component.
+	</Description>
+	<eeschema_sch>
+		L 74xx:74HC02
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000142824DS02/datenblatt-142824-nexperia-74hc02d652-logik-ic-gate-und-inverter-nor-gate-74hc-soic-14.pdf
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fnexperia-74hc02d-652-logik-ic-gate-und-inverter-nor-gate-74hc-soic-14-142824.html</url>
+			<title>74HC02D NOR Gate</title>
+			<detail>Nexperia 74HC02D,652 Logik IC - Gate and Inverter NOR-Gate 74HC SOIC-14 at Conrad electronic<detail>
+		</link>
+</purchase>
+	<eeschema_symbol>
+		IF [eeschema_u_n] EQUAL_TO 5 THEN // Block Unit E=5 is VCC/GND connection block
+			<SET_CONNECTION [value]_vcc 0 -500> 
+			<SET_CONNECTION [value]_gnd 0 500> 
+			
+			//normal drawing:
+			<.PortSym 0 -500 [pin_vcc] 0><Line 0 -500 0 200 #000080 2 1>
+			<.PortSym 0 500 [pin_gnd] 0><Line 0 500 0 -200  #000080 2 1>
+			<Rectangle -200 -300 400 600 #000080 2 1 #000080 1 0>
+
+			<Text -150 -40 60 #888888 0 [value]>
+			<Text -150  40 60 #888888 0 "Source">
+			<Text -60 -230 60 #888888 0 "VCC">
+			<Text -60  230 60 #888888 0 "GND">
+		ELSE 
+			// get distant connections from above:
+			<.PortSym GET_CONNECTION [value]_vcc>
+			<.PortSym GET_CONNECTION [value]_gnd>
+			
+			//normal drawing:
+			// Common part for 2-input logic elements:
+			<Rectangle -200 -120 400 240 #000080 2 1 #000080 1 0>
+			<.PortSym -300 -100 [pinA] 0><Line -300 -100 100 0 #000080 2 1>
+			<.PortSym -300 100 [pinB] 0><Line -300 100 100 0 #000080 2 1>
+			<.PortSym 300 0 [pout] 0><Line 300 0 -100 0 #000080 2 1>
+			// Individual part:
+			<Text -150 -60 60 #000080 0 "NOR">
+			<Text -150 10 50 #888888 0 "74HC02">
+        ENDIF
+	</eeschema_symbol>
+	<Spice>
+     IF [eeschema_u_n] EQUAL_TO 5 THEN 
+			R_[individual] [pin_vcc] [pin_gnd] 1e6
+     ELSE
+			// Model - Declaration:
+			.subckt 74HC02 inA inB vpos vneg out
+			.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+			.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+			
+			//Model - NOR:
+			//name drain gate source bulk type
+			mospHA nab   inA  vpos   vpos mdl_MOSP
+			mospHB out   inB  nab    nab  mdl_MOSP
+			mosnLA out   inA  vneg   vneg mdl_MOSN
+			mosnLB out   inB  vneg   vneg mdl_MOSN
+			.ends
+			// component
+			X_[name] [pinA] [pinB] [value]_vcc [value]_gnd [pout] 74HC02
+		ENDIF
+	</Spice>
+</Component>
+
+<Component>
+	<Description>
+		74HC04 Hex Inverter (a normal NOT gate)
+		This component has an external power source block (Unit 7 or unit G).
+		You can set the power block to supply this component by 
+		giving the power block the same value as you give to the component.
+	</Description>
+	<eeschema_sch>
+		L 74xx:74HC04
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000144614DS02/datenblatt-144614-nexperia-74hct04d652-logik-ic-inverter-inverter-74hct-so-14.pdf
+	</eeschema_sch>
+	<eeschema_sch>
+		L 74xx:74AHC04
+		F0 [name]
+		F1 [value]
+		F2 [footprint]
+		F3 [datasheet]
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fnexperia-74hct04d-652-logik-ic-inverter-inverter-74hct-so-14-144614.html</url>
+			<title>74HCT Inverter</title>
+			<detail>An inverter of type Nexperia 74HCT04D at Conrad electronic</detail>
+		</link>
+</purchase>
+	
+	<eeschema_symbol>
+		IF [eeschema_u_n] EQUAL_TO 7 THEN // [eeschema_u_n] is the Block type number in the U line of eeschema-sch-files. Here, 7 is the block type G, which is the source block. 
+			// create distant connections for other blocks, see below:
+			<SET_CONNECTION [value]_vcc 0 -500> 
+			<SET_CONNECTION [value]_gnd 0 500> 
+			
+			//normal drawing:
+			<.PortSym 0 -500 [pin_vcc] 0><Line 0 -500 0 200 #000080 2 1>
+			<.PortSym 0 500 [pin_gnd] 0><Line 0 500 0 -200  #000080 2 1>
+			<Rectangle -200 -300 400 600 #000080 2 1 #000080 1 0>
+
+			<Text 0 0 60 #888888 0 [value]>
+			
+			<Text 0 -230 60 #888888 0 "VCC">
+			<Text 0  230 60 #888888 0 "GND">
+		ELSE // blocks other than G. These are the actual inverters
+			
+			// get distant connections from above:
+			<.PortSym GET_CONNECTION [value]_vcc>
+			<.PortSym GET_CONNECTION [value]_gnd>
+			//normal drawing:
+			// Common part for 1-input logic elements:
+			<Rectangle -200 -120 400 240 #000080 2 1 #000080 1 0>
+			<.PortSym -300 0 [pin] 0><Line -300 0 100 0 #000080 2 1>
+			<.PortSym 300 0 [pout] 0><Line 300 0 -60 0 #000080 2 1>
+			// Individual part:
+			IF [rotation] EQUAL_TO 1 || [rotation] EQUAL_TO 3 THEN
+                <Text -50 0 60 #000080 0 "=1">
+                <Text 0 0 40 #888888 0 "[value]">
+                <Text 40 0 40 #888888 0 "Type [eeschema_u_n]">
+			ELSE
+                <Text 0 -50  60 #000080 0 "=1">
+                <Text 0 0 40 #888888 0 "[value]>
+                <Text 0 40 40 #888888 0 "Type [eeschema_u_n]">
+            ENDIF
+            <Ellipse 200 -20 40 40 #000080 2 1 2 1 0>
+		ENDIF 
+	</eeschema_symbol>
+	<Spice>
+			IF [eeschema_u_n] EQUAL_TO 7 THEN 
+				R_[individual] [pin_vcc] [pin_gnd] 1e6
+			ELSE
+				//Model
+				.subckt mdl_74HC04 in vpos vneg out
+				.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+				.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+				rpos vpos out 1e8
+				rneg out vneg 1e8
+				m_inv_p out in vpos vpos mdl_MOSP 
+				m_inv_n out in vneg vneg mdl_MOSN 
+				.ends
+				// component
+				X_[name] [pin] [value]_vcc [value]_gnd [pout] mdl_74HC04
+			ENDIF 
+	</Spice>
+</Component>
+
+<Component>
+	<Description>
+		Inverter, a NOT-Gate.
+	</Description>
+	<eeschema_sch>
+		L 74xGxx:74LVC1GU04DRL
+		ALIAS 74xGxx:NC7SVU04P5X
+		F0 [name]
+		F1 [value]
+		F2 [footprint]
+		F3 [datasheet]
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Flogik-ics-gates-und-inverter-0204409.html%3Ftfo_productType%3DLogik%2520IC%2520-%2520Inverter</url>
+			<title>Overview inverters</title>
+			<detail>An overview of inverters as IC components at Conrad electronic<detail>
+		</link>
+</purchase>
+	<eeschema_symbol>
+			<Rectangle -150 -100 300 200 #000080 2 1 #000080 1 0>
+			<.PortSym -200 0 [pin]  0>  <Line -200 0  50 0 #000080 2 1>
+			<.PortSym  300 0 [pout] 0>  <Line  300 0 -150 0 #000080 2 1>
+			<.PortSym 0 -200 [vpos] 0><Line 0 -200 0 100 #000080 2 1><Text 10 -110 60 #FF0000 0 "+">
+			<.PortSym 0  200 [vneg] 0><Line 0 200 0 -100 #000080 2 1><Text 10  110 60 #0000FF 0 "-">
+			// Individual part:
+			<Text  0 -60 60 #000080 0 "NOT">
+			<Text  0 10 40 #888888 0 "[value]">
+	</eeschema_symbol>
+	<Spice>
+		.subckt mdl_74xGxx_NOT in vpos vneg out
+        .model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+		.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+		//rpos vpos out 1e8
+		//rneg out vneg 1e8
+		m_inv_p out in vpos vpos mdl_MOSP 
+		m_inv_n out in vneg vneg mdl_MOSN 
+		.ends
+		// component
+		X_[name] [pin] [vpos] [vneg] [pout] mdl_74xGxx_NOT
+	</Spice>
+</Component>
+
+
+<Component>
+	<Description>
+		AND - Gate
+	</Description>
+	<eeschema_sch>
+		L 74xGxx:74AHC1G08
+		ALIAS 74xGxx:74AHCT1G08 74xGxx:74AUC1G08 74xGxx:74AUP1G08 74xGxx:74LVC1G08 74xGxx:74AUC2G08 74xGxx:74LVC2G08
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/001115521DS00/datenblatt-1115521-nexperia-74hc08d652-logik-ic-gate-and-gate-74hc-so-14.pdf
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fnexperia-74hc08d-652-logik-ic-gate-and-gate-74hc-so-14-1115521.html</url>
+			<title>74HC08D AND-Gate</title>
+			<detail>Nexperia 74HC08D,652 Logik IC - AND-Gate 74HC SO-14 at Conrad electronic</detail>
+		</link>
+</purchase>
+	<eeschema_symbol>
+			<Rectangle -150 -100 300 200 #000080 2 1 #000080 1 0>
+			<.PortSym -300 -50 [pinA] 0><Line -300 -50 150 0 #000080 2 1>
+			<.PortSym -300 50 [pinB] 0><Line -300 50 150 0 #000080 2 1>
+			<.PortSym 250 0 [pout] 0><Line 250 0 -100 0 #000080 2 1>
+			<.PortSym 0 -100 [vpos] 0><Text 10 -110 40 #FF0000 0 "+">
+			<.PortSym 0  100 [vneg] 0><Text 10  110 40 #0000FF 0 "-">
+			// Individual part:
+			<Text  0 -60 60 #000080 0 "AND">
+			<Text  0 10 40 #888888 0 "74xGx08">
+	</eeschema_symbol>
+	<Spice>
+		//Model
+		.subckt mdl_74xx08 inA inB vpos vneg out
+		.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+		.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+		//Model - NAND:
+        //name drain gate source bulk type
+		mospHA mid   inA  vpos   vpos mdl_MOSP
+		mospHB mid   inB  vpos   vpos mdl_MOSP
+		mosnLA nab   inA  vneg   vneg mdl_MOSN
+		mosnLB mid   inB  nab    nab  mdl_MOSN
+		//Inverter:
+		m_invP out   mid vpos    vpos mdl_MOSP 
+		m_invN out   mid vneg    vneg mdl_MOSN 
+		.ends
+		// component
+		X_[name] [pinA] [pinB] [vpos] [vneg] [pout] mdl_74xx08
+	</Spice>
+</Component>
+
+<Component>
+	<Description>
+		OR - Gate
+		(This component has its own VCC and GND connections, it does not need an external source block.)
+		This component is in public domain, written by Benedikt Sessler for Circuit Navigation System
+	</Description>
+	<eeschema_sch>
+		L 74xGxx:74AHC1G32
+		ALIAS 74xGxx:74AHCT1G32 74xGxx:74AUC1G32 74xGxx:74AUP1G32 74xGxx:74LVC1G32 74xGxx:74AUC2G32 74xGxx:74LVC2G32
+		F0 [name]
+		F1 [value]
+		F2 [footprint]
+		F3 [datasheet]
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fnexperia-74hc32d-652-logik-ic-gate-or-gate-74hc-so-14-1115554.html</url>
+			<title>74HC32D OR-gate</title>
+			<detail>Nexperia 74HC32D,652 Logik IC -  OR-Gate 74HC - SO-14 package - at Conrad electronic</detail>
+		</link>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fmm74hct32m-logik-ic-gate-und-inverter-or-gate-74hct-soic-14-144738.html</url>
+			<title>MM74HCT32M OR-Gate</title>
+			<detail>MM74HCT32M Logik IC - Gate und Inverter OR-Gate 74HCT SOIC-14package - at Conrad electronic</detail>
+		</link>	
+    </purchase>
+	<eeschema_symbol>
+			<Rectangle -150 -100 300 200 #000080 2 1 #000080 1 0>
+			<.PortSym -300 -50 [pinA] 0><Line -300 -50 150 0 #000080 2 1>
+			<.PortSym -300 50 [pinB] 0><Line -300 50 150 0 #000080 2 1>
+			<.PortSym 250 0 [pout] 0><Line 250 0 -100 0 #000080 2 1>
+			<.PortSym 0 -100 [vpos] 0><Text 10 -110 40 #FF0000 0 "+">
+			<.PortSym 0  100 [vneg] 0><Text 10  110 40 #0000FF 0 "-">
+			// Individual part:
+			<Text  0 -60 60 #000080 0 "OR">
+			<Text  0 10 40 #888888 0 "74xx32">
+	</eeschema_symbol>
+	<Spice>
+		//Model
+		.subckt mdl_74xx32 inA inB vpos vneg out
+		.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+		.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+		
+		//Model - NOR:
+        //name drain gate source bulk type
+		mospHA nab   inA  vpos   vpos mdl_MOSP
+		mospHB mid   inB  nab    nab  mdl_MOSP
+		mosnLA mid   inA  vneg   vneg mdl_MOSN
+		mosnLB mid   inB  vneg   vneg mdl_MOSN
+		
+		//Inverter:
+		m_invP out   mid vpos    vpos mdl_MOSP 
+		m_invN out   mid vneg    vneg mdl_MOSN 
+		.ends
+		// component
+		X_[name] [pinA] [pinB] [vpos] [vneg] [pout] mdl_74xx32
+	</Spice>
+</Component>
+
+<Component>
+	<Description>
+		NAND - Gate
+		(This component has its own VCC and GND connections, it does not need an external source block.)
+		This component is in public domain, written by Benedikt Sessler for Circuit Navigation System
+	</Description>
+	<eeschema_sch>
+		L 74xGxx:74AHC1G00
+		ALIAS 74xGxx:74AHCT1G00 74xGxx:74AUC1G00 74xGxx:74AUP1G00 74xGxx:74LVC1G00 74xGxx:74AUC2G00 74xGxx:74LVC2G00
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000143090DS02/datenblatt-143090-nexperia-74hc132d652-logik-ic-gate-und-inverter-nand-gate-74hc-so-14.pdf
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fnexperia-74hc132d-652-logik-ic-gate-und-inverter-nand-gate-74hc-so-14-143090.html</url>
+			<title>74HC132D NAND-Gate</title>
+			<detail>Nexperia 74HC132D,652 Logik IC - Gate und Inverter NAND-Gate 74HC SO-14 - at Conrad Electronic</detail>
+		</link>
+</purchase>
+	<eeschema_symbol>
+			<Rectangle -150 -100 300 200 #000080 2 1 #000080 1 0>
+			<.PortSym -300 -50 [pinA] 0><Line -300 -50 150 0 #000080 2 1>
+			<.PortSym -300 50 [pinB] 0><Line -300 50 150 0 #000080 2 1>
+			<.PortSym 250 0 [pout] 0><Line 250 0 -100 0 #000080 2 1>
+			<.PortSym 0 -100 [vpos] 0><Text 10 -110 40 #FF0000 0 "+">
+			<.PortSym 0  100 [vneg] 0><Text 10  110 40 #0000FF 0 "-">
+			// Individual part:
+			<Text 0 -60 60 #000080 0 "NAND">
+			<Text 0 10 40 #888888 0 "74xx00">
+	</eeschema_symbol>
+	<Spice>
+		//Model
+		.subckt mdl_74xx00 inA inB vpos vneg out
+		.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+		.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+		//Model - NAND:
+        //name drain gate source bulk type
+		mospHA out   inA  vpos   vpos mdl_MOSP
+		mospHB out   inB  vpos   vpos mdl_MOSP
+		mosnLA nab   inA  vneg   vneg mdl_MOSN
+		mosnLB out   inB  nab    nab  mdl_MOSN
+		.ends
+		// component
+		X_[name] [pinA] [pinB] [vpos] [vneg] [pout] mdl_74xx00
+	</Spice>
+</Component>
+
+<Component>
+	<Description>
+		NOR - Gate
+		(This component has its own VCC and GND connections, it does not need an external source block.)
+		This component is in public domain, written by Benedikt Sessler for Circuit Navigation System
+	</Description>
+	<eeschema_sch>
+		L 74xGxx:74AHC1G02
+		ALIAS 74xGxx:74AHCT1G02 74xGxx:74AUC1G02 74xGxx:74AUP1G02 74xGxx:74LVC1G02 74xGxx:74AUC2G02 74xGxx:74LVC2G02
+	</eeschema_sch>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fnexperia-74hc02d-652-logik-ic-gate-und-inverter-nor-gate-74hc-soic-14-142824.html</url>
+			<title>74HC02D NOR-Gate</title>
+			<detail>Nexperia 74HC02D,652 Logik IC - Gate and Inverter NOR-Gate - SOIC-14 package - at Conrad electronic</detail>
+		</link>
+    </purchase>
+	<eeschema_symbol>
+			<Rectangle -150 -100 300 200 #000080 2 1 #000080 1 0>
+			<.PortSym -300 -50 [pinA] 0><Line -300 -50 150 0 #000080 2 1>
+			<.PortSym -300 50 [pinB] 0><Line -300 50 150 0 #000080 2 1>
+			<.PortSym 250 0 [pout] 0><Line 250 0 -100 0 #000080 2 1>
+			<.PortSym 0 -100 [vpos] 0><Text 10 -110 40 #FF0000 0 "+">
+			<.PortSym 0  100 [vneg] 0><Text 10  110 40 #0000FF 0 "-">
+			// Individual part:
+			<Text  0 -60 60 #000080 0 "NOR">
+			<Text  0 10 40 #888888 0 "74xx02">
+	</eeschema_symbol>
+	<Spice>
+		//Model
+		.subckt mdl_74xx02 inA inB vpos vneg out
+		.model mdl_MOSP PMOS KP=1.0E-5 VTO=-1.0 LAMBDA=0.05 W=5U L=1U
+		.model mdl_MOSN NMOS KP=2.5E-5 VTO=1.0  LAMBDA=0.05 W=5U L=1U
+		
+		//Model - NOR:
+        //name drain gate source bulk type
+		mospHA nab   inA  vpos   vpos mdl_MOSP
+		mospHB out   inB  nab    nab  mdl_MOSP
+		mosnLA out   inA  vneg   vneg mdl_MOSN
+		mosnLB out   inB  vneg   vneg mdl_MOSN
+		.ends
+		// component
+		X_[name] [pinA] [pinB] [vpos] [vneg] [pout] mdl_74xx02
+	</Spice>
+</Component>

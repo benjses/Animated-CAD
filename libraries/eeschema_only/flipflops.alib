@@ -1,0 +1,602 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+// TODO This model contains flipflops, but the model is idealized.
+// It contains a model for each flipflop type [fftype], but further distinction is not yet done.
+// That further distinction can be: Overcurrent model, areas of undefined input voltages, transition times and some more.
+
+// -> So for the users: Please be aware that there are the differences between the real components and the idealized model
+// -> So for the jurists: this library is presented AS IS. We are not liable of any consequences resulting from it in any way.
+// -> So for the helping hands: there is still a lot TODO in this library to make more realistic models:
+//      Someone who has a more realistic model which also works reliably in ngspice is very welcome to add it to the library
+//      also you may of course contact us.
+
+<Component>
+    <Description>
+        A flipflop.
+        Can be a D-flipflop or a JK-Flipflop, depending on selected model.
+        
+        Some models of this type have an external power block, this is exactly when the parameter [powerblock] exists.
+        The parameter is a number, which indicates, which unit of that model is the power block.
+        All flipflops together only need one such powerblock.
+    </Description>
+    <eeschema_sch>
+        L 74xGxx:74AUC1G79
+        ALIAS 74xGxx:74AUC2G79 74xGxx:74LVC2G79 74xGxx:74LVC1G79 74xGxx:74AUP1G79
+        DEFINE [fftype] _dup_cdn_vccmu_gndmd_qup_ // d up position, clock down position, vcc middle up, gnd middle down, q up position
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xGxx:74AUC1G80
+        ALIAS 74xGxx:74AUC2G80 74xGxx:74LVC2G80 74xGxx:74LVC1G80 74xGxx:74AUP1G80
+        DEFINE [fftype] _dup_cdn_vccmu_gndmd_nqup_ //d up position, clock down position, vcc middle up, gnd middle down, notq up position
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xGxx:74LVC2G74
+        ALIAS 74xGxx:74AUC1G74 74xGxx:74AUP1G74
+        DEFINE [fftype] _dup_cdn_vcclu_gndld_qup_nqdn_notPREmupl_notCLRmdnl_ //d up position, clock down position, vcc at left-up corner, q up position, gnd at left-down corner, notPRESET at middle-up line, notCLEAR at middle-down line
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xGxx:74LVC1G175
+        DEFINE [fftype] _dup_cmid_notCLRmdnl_qup_vccmu_gndld_ //d up position, clock middle position, notCLEAR at line middle down, vcc at middle up, gnd at left-down corner
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xGxx:74LVC1G374
+        DEFINE [fftype] _dup_cdn_vccmu_gndmd_qup_notOEd_ //d up position, clock down position, vcc middle up, gnd middle down, notOE (=notOutputEnable) down position
+    </eeschema_sch>
+    <eeschema_sch>
+        L 4xxx:4013
+        DEFINE [fftype] _dup_cmid_RESETmdnl_SETmupl_qup_nqdn_ // d up position, clock middle position, RESET middle down at line, SET middle up at line, q up position, notq down position
+        DEFINE [powerblock] 3
+    </eeschema_sch>
+    <eeschema_sch>
+        L 4xxx:4027
+        DEFINE [fftype] _jup_cmid_kdn_RESETmdnl_SETmupl_qup_nqdn_ //jump up position, clk middle position, kill down position, RESET middle down at line, SET middle up at line, q up position, notq down position
+        DEFINE [powerblock] 3
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xx:74HC74
+        ALIAS L 74xx:74LS74
+        DEFINE [fftype] _dup_cmid_notPREmupl_notCLRmdnl_qup_nqdn_ //d up position, clock middle, notPRESET middle up at line, notCLEAR middle down at line, q up position, notq down position
+        DEFINE [powerblock] 3
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/001115101DS00/datenblatt-1115101-nexperia-74hc74d652-logik-ic-flip-flop-setzen-voreinstellung-und-ruecksetzen-differenzial-soic-14.pdf
+	    DEFINE [conrad_de] nexperia-74hc74d-652-logik-ic-flip-flop-setzen-voreinstellung-und-ruecksetzen-differenzial-soic-14-1115101.html
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xx:74LS73
+        DEFINE [fftype] _jup_cmid_kdn_notCLRmdnl_qup_nqdn_ //jump up position, clock middle position, kill down position, notCLEAR middle up at line, q up position, notq middle down position
+        DEFINE [powerblock] 3
+    </eeschema_sch>
+    <eeschema_sch>
+        L 74xx:74LS76
+        ALIAS 74xx:74LS109 74xx:74LS112 74xx:74LS114
+        DEFINE [fftype] _jup_cmid_kdn_notPREmupl_notCLRmdnl_qup_nqdn_
+        DEFINE [powerblock] 3
+    </eeschema_sch>
+    <eeschema_sch>
+        L 4xxx_IEEE:4013
+        DEFINE [fftype] E4013
+    </eeschema_sch>
+    <eeschema_sch>
+        L 4xxx_IEEE:4027
+        DEFINE [fftype] E4027
+    </eeschema_sch>
+     <purchase>
+		<link>
+		<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Flogik-ics-flip-flop-0204410.html</url>
+		<title>IF [language] EQUAL_TO de THEN Uebersicht Flipflop ELSE Overview flip flopsENDIF</title>
+		<detail>IF [language] EQUAL_TO de THEN Eine Auswahl an Flipflops bei Conrad Electronic. ELSE A collection of flip-flops of various types at conrad electronic.ENDIF</detail>
+		</link>
+		IF [conrad_de] THEN
+		<link>
+		    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2F[conrad_de]</url>
+			<title>component of [model] series</title>
+			<detail>a relais of the [model] series at conrad electronic. Please make sure that you select a matching relais, e.g. make sure that the nominal voltage is correct for your purpose.</detail>
+		</link>
+		ENDIF	
+	</purchase>
+    <eeschema_symbol>
+       DRAW
+        IF ![fftype] THEN 
+            <Dialog type="error" title="missing parameter [fftype] in library">
+                The model called [model] misses the flipflop-type parameter called [fftype] in the flipflops.alib - library.
+                Therefor the component [name] at ([xpos] | [ypos]) is not correctly defined, and can not be used.
+            </Dialog>
+        ENDIF 
+       IF[fftype] STARTS_WITH E40 THEN
+            S -300 250 300 -250 0 1 0 f
+            X VCC 14 0 250 0 D 50 30 0 0 W N
+            T 0      0 200 50 1 0 vcc
+            X GND 7 0 -250 0 U 50 30 0 0 W N
+            T 0     0 -200 50 1 0 gnd
+            IF [fftype] EQUAL_TO E4013 THEN
+                T 0   0 0 50 1 0 4013
+                X D 5 -600 150 300 R 50 50 1 1 I
+                T 0   -250 150 50 1 0 d
+                X C 3 -600 50 300 R 50 50 1 1 I C
+                T 0   -250 50 50 1 0 clk
+                X RESET 4 -600 -50 300 R 50 50 1 1 I
+                T 0       -250 -50 50 1 0 reset
+                X SET 6 -600 -150 300 R 50 50 1 1 I
+                T 0     -250 -150 50 1 0 set
+                X Q 1 600 100 300 L 50 50 1 1 O
+                T 0   250 100 50 1 0 q
+                X notQ 2 600 -100 300 L 50 50 1 1 O I
+                T 0      250 -100 50 1 0 nq
+            ELSEIF [fftype] EQUAL_TO E4027 THEN
+                T 0   0 0 50 1 0 4027
+                X K 5 -600 -100 300 R 50 50 1 1 I
+                T 0   -250 -100 50 1 0 k
+                X J 6 -600 100 300 R 50 50 1 1 I
+                T 0   -250 100 50 1 0 j
+                X C 3 -600 0 300 R 50 50 1 1 I C
+                T 0   -250 0 50 1 0 clk
+                X RESET 4 -600 -200 300 R 50 50 1 1 I
+                T 0       -250 -200 50 1 0 reset
+                X SET 7 -600 200 300 R 50 50 1 1 I
+                T 0     -250 200 50 1 0 set
+                X Q 1 600 150 300 L 50 50 1 1 O
+                T 0   250 150 50 1 0 q
+                X notQ 2 600 -150 300 L 50 50 1 1 O I
+                T 0      250 -150 50 1 0 nq
+            ELSE
+                <Dialog type="error" title="parameter [fftype] is wrong in library">
+                    The model called [model] has an invalid flipflop-type parameter called fftype in the flipflops.alib - library.
+                    that parameter's value is [fftype]
+                    Therefor the component [name] at ([xpos] | [ypos]) is not correctly defined, and can not be used.
+                </Dialog>
+            ENDIF ENDIF
+       ELSEIF [model] STARTS_WITH 74xGxx THEN
+            S -150 150 150 -150 0 1 10 f
+            //Power:
+            IF[fftype]CONTAINS _vcclu_ THEN //vcc at left-up corner
+                    X VCC 8 -150 150 0 U 40 40 1 1 P
+                    T 0     -150 100 60 1 0 +
+            ELSEIF[fftype]CONTAINS _vccmu_ THEN //vcc at mid-up position
+                    X VCC 8 0 150 0 U 40 40 0 1 P
+                    T 0     0 100 60 1 0 +
+            ELSE <Dialog type="error" title= "missing type of vcc connection in library">
+                    The model [model] has not defined the vcc type in its parameter  [fftype].
+                    </Dialog>
+            ENDIF ENDIF
+            
+            IF[fftype]CONTAINS _gndld_ THEN //gnd at left-down corner
+                    X GND 4 -150 -150 0 D 40 40 1 1 W N
+                    T 0     -150 -100 60 1 0 -
+            ELSEIF[fftype]CONTAINS _gndmd_ THEN //gnd at mid-down position
+                    X GND 4 0 -150 0 D 40 40 1 1 W N
+                    T 0     0 -100 60 1 0 -
+            ELSE <Dialog type="error" title= "missing type of gnd connection in library">
+                    The model [model] has not defined the gnd type in its parameter  [fftype].
+                    </Dialog>
+            ENDIF ENDIF
+            //input
+            IF[fftype]CONTAINS _dup_ THEN // d input up position
+                X D 2 -250 100 100 R 40 40 1 1 I
+                T 0   -100 100 50 1 0 d
+            ELSE
+                <Dialog type="error" title= "missing type of din connection in library">
+                    The model [model] has not defined the d-input-type in its parameter  [fftype].
+                </Dialog>
+            ENDIF
+            
+            IF[fftype]CONTAINS _cdn_ THEN //c input down position
+                X C 1 -250 -100 100 R 40 40 1 1 I C
+                T 0   -100 -100 50 1 0 clk
+            ELSEIF[fftype]CONTAINS _cmid_ THEN //c input mid position
+                X C 1 -250 0 100 R 40 40 1 1 I C
+                T 0   -100 0 50 1 0 clk
+            ELSE
+                <Dialog type="error" title= "missing type of clock connection in library">
+                    The model [model] has not defined the clock type in its parameter  [fftype].
+                </Dialog>
+            ENDIF ENDIF
+            //output:
+            IF[fftype]CONTAINS _qup_ THEN //Q at up position
+                X Q 5 250 100 100 L 40 40 1 1 O
+                T 0   100 100 50 1 0 q
+            ELSEIF[fftype]CONTAINS _qdn_ THEN //Q at down position
+                X Q 3 250 -100 100 L 40 40 1 1 O
+                T 0   100 -100 50 1 0 q
+            ENDIF ENDIF
+            
+            IF[fftype]CONTAINS _nqup_ THEN //notQ at up position
+                X notQ 5 250 100 100 L 40 40 1 1 O
+                T 0      100 100 50 1 0 nq
+            ELSEIF[fftype]CONTAINS _nqdn_ THEN //notQ at down position
+                X notQ 3 250 -100 100 L 40 40 1 1 O
+                T 0      100 -100 50 1 0 nq
+            ENDIF ENDIF
+            
+            //additional:
+            IF[fftype]CONTAINS _notPREmupl_ THEN //notPRE mid-up at line
+                X notPRE 7 0 250 100 D 40 25 1 1 I
+                T 0        0 100 50 1 0 nPRE
+            ENDIF
+            IF[fftype]CONTAINS _notCLRmdnl_ THEN//notCLR mid-down at line
+                X notCLR 6 0 -250 100 U 40 25 1 1 I
+                T 0        0 -100 50 1 0 nCLR
+            ENDIF 
+            
+            IF[fftype]CONTAINS _OEd_ THEN //OE at down position
+                X OE 3 250 -100 100 L 40 40 1 1 I
+                T 0    100 -100 50 1 0 oe
+            ELSEIF[fftype]CONTAINS _notOEd_ THEN //notOE at down position
+                X notOE 3 250 -100 100 L 40 40 1 1 I
+                T 0    100 -100 50 1 0 noe
+            ENDIF ENDIF
+       ELSE //models other than 74xGxx have a different format:
+            S -200 200 200 -200 1 1 10 f
+            //Power:
+           IF [powerblock] EQUAL_TO [eeschema_u_n] THEN
+              S -200 -300 200 300 0 1 10 f
+              
+              SET_CONNECTION [flipflopVpos] 0 400 
+              X ff_vpos 1 0 400 100 D 50 50 1 1 P
+              T 0 0 250 80 1 0 vpos
+        
+              SET_CONNECTION [flipflopVneg] 0 -400
+              X ff_vneg 1 0 -400 100 U 50 50 1 1 P
+              T 0 0 -250 80 1 0 vneg 
+              T 0 0 0 60 1 0 flipflop
+           ELSE
+               IF [powerblock] THEN
+                   X GET_CONNECTION [flipflopVpos]
+                   X GET_CONNECTION [flipflopVneg]
+               ENDIF
+               //input:
+               IF[fftype]CONTAINS _dup_ THEN //d input up position
+                   X D 5 -300 100 100 R 50 50 1 1 I
+                   T 0  -160 100 50 1 0 d
+               ELSEIF[fftype]CONTAINS _jup_ THEN //j input up position
+                   X J 5 -300 100 100 R 50 50 1 1 I
+                   T 0  -160 100 50 1 0 j
+               ELSEIF[fftype]CONTAINS _kup_ THEN //k input up position
+                   X K 5 -300 100 100 R 50 50 1 1 I
+                   T 0  -160 100 50 1 0 k
+               ENDIF ENDIF ENDIF
+               
+               IF[fftype]CONTAINS _cmid_ THEN //clock input middle position
+                       X C 3 -300 0 100 R 50 50 1 1 I C
+                       T 0   -160  0 50 1 0 clk
+               ENDIF
+               
+               IF[fftype]CONTAINS _ddn_ THEN //d input down position
+                   X D 5 -300 -100 100 R 50 50 1 1 I
+                   T 0  -160  -100 50 1 0 d
+               ELSEIF[fftype]CONTAINS _jdn_ THEN //j input down position
+                   X J 5 -300 -100 100 R 50 50 1 1 I
+                   T 0  -160  -100 50 1 0 j
+               ELSEIF[fftype]CONTAINS _kdn_ THEN //k input down position
+                   X K 5 -300 -100 100 R 50 50 1 1 I
+                   T 0  -160  -100 50 1 0 k
+               ENDIF ENDIF ENDIF
+               
+               //output:
+               IF[fftype]CONTAINS _qup_ THEN //Q at up position
+                       X Q 1 300 100 100 L 50 50 1 1 O
+                       T 0   160 100 50 1 0 q
+               ELSEIF[fftype]CONTAINS _qdn_ THEN //Q at down position
+                       X Q 2 300 -100 100 L 50 50 1 1 O
+                       T 0   160 -100 50 1 0 q
+               ENDIF ENDIF
+               IF[fftype]CONTAINS _nqdn_ THEN
+                       X notQ 2 300 -100 100 L 50 50 1 1 O
+                       T 0      160 -100 50 1 0 nq
+               ELSEIF[fftype]CONTAINS _nqdup_ THEN
+                       X notQ 1 300 100 100 L 50 50 1 1 O
+                       T 0      160 100 50 1 0 nq
+               ENDIF ENDIF
+               //additional:
+               IF[fftype]CONTAINS _RESETmdnl_ THEN
+                       X RESET 4 0 -300 100 U 50 50 1 1 I
+                       T 0       0 -160 50 1 0 r
+               ELSEIF[fftype]CONTAINS _notCLRmdnl_ THEN
+                       X notCLR 4 0 -300 100 U 50 50 1 1 I
+                       T 0       0 -160 50 1 0 notCLR
+               ENDIF ENDIF
+               IF[fftype]CONTAINS _SETmupl_ THEN
+                       X SET 6 0 300 100 D 50 50 1 1 I
+                       T 0     0 160 50 1 0 s
+               ELSEIF[fftype] CONTAINS _notPREmupl_ THEN
+                       X notPRE 6 0 300 100 D 50 50 1 1 I
+                       T 0     0 160 50 1 0 notPRE
+               ENDIF ENDIF
+           T 0 0 0 50 1 0 [name]
+           ENDIF 
+       ENDIF ENDIF
+       ENDDRAW
+    </eeschema_symbol>
+	    <Default_Values>
+		noValue // no specific value needed for relay types 
+	</Default_Values>
+    <Spice>
+        //---- precompiler----
+        IF[flipflopVpos] THEN DEFINE [VCC] external ENDIF
+        IF[flipflopVneg] THEN DEFINE [GND] external ENDIF
+    
+        //---- model ----
+         IF[powerblock] EQUAL_TO [eeschema_u_n]THEN
+            Rpcc [ff_vpos] [ff_vneg] 100k//simulates power consumption
+        ELSE
+         
+          //    |<---- name of subckt ----->| |<-- D input -->| |<--- J and K inputs --->| |<--- clock --->| |<-- Q output -->| |<-inverted Q output->| |<- asynchronous set (not inverted or inverted)->| |<- asynchronous reset (not inverted or  inverted) ->| |<output enabled (not inverted/inverted->| |+| |- |
+        .subckt flipflop_[individual] IF[D]THENdinENDIF IF[J]&&[K]THENjin kinENDIF IF[C]THENclkENDIF IF[Q]THENqoutENDIF IF[notQ]THENnotqoutENDIF IF[SET]THENsetELSEIF[notPRE]THENpre_invENDIFENDIF  IF[RESET]THENresetELSEIF[notCLR]THENclr_invENDIFENDIF IF[OE]THENoeELSEIF[notOE]THENnoeENDIFENDIF vcc vneg
+
+            //digital model with xspice. converts input into digital value, calculates, and converts output to analog value.
+            .model mdl_a_to_d adc_bridge
+            .model mdl_d_to_a dac_bridge
+            .model mdl_inverter d_inverter
+            
+            //---------- input: analog to digital ----------
+            //clock:
+            IF [C] THEN
+                //a->d    |<-- in --->| |<-out->| |<-model>|
+                A_adc_clk %vd[clk vneg] [dig_clk] mdl_a_to_d
+            ENDIF
+            // asynchronous set:
+            IF[SET]THEN
+                A_adc_set %vd[set vneg] [dig_set] mdl_a_to_d
+            ELSEIF[notPRE]THEN
+                //a->d       |<--- in --->| |<---out--->| |<-model>|
+                A_adc_pre %vd[pre_inv vneg] [dig_not_set] mdl_a_to_d
+                A_inv_pre dig_not_set dig_set mdl_inverter
+            ENDIF ENDIF
+            // asynchronous reset
+            IF[RESET]THEN
+                A_adc_reset %vd[reset vneg] [dig_reset] mdl_a_to_d
+            ELSEIF[notCLR]THEN
+                A_adc_clr %vd[clr_inv vneg] [dig_not_reset] mdl_a_to_d
+                A_inv_clr dig_not_reset dig_reset mdl_inverter
+            ENDIF ENDIF
+            
+            // ----------- processing ------------------------
+            // processes the digital signal values.
+            // Can process types of synchronous types: D, JK
+            // each type can additionally have asynchronous set or reset.
+            
+            //d-flipflop:
+            IF[D]THEN
+                //a->d    |<-- in --->| |<-out->| |<-model>|
+                A_adc_din %vd[din vneg] [dig_din] mdl_a_to_d
+                //process digial input in a d-flip-flop:
+                .model mdl_dff d_dff
+                //    |<data>||<clk>| |<---------------- set ---------------->| |<---------- reset ------------------------>| |<---------- out ---------->| |<----- inverted out ---------->||<model>|
+                a_dff dig_din dig_clk IF[SET]||[notPRE]THENdig_setELSEnullENDIF IF[RESET]||[notCLR]THENdig_resetELSEnullENDIF IF[Q]THENdig_outELSEnullENDIF IF[notQ]THENdig_noutELSEnullENDIF mdl_dff
+            ELSEIF[J]&&[K]THEN
+                
+                A_adc_jin %vd[jin vneg] [dig_jin] mdl_a_to_d
+                A_adc_kin %vd[kin vneg] [dig_kin] mdl_a_to_d
+                
+                .model mdl_jkff d_jkff
+                //    |<jump>| |<kill>||<clk>| |<---------------- set ---------------->| |<---------- reset ------------------------>| |<---------- out ---------->| |<----- inverted out ---------->||<model>|
+                A_jkff dig_jin dig_kin dig_clk IF[SET]||[notPRE]THENdig_setELSEnullENDIF IF[RESET]||[notCLR]THENdig_resetELSEnullENDIF IF[Q]THENdig_outELSEnullENDIF IF[notQ]THENdig_noutELSEnullENDIF mdl_jkff
+                
+            ELSE
+                <Dialog>model type [model] of component [name] is defined as a flipflop. but the pins do not match a model in the library</Dialog>
+            ENDIF ENDIF
+            // -------- output: digital to analog ---------
+            .param rout = 1.0 //output resistance, when enabled
+            .param rdis = 1E9 //output resistance, when disabled
+            .model mdl_swpos sw  ron=1    roff=1E9  vt=0.5
+            .model mdl_swneg sw  ron=1E9  roff=1    vt=0.5
+            .model mdl_sw_oe sw  ron=rout roff=rdis vt=1.0
+            .model mdl_sw_noe sw ron=rdis roff=rout vt=1.0
+            IF[Q]THEN
+                //        dig_in    out    model
+                A_dac_out [dig_out] [out1v] mdl_d_to_a
+                S_pos_qout vcc  qoutpre out1v 0 mdl_swpos
+                S_neg_qout vneg qoutpre out1v 0 mdl_swneg
+                IF[OE]THEN
+                    S_oe qout qoutpre oe vneg mdl_sw_oe
+                ELSEIF[notOE]THEN
+                    S_oe qout qoutpre noe vneg mdl_sw_noe
+                ELSE
+                    R_oe qout qoutpre rout
+                ENDIF ENDIF
+            ENDIF
+            IF[notQ]THEN
+                A_dac_nout [dig_nout] [notout1v] mdl_d_to_a
+                S_pos_notqout vcc  notqoutpre notout1v 0 mdl_swpos
+                S_neg_notqout vneg notqoutpre notout1v 0 mdl_swneg
+                IF[OE]THEN
+                    S_noe notqoutpre notqout oe vneg mdl_sw_oe
+                ELSEIF[notOE]THEN
+                    S_noe notqoutpre notqout noe vneg mdl_sw_noe
+                ELSE
+                    R_noe notqoutpre notqout rout
+                ENDIF ENDIF
+            ENDIF
+            //resistors between vcc and vneg to simulate current consumption:
+            Rvc vcc vneg 1E9
+        .ends
+        //---- component ----
+        //< name of component>| |<-- D input -->| |<--- J and K inputs --->| |<--- clock --->| |<-- Q output ->| |< inverted Q output >| |<- asynchronous set (not inverted  or inverted) ->| |<-- asynchronous reset (not inverted or  inverted) -->| |<-output enabled (not inverted or  inverted ->| |<-- power supply + (external or  internal) -->| |<-power supply minus (external  or internal)->| |<-- name of the subckt --->|
+        X_flipflop_[individual] IF[D]THEN[D]ENDIF IF[J]&&[K]THEN[J] [K]ENDIF IF[C]THEN[C]ENDIF IF[Q]THEN[Q]ENDIF IF[notQ]THEN[notQ]ENDIF IF[SET]THEN[SET]ELSEIF[notPRE]THEN[notPRE]ENDIFENDIF IF[RESET]THEN[RESET]ELSEIF[notCLR]THEN[notCLR]ENDIFENDIF IF[OE]THEN[OE]ELSEIF[notOE]THEN[notOE]ENDIFENDIF IF[flipflopVpos]THEN[flipflopVpos]ELSE[VCC]ENDIF IF[flipflopVneg]THEN[flipflopVneg]ELSE[GND]ENDIF flipflop_[individual]
+        ENDIF
+    </Spice>
+</Component>
+
+<Component>
+    <Description>
+        A multi-D-Flip-Flop with reset.
+    </Description>
+    <eeschema_sch>
+        L 74xx:74AHCT273
+        ALIAS 74xx:74HC273 74xx:74HCT273 74xx:74AHC273 
+    </eeschema_sch>
+    <eeschema_symbol>
+        DRAW
+        S -300 600 300 -600 1 1 10 f
+        X notMr 1 -500 -500 200 R 50 50 1 0 I
+        T 0       -250 -500 60 1 0 ~mr
+        X GND 10 0 -800 200 U 50 50 1 0 W
+        T 0      0 -550 60 1 0 vneg
+        X VCC 20 0 800 200 D 50 50 1 0 W
+        T 0      0 550 60 1 0 vpos
+        X C 11 -500 -400 200 R 50 50 1 0 I C
+        T 0    -250 -400 60 1 0 clk
+        X Q0 2  500  500 200 L 50 50 1 0 O
+        X Q1 5  500  400 200 L 50 50 1 0 O
+        X Q2 6  500  300 200 L 50 50 1 0 O
+        X Q3 9  500  200 200 L 50 50 1 0 O
+        X Q4 12 500  100 200 L 50 50 1 0 O
+        X Q5 15 500  0   200 L 50 50 1 0 O
+        X Q6 16 500 -100 200 L 50 50 1 0 O
+        X Q7 19 500 -200 200 L 50 50 1 0 O
+        T 0     250  500 50 1 0 q0
+        T 0     250  400 50 1 0 q1
+        T 0     250  300 50 1 0 q2
+        T 0     250  200 50 1 0 q3
+        T 0     250  100 50 1 0 q4
+        T 0     250  000 50 1 0 q5
+        T 0     250 -100 50 1 0 q6
+        T 0     250 -200 50 1 0 q7
+        X D0 3  -500  500 200 R 50 50 1 0 I
+        X D1 4  -500  400 200 R 50 50 1 0 I
+        X D2 7  -500  300 200 R 50 50 1 0 I
+        X D3 8  -500  200 200 R 50 50 1 0 I
+        X D4 13 -500  100 200 R 50 50 1 0 I
+        X D5 14 -500  0   200 R 50 50 1 0 I
+        X D6 17 -500 -100 200 R 50 50 1 0 I
+        X D7 18 -500 -200 200 R 50 50 1 0 I
+        T 0     -250  500 50 1 0 d0
+        T 0     -250  400 50 1 0 d1
+        T 0     -250  300 50 1 0 d2
+        T 0     -250  200 50 1 0 d3
+        T 0     -250  100 50 1 0 d4
+        T 0     -250  000 50 1 0 d5
+        T 0     -250 -100 50 1 0 d6
+        T 0     -250 -200 50 1 0 d7
+        IF [rotation] EQUAL_TO 1 || [rotation] EQUAL_TO 3 THEN
+            T 0     0     0   60 1 0 [model]
+            T 0     50     0   60 1 0 [name]
+        ELSE
+            T 0     0     0   60 1 0 [name]
+        ENDIF
+        ENDDRAW
+    </eeschema_symbol>
+    <Spice>
+           //    |<---- name of subckt ----->||<----- D inputs ---->| clk |<---- Q outputs ---->| notreset vcc vneg
+        .subckt flipflop_[individual] d0 d1 d2 d3 d4 d5 d6 d7 clk q0 q1 q2 q3 q4 q5 q6 q7 notreset vcc vneg
+            .model mdl_a_to_d adc_bridge
+            .model mdl_d_to_a dac_bridge
+            .model mdl_inverter d_inverter
+            .model mdl_dff d_dff
+            
+            //clk A->D|<--- in -->| |<-out->| |<-model>|
+            A_adc_clk %vd[clk vneg] [dig_clk] mdl_a_to_d
+            
+            A_adc_reset %vd[notreset vneg] [dig_not_reset] mdl_a_to_d 
+            A_inv_clr dig_not_reset dig_reset mdl_inverter
+        
+            //---------- input: analog to digital ----------
+            A_adc_din0 %vd[d0 vneg] [dig_d0] mdl_a_to_d
+            A_adc_din1 %vd[d1 vneg] [dig_d1] mdl_a_to_d
+            A_adc_din2 %vd[d2 vneg] [dig_d2] mdl_a_to_d
+            A_adc_din3 %vd[d3 vneg] [dig_d3] mdl_a_to_d
+            A_adc_din4 %vd[d4 vneg] [dig_d4] mdl_a_to_d
+            A_adc_din5 %vd[d5 vneg] [dig_d5] mdl_a_to_d
+            A_adc_din6 %vd[d6 vneg] [dig_d6] mdl_a_to_d
+            A_adc_din7 %vd[d7 vneg] [dig_d7] mdl_a_to_d
+            // ----------- processing ------------------------
+            // processes the digital signal values.
+            // Can process types of synchronous types: D, JK
+            // each type can additionally have asynchronous set or reset.
+
+            //process digial input in a d-flip-flop:
+            
+            //     |data| |<clk>| set  |<reset>| |<out>| nout |<model>|
+            a_dff0 dig_d0 dig_clk null dig_reset dig_q0  null mdl_dff
+            a_dff1 dig_d1 dig_clk null dig_reset dig_q1  null mdl_dff
+            a_dff2 dig_d2 dig_clk null dig_reset dig_q2  null mdl_dff
+            a_dff3 dig_d3 dig_clk null dig_reset dig_q3  null mdl_dff
+            a_dff4 dig_d4 dig_clk null dig_reset dig_q4  null mdl_dff
+            a_dff5 dig_d5 dig_clk null dig_reset dig_q5  null mdl_dff
+            a_dff6 dig_d6 dig_clk null dig_reset dig_q6  null mdl_dff
+            a_dff7 dig_d7 dig_clk null dig_reset dig_q7  null mdl_dff
+            
+            // -------- output: digital to analog ---------
+            .param rout = 1.0 //output resistance, when enabled            
+            //         dig_in    out    model
+            A_dac_out0 [dig_q0] [q0_1v] mdl_d_to_a
+            A_dac_out1 [dig_q1] [q1_1v] mdl_d_to_a
+            A_dac_out2 [dig_q2] [q2_1v] mdl_d_to_a
+            A_dac_out3 [dig_q3] [q3_1v] mdl_d_to_a
+            A_dac_out4 [dig_q4] [q4_1v] mdl_d_to_a
+            A_dac_out5 [dig_q5] [q5_1v] mdl_d_to_a
+            A_dac_out6 [dig_q6] [q6_1v] mdl_d_to_a
+            A_dac_out7 [dig_q7] [q7_1v] mdl_d_to_a
+            
+            .model mdl_swpos sw  ron=1    roff=1E9  vt=0.5
+            .model mdl_swneg sw  ron=1E9  roff=1    vt=0.5
+            //  
+            S_pos_qout0 vcc  q0 q0_1v 0 mdl_swpos
+            S_pos_qout1 vcc  q1 q1_1v 0 mdl_swpos
+            S_pos_qout2 vcc  q2 q2_1v 0 mdl_swpos
+            S_pos_qout3 vcc  q3 q3_1v 0 mdl_swpos
+            S_pos_qout4 vcc  q4 q4_1v 0 mdl_swpos
+            S_pos_qout5 vcc  q5 q5_1v 0 mdl_swpos
+            S_pos_qout6 vcc  q6 q6_1v 0 mdl_swpos
+            S_pos_qout7 vcc  q7 q7_1v 0 mdl_swpos
+            
+            S_neg_qout0 vneg q0 q0_1v 0 mdl_swneg
+            S_neg_qout1 vneg q1 q1_1v 0 mdl_swneg    
+            S_neg_qout2 vneg q2 q2_1v 0 mdl_swneg    
+            S_neg_qout3 vneg q3 q3_1v 0 mdl_swneg    
+            S_neg_qout4 vneg q4 q4_1v 0 mdl_swneg    
+            S_neg_qout5 vneg q5 q5_1v 0 mdl_swneg    
+            S_neg_qout6 vneg q6 q6_1v 0 mdl_swneg    
+            S_neg_qout7 vneg q7 q7_1v 0 mdl_swneg
+
+            //resistors between vcc and vneg to simulate current consumption:
+            Rvc vcc vneg 1E9
+
+        .ends 
+        //---- component ----
+        //< name of component>| |<------------- D inputs ------------>| clk |<------------ Q outputs ------------>| reset   vcc   vneg  |<---- name of subckt ----->|
+        X_multiDff_[individual] [D0] [D1] [D2] [D3] [D4] [D5] [D6] [D7] [C] [Q0] [Q1] [Q2] [Q3] [Q4] [Q5] [Q6] [Q7] [notMr] [VCC] [GND] flipflop_[individual]
+    </Spice>
+</Component>
+
+
+<Component>
+    <Description>
+        Alternative spice model for D-flipflop. Does not need xspice subsystem, but fails if the output is linked back to the
+        input. Tested successfully for other circuits, where output does not influence input.
+    </Description>
+    <Spice>
+        //analog model without xspice. 
+        //    advantage=does not need xspice.
+        //    disadvantage=fails to solve when output influences input.
+            
+            //voltage divider creates compare voltage at node ref
+            R1ref vcc ref 1E9
+            R2ref ref vneg 1E9
+            
+            //edge detection of clock
+            IF[C]THEN
+                R_clk clk tp_clk 1
+                C_clk tp_clk vneg [timestep]
+                B_redge rising_edge 0 V=(V(clk) > V(ref) && V(tp_clk) <= V(ref)) ? 1 : 0
+            ENDIF
+            
+            //set-logic:
+            //                |<----- synchronous -D --------------->|  |<------ asynchronous inverted -->|
+            B_set   set   0 V=(V(rising_edge) > 0.5 && V(din) > V(ref)) IF[notPRE]THEN|| (V(pre_inv) < V(ref))ENDIF ? 1 : 0
+            B_reset reset 0 V=(V(rising_edge) > 0.5 && V(din) < V(ref)) IF[notCLR]THEN|| (V(clr_inv) < V(ref))ENDIF ? 1 : 0
+            //                |<-- set --->|  || |<--- hold -->| && |<- not reset->|
+            B_isset isset 0 V=(V(set) > 0.5 ) || (V(isset) > 0.5 && V(reset) < 0.5 ) ? 1 : 0
+            //output:
+            .model mdl_swpos sw ron=1 roff=1E9 vt=0.5
+            .model mdl_swneg sw ron=1E9 roff=1 vt=0.5
+            IF[Q]THEN
+                S_pos_qout vcc  qout isset 0 mdl_swpos
+                S_neg_qout vneg qout isset 0 mdl_swneg
+            ENDIF
+            IF[notQ]THEN
+                S_pos_notqout vcc     notqout isset 0 mdl_swneg
+                S_neg_notqout vneg notqout isset 0 mdl_swpos
+            ENDIF
+    </Spice>
+        
+</Component>
+
