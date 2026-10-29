@@ -1,0 +1,356 @@
+//All texts are presented AS IS and the provider of this library does not provide any liability for any consequences resulting from using it in any way.
+// DEPRECATED - this library is no longer supported, only exists for compatibility with  kicad eeschema. Please use the same transistor types from the "basic semiconductors" library.
+
+<Component>
+    <Description>
+        Bipolar Junction Transistor, short "BJT".
+        If you give this Transistor a value that starts with "fuse", then this component has an internal fuse at the
+        emitter, which simulates the destruction of the component, when maximal current "icmax" or maximal voltage "uceomax"
+        is exceeded.
+    </Description>
+    // ---- power transistors - e.g. to run motors ----
+    <eeschema_sch>
+        L Transistor_BJT:BD233
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=2.447p Xti=3 Eg=1.11 Vaf=100 Bf=208.2 Ise=70.69p Ne=1.565 Ikf=.9743 Nk=.6134 Xtb=1.5 Br=12.59 Isc=11.68n Nc=1.835 Ikr=3.86 Rc=.4685 Cjc=142p Mjc=.4353 Vjc=.75 Fc=.5 Cje=188.5p Mje=.4878 Vje=.75 Tr=194.2n Tf=19.85n Itf=164.1 Xtf=5.945 Vtf=10 Rb=.1)
+        DEFINE [icmax] 2
+        DEFINE [uceomax] 45
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD234
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=51.23f Xti=3 Eg=1.11 Vaf=100 Bf=434.1 Ise=51.23f Ne=1.22 Ikf=.3883 Nk=.5544 Xtb=2.2 Br=55.47 Isc=51.23f Nc=1.205 Ikr=10.87 Rc=.3443 Cjc=136.9p Mjc=.3155 Vjc=.75 Fc=.5 Cje=179.9p Mje=.4294 Vje=.75 Tr=20.25n Tf=13.05n Itf=6.85 Xtf=1.573 Vtf=10 Rb=.1)
+        DEFINE [icmax] 2
+        DEFINE [uceomax] 45
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD235
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=2.447p Xti=3 Eg=1.11 Vaf=100 Bf=208.2 Ise=70.69p Ne=1.565 Ikf=.9743 Nk=.6134 Xtb=1.5 Br=12.59 Isc=11.68n Nc=1.835 Ikr=3.86 Rc=.4685 Cjc=142p Mjc=.4353 Vjc=.75 Fc=.5 Cje=188.5p Mje=.4878 Vje=.75 Tr=194.2n Tf=19.85n Itf=164.1 Xtf=5.945 Vtf=10 Rb=.1)
+        DEFINE [icmax] 2
+        DEFINE [uceomax] 60
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD236
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=51.23f Xti=3 Eg=1.11 Vaf=100 Bf=434.1 Ise=51.23f Ne=1.22 Ikf=.3883 Nk=.5544 Xtb=2.2 Br=55.47 Isc=51.23f Nc=1.205 Ikr=10.87 Rc=.3443 Cjc=136.9p Mjc=.3155 Vjc=.75 Fc=.5 Cje=179.9p Mje=.4294 Vje=.75 Tr=20.25n Tf=13.05n Itf=6.85 Xtf=1.573 Vtf=10 Rb=.1)
+        DEFINE [icmax] 2
+        DEFINE [uceomax] 60
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD237
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=2.447p Xti=3 Eg=1.11 Vaf=100 Bf=208.2 Ise=70.69p Ne=1.565 Ikf=.9743 Nk=.6134 Xtb=1.5 Br=12.59 Isc=11.68n Nc=1.835 Ikr=3.86 Rc=.4685 Cjc=142p Mjc=.4353 Vjc=.75 Fc=.5 Cje=188.5p Mje=.4878 Vje=.75 Tr=194.2n Tf=19.85n Itf=164.1 Xtf=5.945 Vtf=10 Rb=.1)
+        DEFINE [icmax] 2
+        DEFINE [uceomax] 80
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD238
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=51.23f Xti=3 Eg=1.11 Vaf=100 Bf=434.1 Ise=51.23f Ne=1.22 Ikf=.3883 Nk=.5544 Xtb=2.2 Br=55.47 Isc=51.23f Nc=1.205 Ikr=10.87 Rc=.3443 Cjc=136.9p Mjc=.3155 Vjc=.75 Fc=.5 Cje=179.9p Mje=.4294 Vje=.75 Tr=20.25n Tf=13.05n Itf=6.85 Xtf=1.573 Vtf=10 Rb=.1)
+        DEFINE [icmax] 2
+        DEFINE [uceomax] 80
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD433
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=1.129p Xti=3 Eg=1.11 Vaf=100 Bf=161 Ise=31.17p Ne=1.557 Ikf=1.948 Nk=.648 Xtb=2 Br=1 Isc=23.5p Nc=1.489 Ikr=31.34m Rc=.1682 Cjc=251.5p Mjc=.5045 Vjc=.75 Fc=.5 Cje=286.3p Mje=.4961 Vje=.75 Tr=810n Tf=23.64n Itf=10.92 Xtf=.3795 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 22
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD434
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=632.4f Xti=3 Eg=1.11 Vaf=100 Bf=112.1 Ise=962.8f Ne=1.373 Ikf=2.187 Nk=.6196 Xtb=2.1 Br=66.4 Isc=974.4f Nc=1.207 Ikr=125.8 Rc=.2066 Cjc=508.9p Mjc=.4847 Vjc=.75 Fc=.5 Cje=379.8p Mje=.4937 Vje=.75 Tr=89.17n Tf=17.41n Itf=5.921 Xtf=1.062 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 22
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD435
+        DEFINE [bjttype] npn
+        DEFINE [parameters]  (Is=1.129p Xti=3 Eg=1.11 Vaf=100 Bf=161 Ise=31.17p Ne=1.557 Ikf=1.948 Nk=.648 Xtb=2 Br=1 Isc=23.5p Nc=1.489 Ikr=31.34m Rc=.1682 Cjc=251.5p Mjc=.5045 Vjc=.75 Fc=.5 Cje=286.3p Mje=.4961 Vje=.75 Tr=810n Tf=23.64n Itf=10.92 Xtf=.3795 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 32
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD436
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=632.4f Xti=3 Eg=1.11 Vaf=100 Bf=112.1 Ise=962.8f Ne=1.373 Ikf=2.187 Nk=.6196 Xtb=2.1 Br=66.4 Isc=974.4f Nc=1.207 Ikr=125.8 Rc=.2066 Cjc=508.9p Mjc=.4847 Vjc=.75 Fc=.5 Cje=379.8p Mje=.4937 Vje=.75 Tr=89.17n Tf=17.41n Itf=5.921 Xtf=1.062 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 32
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD437
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=1.129p Xti=3 Eg=1.11 Vaf=100 Bf=161 Ise=31.17p Ne=1.557 Ikf=1.948 Nk=.648 Xtb=2 Br=1 Isc=23.5p Nc=1.489 Ikr=31.34m Rc=.1682 Cjc=251.5p Mjc=.5045 Vjc=.75 Fc=.5 Cje=286.3p Mje=.4961 Vje=.75 Tr=810n Tf=23.64n Itf=10.92 Xtf=.3795 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 45
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD438
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=632.4f Xti=3 Eg=1.11 Vaf=100 Bf=112.1 Ise=962.8f Ne=1.373 Ikf=2.187 Nk=.6196 Xtb=2.1 Br=66.4 Isc=974.4f Nc=1.207 Ikr=125.8 Rc=.2066 Cjc=508.9p Mjc=.4847 Vjc=.75 Fc=.5 Cje=379.8p Mje=.4937 Vje=.75 Tr=89.17n Tf=17.41n Itf=5.921 Xtf=1.062 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 45
+    </eeschema_sch>
+     <eeschema_sch>
+        L Transistor_BJT:BD439
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=1.129p Xti=3 Eg=1.11 Vaf=100 Bf=161 Ise=31.17p Ne=1.557 Ikf=1.948 Nk=.648 Xtb=2 Br=1 Isc=23.5p Nc=1.489 Ikr=31.34m Rc=.1682 Cjc=251.5p Mjc=.5045 Vjc=.75 Fc=.5 Cje=286.3p Mje=.4961 Vje=.75 Tr=810n Tf=23.64n Itf=10.92 Xtf=.3795 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 60
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD440
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=632.4f Xti=3 Eg=1.11 Vaf=100 Bf=112.1 Ise=962.8f Ne=1.373 Ikf=2.187 Nk=.6196 Xtb=2.1 Br=66.4 Isc=974.4f Nc=1.207 Ikr=125.8 Rc=.2066 Cjc=508.9p Mjc=.4847 Vjc=.75 Fc=.5 Cje=379.8p Mje=.4937 Vje=.75 Tr=89.17n Tf=17.41n Itf=5.921 Xtf=1.062 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 60
+    </eeschema_sch>
+     <eeschema_sch>
+        L Transistor_BJT:BD441
+        DEFINE [bjttype] npn
+        DEFINE [parameters] (Is=1.129p Xti=3 Eg=1.11 Vaf=100 Bf=161 Ise=31.17p Ne=1.557 Ikf=1.948 Nk=.648 Xtb=2 Br=1 Isc=23.5p Nc=1.489 Ikr=31.34m Rc=.1682 Cjc=251.5p Mjc=.5045 Vjc=.75 Fc=.5 Cje=286.3p Mje=.4961 Vje=.75 Tr=810n Tf=23.64n Itf=10.92 Xtf=.3795 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 80
+   </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BD442
+        DEFINE [bjttype] pnp
+        DEFINE [parameters] (Is=632.4f Xti=3 Eg=1.11 Vaf=100 Bf=112.1 Ise=962.8f Ne=1.373 Ikf=2.187 Nk=.6196 Xtb=2.1 Br=66.4 Isc=974.4f Nc=1.207 Ikr=125.8 Rc=.2066 Cjc=508.9p Mjc=.4847 Vjc=.75 Fc=.5 Cje=379.8p Mje=.4937 Vje=.75 Tr=89.17n Tf=17.41n Itf=5.921 Xtf=1.062 Vtf=10 Rb=.1)
+        DEFINE [icmax] 4
+        DEFINE [uceomax] 80
+    </eeschema_sch>
+    // ---- end power transistors ----
+    // ---- start small transistors ----
+    <eeschema_sch>
+        L Transistor_BJT:2N3904
+        DEFINE [bjttype] npn
+        DEFINE [icmax] 200m
+        DEFINE [uceomax] 40
+        DEFINE [pmax] 0.5
+        DEFINE [parameters] (is=1e-14 bf=300 vaf=100 ikf=0.4 br=4 rb=20 rc=0.1 cje=8e-12 tf=350e-12 xtf=3 vtf=2 itf=1 cjc=4e-12 tr=250e-9 xtb=1.5 kf=0.4 af=100 )
+        DEFINE [Re] 0.1
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000163350DS01/datenblatt-163350-on-semiconductor-transistor-bjt-diskret-2n3904bu-to-92-3-anzahl-kanaele-1-npn.pdf
+		DEFINE [conrad_de] on-semiconductor-transistor-bjt-diskret-2n3904bu-to-92-3-anzahl-kanaele-1-npn-163350.html
+    </eeschema_sch>
+    <eeschema_sch>
+    L Transistor_BJT:2N3906
+        DEFINE [bjttype] pnp
+        ALIAS Transistor_BJT:FFB3906 Transistor_BJT:MBT3906DW1 Transistor_BJT:PZT3906 Transistor_BJT:MMBT3906 Transistor_BJT:MMDT3906 Transistor_BJT:PMBT3906
+        DEFINE [icmax] 200m
+        DEFINE [uceomax] 40
+        DEFINE [pmax] 0.5
+        DEFINE [parameters] (is=1e-14 bf=200 vaf=100 ikf=0.4 br=4 rb=20 rc=0.1 cje=10e-12 tf=350e-12 xtf=3 vtf=2 itf=1 cjc=4.5e-12 tr=250e-9 xtb=1.5 kf=0.4 af=100 )
+        DEFINE [Re] 0.1
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:2N2219
+        DEFINE [bjttype] npn
+        DEFINE [icmax] 800m
+        DEFINE [uceomax] 40
+        DEFINE [parameters] (is=14.34f bf=255.9 vaf=74.03 ikf=0.2847 ise=14.34f ne=1.307 br=6.092 ikr=0 isc=0 nc=2 rb=10 rc=1 cje=22.01p vje=0.75 mje=0.377 tf=411.1p xtf=3 vtf=1.7 itf=0.6 cjc=7.306p vjc=0.75 mjc=0.3416 tr=46.91n xtb=1.5 eg=1.11 xti=3 kf=0.2847 af=74.03 fc=0.5 )
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC547
+        DEFINE [bjttype] npn
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 45
+        DEFINE [parameters] (is=4.679e-14 bf=458.7 nf=1.01 vaf=52.64 ikf=0.1371 ise=2.642e-15 ne=1.581 br=11.57 nr=1.019 var=364.5 ikr=0.1144 isc=2.337e-14 nc=1.164 rb=1 irb=1.00e-06 rbm=1 rc=1 cje=1.229e-11 vje=0.5591 mje=0.3385 tf=4.689e-10 xtf=160 vtf=2.828 itf=0.8842 ptf=0 cjc=4.42e-12 vjc=0.1994 mjc=0.2782 xcjc=0.6193 tr=1.00e-32 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.1371 af=52.64 fc=0.7936 )
+        DEFINE [Re] 0.2598
+		DEFINE [conrad_de] diotec-transistor-bjt-diskret-bc547c-to-92-3-anzahl-kanaele-1-npn-140539.html
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/gl/000140539DS01/datenblatt-140539-diotec-transistor-bjt-diskret-bc547c-to-92-3-anzahl-kanaele-1-npn.pdf
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC557
+        DEFINE [bjttype] pnp
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 45
+        DEFINE [parameters] (is=3.83e-14 bf=344.4 nf=1.008 vaf=21.11 ikf=0.08039 ise=1.22e-14 ne=1.528 br=14.84 nr=1.005 var=32.02 ikr=0.047 isc=2.85e-13 nc=1.28 rb=1 irb=1.00e-06 rbm=1 rc=0.5713 cje=1.23e-11 vje=0.6106 mje=0.378 tf=5.60e-10 xtf=3.414 vtf=5.23 itf=0.1483 ptf=0 cjc=1.08e-11 vjc=0.1022 mjc=0.3563 xcjc=0.6288 tr=1.00e-32 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.08039 af=21.11 fc=0.8027 )
+        DEFINE [Re] 0.6202
+		DEFINE [conrad_de] diotec-transistor-bjt-diskret-bc557c-to-92-anzahl-kanaele-1-pnp-154970.html
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000154970DS01/datenblatt-154970-diotec-transistor-bjt-diskret-bc557c-to-92-anzahl-kanaele-1-pnp.pdf
+    </eeschema_sch>
+    <eeschema_sch>
+    L Transistor_BJT:BC847
+    ALIAS Transistor_BJT:BC847BDW1 Transistor_BJT:BC847BPDW1 Transistor_BJT:BC847BPN Transistor_BJT:BC847BS Transistor_BJT:BC847W
+    DEFINE [bjttype] npn
+    DEFINE [icmax] 100m
+    DEFINE [uceomax] 45
+    IF [value] ENDS_WITH "a" THEN //BC847a
+        DEFINE [parameters] (is=9.677e-15 bf=182.1 nf=0.9922 vaf=143.8 ikf=0.14 ise=5.44e-15 ne=2 br=7.004 nr=0.9935 var=31.15 ikr=0.06 isc=5.236e-12 nc=1.53 rb=10 irb=5.00e-06 rbm=4 rc=0.656 cje=1.443e-11 vje=0.733 mje=0.3514 tf=6.04e-10 xtf=8.94 vtf=3.78 itf=0.2711 ptf=0 cjc=3.287e-12 vjc=0.5444 mjc=0.3954 xcjc=0.6193 tr=0.00000011 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.14 af=143.8 fc=0.789 )
+        DEFINE [Re] 0.78
+    ELSEIF [value] ENDS_WITH "c" THEN //BC847c
+        DEFINE [parameters] (is=2.375e-14 bf=524.9 nf=0.9925 vaf=49.77 ikf=0.09 ise=5.16e-16 ne=1.3 br=10.04 nr=0.9931 var=16 ikr=0.132 isc=7.064e-12 nc=1.78 rb=10 irb=5.00e-06 rbm=5 rc=0.78 cje=1.132e-11 vje=0.7685 mje=0.3733 tf=4.258e-10 xtf=6.319 vtf=6.4 itf=0.1845 ptf=0 cjc=3.379e-12 vjc=0.5444 mjc=0.3968 xcjc=0.6193 tr=0.000000095 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.09 af=49.77 fc=0.999 )
+        DEFINE [Re] 0.653
+    ELSE //BC847b
+        DEFINE [parameters] (is=1.822e-14 bf=324.4 nf=0.9932 vaf=82 ikf=0.109 ise=2.894e-16 ne=1.4 br=8.29 nr=0.9931 var=17.9 ikr=0.09 isc=9.982e-12 nc=1.763 rb=10 irb=5.00e-06 rbm=5 rc=0.7014 cje=1.244e-11 vje=0.7579 mje=0.3656 tf=4.908e-10 xtf=9.51 vtf=2.927 itf=0.3131 ptf=0 cjc=3.347e-12 vjc=0.5463 mjc=0.391 xcjc=0.6193 tr=9.00e-08 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.109 af=82 fc=0.979 )
+        DEFINE [Re] 0.649
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000153157DS01/datenblatt-153157-infineon-technologies-transistor-bjt-diskret-bc847b-sot-23-3-anzahl-kanaele-1-npn.pdf
+		DEFINE [conrad_de] infineon-technologies-transistor-bjt-diskret-bc847b-sot-23-3-anzahl-kanaele-1-npn-153157.html
+    ENDIF ENDIF
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC857
+         ALIAS Transistor_BJT:BC857BDW1 Transistor_BJT:BC857BPDW1 Transistor_BJT:BC857BPN Transistor_BJT:BC857BS Transistor_BJT:BC857W
+        DEFINE [bjttype] pnp
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 45
+        IF [value] ENDS_WITH "a" THEN //BC857a
+            DEFINE [parameters] (is=1.17e-14 bf=161.3 nf=0.9972 vaf=59.62 ikf=0.15 ise=1.762e-14 ne=1.661 br=6.78 nr=0.9967 var=15.4 ikr=0.048 isc=1.506e-13 nc=1.32 rb=10 irb=5.00e-06 rbm=5 rc=0.61 cje=1.325e-11 vje=0.8514 mje=0.3999 tf=8.333e-10 xtf=2.41 vtf=6.262 itf=0.097 ptf=0 cjc=6.396e-12 vjc=0.2182 mjc=0.333 xcjc=0.6288 tr=0.00000007 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.15 af=59.62 fc=0.8981 )
+            DEFINE [Re] 0.689
+        ELSEIF [value] ENDS_WITH "c" THEN //BC857c
+            DEFINE [parameters] (is=3.258e-14 bf=515.4 nf=0.999 vaf=25 ikf=0.066 ise=3.003e-15 ne=1.45 br=15.26 nr=0.9985 var=8 ikr=0.039 isc=4.393e-15 nc=1.2 rb=10 irb=5.00e-06 rbm=5 rc=0.58 cje=1.024e-11 vje=0.9 mje=0.453 tf=5.971e-10 xtf=4.137 vtf=6.31 itf=0.2108 ptf=0 cjc=6.345e-12 vjc=0.4254 mjc=0.423 xcjc=0.6288 tr=0.000000035 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.066 af=25 fc=0.78 )
+            DEFINE [Re] 0.7071
+			DEFINE [conrad_de] diotec-transistor-bjt-diskret-bc847c-sot-23-anzahl-kanaele-1-npn-tape-cut-140540.html
+			DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000140540DS01/datenblatt-140540-diotec-transistor-bjt-diskret-bc847c-sot-23-anzahl-kanaele-1-npn-tape-cut.pdf
+        ELSE //BC857b
+            DEFINE [parameters] (is=2.014e-14 bf=315.3 nf=0.9974 vaf=39.15 ikf=0.079 ise=6.578e-15 ne=1.45 br=8.68 nr=0.9952 var=9.5 ikr=0.09 isc=1.633e-14 nc=1.15 rb=10 irb=5.00e-06 rbm=5.00e-06 rc=0.718 cje=1.135e-11 vje=0.7071 mje=0.3808 tf=6.546e-10 xtf=5.387 vtf=6.245 itf=0.2108 ptf=0 cjc=6.395e-12 vjc=0.4951 mjc=0.44 xcjc=0.6288 tr=5.50e-08 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.079 af=39.15 fc=0.9059 )
+            DEFINE [Re] 0.663
+			DEFINE [conrad_de] infineon-technologies-transistor-bjt-diskret-bc847b-sot-23-3-anzahl-kanaele-1-npn-153157.html
+			DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000153157DS01/datenblatt-153157-infineon-technologies-transistor-bjt-diskret-bc847b-sot-23-3-anzahl-kanaele-1-npn.pdf
+        ENDIF
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC846
+        ALIAS Transistor_BJT:BC846BDW1 Transistor_BJT:BC846BS Transistor_BJT:BC846W
+        DEFINE [bjttype] npn
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 65
+        DEFINE [parameters] (is=1.82e-14 bf=324.4 nf=0.9932 vaf=82 ikf=0.109 ise=2.89e-16 ne=1.4 br=8.29 nr=0.9931 var=17.9 ikr=0.09 isc=9.98e-12 nc=1.763 rb=10 irb=5.00e-06 rbm=5 rc=0.7014 cje=1.24e-11 vje=0.7579 mje=0.3656 tf=4.91e-10 xtf=9.51 vtf=2.927 itf=0.3131 ptf=0 cjc=3.35e-12 vjc=0.5463 mjc=0.391 xcjc=0.6193 tr=9.00e-08 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.109 af=82 fc=0.979 )
+        DEFINE [Re] 0.649
+		DEFINE [conrad_de] nexperia-transistor-bjt-diskret-bc856bw-115-sot-323-anzahl-kanaele-1-pnp-tape-cut-153000.html
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000153000DS00/datenblatt-153000-nexperia-transistor-bjt-diskret-bc856bw115-sot-323-anzahl-kanaele-1-pnp-tape-cut.pdf
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC856
+        ALIAS Transistor_BJT:BC856BDW1 Transistor_BJT:BC856BS Transistor_BJT:BC856W
+        DEFINE [bjttype] pnp
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 65
+        DEFINE [parameters] (is=2.01e-14 bf=315.3 nf=0.9974 vaf=39.15 ikf=0.079 ise=6.58e-15 ne=1.45 br=8.68 nr=0.9952 var=9.5 ikr=0.09 isc=1.63e-14 nc=1.15 rb=10 irb=5.00e-06 rbm=5.00e-06 rc=0.718 cje=1.14e-11 vje=0.7071 mje=0.3808 tf=6.55e-10 xtf=5.387 vtf=6.245 itf=0.2108 ptf=0 cjc=6.40e-12 vjc=0.4951 mjc=0.44 xcjc=0.6288 tr=5.50e-08 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.079 af=39.15 fc=0.9059 )
+        DEFINE [Re] 0.663
+		DEFINE [conrad_de] nexperia-transistor-bjt-diskret-bc856bw-115-sot-323-anzahl-kanaele-1-pnp-tape-cut-153000.html
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000153000DS00/datenblatt-153000-nexperia-transistor-bjt-diskret-bc856bw115-sot-323-anzahl-kanaele-1-pnp-tape-cut.pdf
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC337
+        DEFINE [bjttype] npn
+        DEFINE [icmax] 500m
+        DEFINE [uceomax] 45
+        DEFINE [parameters] (is=4.13e-14 bf=292.4 nf=0.9822 vaf=145.7 ikf=0.9 ise=3.534e-15 ne=1.35 br=23.68 nr=0.982 var=20 ikr=0.1 isc=1.957e-13 nc=1.3 rb=60 irb=2.00e-04 rbm=8 rc=0.25 cje=3.799e-11 vje=0.6752 mje=0.3488 tf=5.4e-10 xtf=4 vtf=4.448 itf=0.665 ptf=90 cjc=1.355e-11 vjc=0.3523 mjc=0.3831 xcjc=0.455 tr=3.00e-08 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.9 af=145.7 fc=0.643 )
+        DEFINE [Re] 0.1129
+		DEFINE [conrad_de] diotec-transistor-bjt-diskret-bc337-40-to-92-3-anzahl-kanaele-1-npn-140536.html
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/gl/000140536DS01/datenblatt-140536-diotec-transistor-bjt-diskret-bc337-40-to-92-3-anzahl-kanaele-1-npn.pdf
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC327
+        DEFINE [bjttype] pnp
+        DEFINE [icmax] 500m
+        DEFINE [uceomax] 45
+        DEFINE [parameters] (is=1.08e-13 bf=385.7 nf=0.99 vaf=31.29 ikf=0.3603 ise=2.713e-14 ne=1.4 br=20.57 nr=0.9849 var=11.62 ikr=0.054 isc=5.062e-13 nc=1.295 rb=1 irb=1.00e-06 rbm=0.5 rc=0.2623 cje=5.114e-11 vje=0.8911 mje=0.4417 tf=7.359e-10 xtf=1.859 vtf=3.813 itf=0.4393 ptf=0 cjc=2.656e-11 vjc=0.62 mjc=0.4836 xcjc=0.459 tr=5.00e-08 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.3603 af=31.29 fc=0.99 )
+        DEFINE [Re] 0.1415
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/gl/000140535DS01/datenblatt-140535-diotec-transistor-bjt-diskret-bc327-40bk-to-92-anzahl-kanaele-1-pnp.pdf
+		DEFINE [conrad_de] diotec-transistor-bjt-diskret-bc327-40bk-to-92-anzahl-kanaele-1-pnp-140535.html
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC546
+        DEFINE [bjttype] npn
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 65
+        DEFINE [parameters] (is=2.39e-14 bf=294.3 nf=1.008 vaf=63.2 ikf=0.1357 ise=3.55e-15 ne=1.541 br=7.946 nr=1.004 var=25.9 ikr=0.1144 isc=6.27e-14 nc=1.243 rb=1 irb=1.00e-06 rbm=1 rc=0.85 cje=1.36e-11 vje=0.65 mje=0.3279 tf=4.39e-10 xtf=120 vtf=2.643 itf=0.7495 ptf=0 cjc=3.73e-12 vjc=0.3997 mjc=0.2955 xcjc=0.6193 tr=1.00e-32 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.1357 af=63.2 fc=0.9579 )
+        DEFINE [Re] 0.4683
+		DEFINE [conrad_de] on-semiconductor-transistor-bjt-diskret-bc546abu-to-92-3-anzahl-kanaele-1-npn-154997.html
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000154997DS01/datenblatt-154997-on-semiconductor-transistor-bjt-diskret-bc546abu-to-92-3-anzahl-kanaele-1-npn.pdf
+    </eeschema_sch>
+    <eeschema_sch>
+        L Transistor_BJT:BC556
+        DEFINE [bjttype] pnp
+        DEFINE [icmax] 100m
+        DEFINE [uceomax] 65
+        DEFINE [parameters] (is=3.83e-14 bf=344.4 nf=1.008 vaf=21.11 ikf=0.08039 ise=1.22e-14 ne=1.528 br=14.84 nr=1.005 var=32.02 ikr=0.047 isc=2.85e-13 nc=1.28 rb=1 irb=1.00e-06 rbm=1 rc=0.5713 cje=1.23e-11 vje=0.6106 mje=0.378 tf=5.60e-10 xtf=3.414 vtf=5.23 itf=0.1483 ptf=0 cjc=1.08e-11 vjc=0.1022 mjc=0.3563 xcjc=0.6288 tr=1.00e-32 cjs=0 vjs=0.75 mjs=0.333 xtb=0 eg=1.11 xti=3 kf=0.08039 af=21.11 fc=0.8027 )
+        DEFINE [Re] 0.6202
+		DEFINE [datasheet] https://asset.conrad.com/media10/add/160267/c1/-/en/000155080DS01/datenblatt-155080-diotec-transistor-bjt-diskret-bc556b-to-92-anzahl-kanaele-1-pnp.pdf
+		DEFINE [conrad_de] diotec-transistor-bjt-diskret-bc556b-to-92-anzahl-kanaele-1-pnp-155080.html
+    </eeschema_sch>
+	    <purchase>
+		<link>
+		<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Ftransistoren-5104045.html</url>
+		<title>IF [language] EQUAL_TO de THEN Uebersicht BJTs ELSE Overview BJTsENDIF</title>
+		<detail>IF [language] EQUAL_TO de THEN Eine Auswahl an Bipolartransistoren bei Conrad Electronic. Darunter eine Beschreibung. ELSE A collection of bipolar junction transistors at conrad electronic.ENDIF</detail>
+		</link>
+		IF [conrad_de] THEN
+		<link>
+		    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2F[conrad_de]</url>
+			<title>component of [model] series</title>
+			<detail>a bipolar transistor of the [model] series at conrad electronic.</detail>
+		</link>
+		ENDIF
+		</purchase>
+    <eeschema_symbol>
+        DRAW
+            C 50 0 111 0 1 12 N
+            P 2 0 1 0 0 0 15 0 N
+            P 2 0 1 0 100 -100 25 -25 N
+            P 2 0 1 0 100 100 25 25 N
+            //P 2 0 1 0 15 -70 15 70 N
+            S 10 -60 20 60 0 1 0 F
+            // arrow indicating npn or pnp ("Tut der Pfeil der Basis weh so handelt sich's um pnp. Will der Pfeil sich von der Basis trenn' so handelt sich's um npn")
+            IF [bjttype] EQUAL_TO pnp THEN
+                P 3 0 1 0 70 -100 30 -30 100 -70 F
+                //P 5 0 1 0 70 -90 90 -70 50 -50 70 -90 70 -90 F
+                X E 1 100 -200 100 U 50 50 1 1 P
+                X C 2 100 200 100 D 50 50 1 1 P
+                X B 3 -200 0 200 R 50 50 1 1 I
+            ELSEIF [bjttype] EQUAL_TO npn THEN
+                P 3 0 1 0 30 -70 100 -100 70 -30 F
+                //P 5 0 1 0 49 -70 69 -50 90 -90 49 -70 49 -70 F
+                X E 1 100 -200 100 U 50 50 1 1 P
+                X C 2 100 200 100 D 50 50 1 1 P
+                X B 3 -200 0 200 R 50 50 1 1 I
+            ELSE
+                <Dialog type="error" title="missing or incorrect bjttype parameter">
+                    The model [model] has a missing or incorrect parameter, called bjttype, in the component library.
+                    The value for that parameter must be "npn" or "pnp" - in lowercase and without the apostrophes.
+					Here bjttype is incorrect: [bjttype]
+                </Dialog>
+            ENDIF ENDIF
+            // fuse at emitter:
+            IF [icmax] || [uceomax] && [value] STARTS_WITH "fuse" THEN
+                S 80 -120 120 -180 0 1 0 N
+            ENDIF
+        ENDDRAW
+    </eeschema_symbol>
+    <Spice>
+        DEFINE [model] AS_REPLACEMENT FROM::TO:_OF:[model] //needed, because otherwise the ":" in the model would cause an exception in ngspice
+        IF [icmax] || [uceomax] && [value] STARTS_WITH "fuse" THEN
+            .subckt fused_[model] c b e
+                // transistor itself:
+                .model mdl_q1 [bjttype] [parameters]
+                Q1 c b prefuse mdl_q1
+                // fuse to simulate descruction of component when voltage or current too high:
+                .param re=IF[Re]THEN[Re]ELSE0.1ENDIF
+                .model si1 sw ron=1E9 roff=re vt=0.5 //ron=resistance AFTER the fuse interrupts in Ohm. roff=resistance BEFORE the fuse interrupts in Ohm
+                s1 prefuse e moff 0 si1 
+                IF [icmax] && [uceomax] THEN
+                    //                |<-- overcurrent -->| || |<-- overvoltage -->| || |<-- hold -->|
+                    BVS_fuse moff 0 V=(abs(I(Q1)) > [icmax] || V(c)-V(e) > [uceomax] || V(moff) > 0.5) ? 1 : 0
+                ELSEIF [icmax] THEN
+                    //                |<-- overcurrent -->|                          || |<-- hold -->|
+                    BVS_fuse moff 0 V=(abs(I(Q1)) > [icmax]                          || V(moff) > 0.5) ? 1 : 0
+                ELSE
+                    //                                         |<-- overvoltage -->| || |<-- hold -->|
+                    BVS_fuse moff 0 V=(                        V(c)-V(e) > [uceomax] || V(moff) > 0.5) ? 1 : 0
+                ENDIF ENDIF
+            .ends
+            X_[individual] [C] [B] [E] fused_[model]
+        ELSE
+            .subckt mdl_[model] c b e
+            // transistor itself:
+            .model mdl_q1 [bjttype] [parameters]
+            Q1 c b e mdl_q1
+            .ends
+            X_[individual] [C] [B] [E] mdl_[model]
+        ENDIF
+    </Spice>
+</Component>

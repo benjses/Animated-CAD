@@ -1,0 +1,18 @@
+The libraries.txt is a file which lists the Component Libraries which shall be used, apart from
+the ones which are placed in the libraries folder*.
+To add a file to this, simply open libraries.txt with a text editor and
+add the path to that file in there. Please use one line for each path.
+
+For example this would work well in MS Windows :
+C:/ExternalLibrariesFolder/first_library.alib
+C:/ExternalLibrariesFolders/another_library.alib
+
+But this would not work:
+C:/ExternalLibrariesFolder/first_library.alib C:/ExternalLibrariesFolders/another_library.alib
+
+The easiest way to add a library is nevertheless to simply add the .alib-file into the libraries folder.
+
+_________________________________________________________________________
+ * Files that are placed in the libraries folder and that have a usable file ending, are added to Component Libraries
+ even if they are not listed in libraries.txt
+ CirNavSys regards files with the ending ".alib" usable.

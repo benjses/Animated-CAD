@@ -1,0 +1,166 @@
+//All texts are presented AS IS and the provider of this library does not provide any liability for any consequences resulting from using it in any way.
+
+<Component>
+	<Description>
+		Default N-Channel MOSFET
+	</Description>
+	<qucs_sch>
+		NMOSFET [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate]
+	</qucs_sch>
+<qucs_symbol>
+		<Line -30 0 15 0 #000080 2 1>
+		<Line -15 -10 0 20 #000080 2 1>
+		<Line -10 -12 0 5 #000080 2 1>
+		<Line 0 -30 0 20 #000080 2 1>
+		<Line -10 -10 10 0 #000080 2 1>
+		<Line 0 30 0 -20 #000080 2 1>
+		<Line -10 10 10 0 #000080 2 1>
+		<Line -10 12 0 -5 #000080 2 1>
+		<Line -10 -15 0 5 #000080 2 1>
+		<Line 0 15 0 -15 #000080 2 1>
+		<Line 0 0 -10 0  #000080 2 1>
+		<Line -10 -2 0 5 #000080 2 1>
+		<Line 0 -10 10 0 #000080 2 1>
+		<Line 10 -10 0 4 #000080 2 1>
+		<Line 10 10 0 -4 #000080 2 1>
+		<Line 0 10 10 0 #000080 2 1>
+		<Line -8 0 4 -4 #000080 2 1>
+		<Line -8 0 4 4 #000080 2 1>
+		<Polygon3 5 5 15 5 10 -5 #000080 2 1 #000080 2 1> 
+		<Line 5 -5 10 0 #000080 2 1>
+		<.PortSym -30 0 [G] 0>
+		<Text -25 0 12 #0000FF 0 "G">
+		<.PortSym 0 -30 [D] 270>
+		<Text -8 -25 12 #0000FF 0 "D">
+		<.PortSym 0 30 [S] 90>
+		<.PortSym 0 30 [B] 90>
+		<Text -8 25 12 #0000FF 0 "S&B">
+	</qucs_symbol>
+	<eeschema_sch>
+		L Transistor:NMOSFET
+		F 0 "[name]"
+		F 1 "[type]"
+		F 2 "[package]"
+		F 3 "[datasheet]"
+	</eeschema_sch>
+	<Spice>
+		.model M_NMOS_DEFAULT_[name] nmos level=6
+		M_[name] [D] [G] [S] [B] M_NMOS_DEFAULT_[name]
+	</Spice>
+	<eeschema_symbol>
+		DRAW
+		C 65 0 111 0 1 10 N
+		C 100 -70 11 0 1 0 F
+		C 100 70 11 0 1 0 F
+		P 2 0 1 0 -100 0 10 0 N
+		P 2 0 1 0 30 -70 100 -70 N
+		P 2 0 1 10 30 -50 30 -90 N
+		P 2 0 1 0 30 0 100 0 N
+		P 2 0 1 10 30 20 30 -20 N
+		P 2 0 1 0 30 70 100 70 N
+		P 2 0 1 10 30 90 30 50 N
+		P 2 0 1 0 100 -70 100 -100 N
+		P 2 0 1 0 100 -70 100 0 N
+		P 2 0 1 0 100 100 100 70 N
+		P 3 0 1 10 10 75 10 -75 10 -75 N
+		P 4 0 1 0 40 0 80 15 80 -15 40 0 F
+		
+		//P 4 0 1 0 100 -70 130 -70 130 70 100 70 N // removed, because result is different. Replaced by the following three lines:
+		P 2 0 1 0 100 -70 130 -70 N
+		P 2 0 1 0 100  70 130  70 N
+		P 2 0 1 0 130 -70 130 70 N
+		
+		P 4 0 1 0 110 20 115 15 145 15 150 10 N
+		P 4 0 1 0 130 15 115 -10 145 -10 130 15 N
+		X S 1 100 -200 100 U 50 50 1 1 P
+		X G 2 -200 0 100 R 50 50 1 1 I
+		X D 3 100 200 100 D 50 50 1 1 P
+		X B 4 100 200 100 D 50 50 1 1 P // needed for calculation of currents via spice
+		ENDDRAW
+	</eeschema_symbol>
+</Component>
+
+<Component>
+	<Description>
+		Default P-Channel MOSFET
+	</Description>
+	<eeschema_sch>
+		L Transistor:PMOSFET
+		F 0 "[name]"
+		F 1 "[type]"
+		F 2 "[package]"
+		F 3 "[datasheet]"
+	</eeschema_sch>
+	<qucs_sch>
+		PMOSFET [name] [active] [xpos] [ypos] [xtext] [ytext] [mirrorx] [rotate]
+	</qucs_sch>
+	<qucs_symbol>
+		<Line -30 0 15 0 #000080 2 1>
+		<Line -15 -10 0 20 #000080 2 1>
+		<Line -10 -12 0 5 #000080 2 1>
+		<Line 0 -30 0 20 #000080 2 1>
+		<Line -10 -10 10 0 #000080 2 1>
+		<Line 0 30 0 -20 #000080 2 1>
+		<Line -10 10 10 0 #000080 2 1>
+		<Line -10 12 0 -5 #000080 2 1>
+		<Line -10 -15 0 5 #000080 2 1>
+		<Line 0 15 0 -15 #000080 2 1>
+		<Line 0 0 -10 0  #000080 2 1>
+		<Line -10 -2 0 5 #000080 2 1>
+		<Line 0 -10 10 0 #000080 2 1>
+		<Line 10 -10 0 4 #000080 2 1>
+		<Line 10 10 0 -4 #000080 2 1>
+		<Line 0 10 10 0 #000080 2 1>
+		<Line -2 0 -4 -4 #000080 2 1>
+		<Line -2 0 -4 4 #000080 2 1>
+		<Polygon3 5 -5 15 -5 10 5 #000080 2 1 #000080 2 1>
+		<Line 5 5 10 0 #000080 2 1>
+		<.PortSym -30 0 [G] 0>
+		<Text -25 0 12 #0000FF 0 "G">
+		<.PortSym 0 -30 [D] 270>
+		<Text -8 -25 12 #0000FF 0 "D">
+		<.PortSym 0 30 [S] 90>
+		<.PortSym 0 30 [B] 90>
+		<Text -8 25 12 #0000FF 0 "S&B">
+	</qucs_symbol>
+	<Spice>
+		// ---- Model ----
+		.model M_PMOS_DEFAULT_[name] pmos level=6
+		.subckt X_PMOS_DEFAULT_[name] drain gate source bulk
+		m1 drain gate source bulk M_PMOS_DEFAULT_[name]
+		.ends X_PMOS_DEFAULT_[name]
+		// ---- Component ----
+		X_[name] [D] [G] [S] [B] X_PMOS_DEFAULT_[name]
+	</Spice>
+	<eeschema_symbol>
+		DRAW
+		C 65 0 111 0 1 10 N
+		C 100 -70 11 0 1 0 F
+		C 100 70 11 0 1 0 F
+		P 2 0 1 0 -100 0 10 0 N
+		P 2 0 1 0 30 -70 100 -70 N
+		P 2 0 1 10 30 -50 30 -90 N
+		P 2 0 1 0 30 0 100 0 N
+		P 2 0 1 10 30 20 30 -20 N
+		P 2 0 1 0 30 70 100 70 N
+		P 2 0 1 10 30 90 30 50 N
+		P 2 0 1 0 100 -70 100 -100 N
+		P 2 0 1 0 100 -70 100 0 N
+		P 2 0 1 0 100 100 100 70 N
+		P 3 0 1 10 10 75 10 -75 10 -75 N
+		P 4 0 1 0 90 0 50 -15 50 15 90 0 F
+		
+		//P 4 0 1 0 100 -70 130 -70 130 70 100 70 N //removed, because result is different. Replaced by the following three lines:
+		P 2 0 1 0 100 -70 130 -70 N
+		P 2 0 1 0 100  70 130  70 N
+		P 2 0 1 0 130 -70 130 70 N
+		
+		P 4 0 1 0 110 -20 115 -15 145 -15 150 -10 N
+		P 4 0 1 0 130 -15 115 10 145 10 130 -15 N
+		X D 1 100 200 100 D 50 50 1 1 P
+		X G 2 -200 0 100 R 50 50 1 1 I
+		X S 3 100 -200 100 U 50 50 1 1 P
+		X B 4 100 -200 100 U 50 50 1 1 P // needed for calculation of currents via spice		
+		ENDDRAW
+	</eeschema_symbol>
+</Component>

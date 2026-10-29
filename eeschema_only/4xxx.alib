@@ -1,0 +1,115 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+<Component>
+    <Description>
+        Dual AND gate, model 4081
+        IF [unit] EQUAL_TO 5 THEN
+         This is the power block for all components of that model.
+        ELSE
+         This model needs a Power Block in order to define positive and negative power supply connections.
+         If you have multiple components from these models, then one power block is enough for all.
+		 You can make this component a power block by setting the unit value to 5. 
+        ENDIF
+    </Description>
+    <eeschema_sch>
+        L 4xxx:4081
+        DEFINE [logic_type] and2
+    </eeschema_sch>
+    <eeschema_symbol>
+        IF [unit] EQUAL_TO 5 THEN // Power block, providing "VDD" as positive source and "VSS" as negative source
+            (symbol "4081_5_0"
+                (pin power_in line (at 0 12.7 270) (length 5.08)
+                    (name "VDD" (effects (font (size 1.27 1.27))))
+                    (number "14" (effects (font (size 1.27 1.27))))
+                )
+                (pin power_in line (at 0 -12.7 90) (length 5.08)
+                    (name "VSS" (effects (font (size 1.27 1.27))))
+                    (number "7" (effects (font (size 1.27 1.27))))
+                )
+            )
+            (symbol "4081_5_1"
+                (rectangle (start -5.08 7.62) (end 5.08 -7.62)
+                    (stroke (width 0.254) (type default) (color 0 0 0 0))
+                    (fill (type background))
+                )
+            )
+            (SET_CONNECTION [vss_logic_minus] (at 0 -12.7))
+            (SET_CONNECTION [vdd_logic_plus]  (at 0  12.7))
+        ELSE // AND block:
+            (pin GET_CONNECTION [vss_logic_minus])
+            (pin GET_CONNECTION [vdd_logic_plus])
+            (symbol "4081_1_1"
+                (arc (start 0 -3.81) (mid 3.81 0) (end 0 3.81)
+                    (stroke (width 0.254) (type default) (color 0 0 0 0))
+                    (fill (type background))
+                )
+                (polyline
+                    (pts
+                        (xy 0 3.81)
+                        (xy -3.81 3.81)
+                        (xy -3.81 -3.81)
+                        (xy 0 -3.81)
+                    )
+                    (stroke (width 0.254) (type default) (color 0 0 0 0))
+                    (fill (type background))
+                )
+                (pin input line (at -7.62 2.54 0) (length 3.81)
+                    (name "IN0" (effects (font (size 1.27 1.27))))
+                    (number "1" (effects (font (size 1.27 1.27))))
+                )
+                (pin input line (at -7.62 -2.54 0) (length 3.81)
+                    (name "IN1" (effects (font (size 1.27 1.27))))
+                    (number "2" (effects (font (size 1.27 1.27))))
+                )
+                (pin output line (at 7.62 0 180) (length 3.81)
+                    (name "OUT" (effects (font (size 1.27 1.27))))
+                    (number "3" (effects (font (size 1.27 1.27))))
+                )
+            )        
+        ENDIF
+    </eeschema_symbol>
+    <Spice>
+        IF [unit] EQUAL_TO 5 THEN // Power block, providing "VDD" as positive source and "VSS" as negative source
+            R_[individual] [VSS] [VDD] 1E9
+        ELSE // normal AND gate
+            //------------- Model --------------------------
+            .subckt mdl_4081 inA inB vpos vneg out
+            //---------- input: analog to digital ----------   
+            //digital model with xspice. converts input into digital value, calculates, and converts output to analog value.
+            .model mdl_a_to_d adc_bridge
+            .model mdl_d_to_a dac_bridge
+            
+            A_adc_inA %vd[inA vneg] [dig_inA] mdl_a_to_d
+            A_adc_inB %vd[inB vneg] [dig_inB] mdl_a_to_d
+
+            // ----------- processing ------------------------
+            // processes the digital signal values.
+           IF [logic_type] CONTAINS and2 THEN
+                .model and2 d_and
+                a_and [dig_inA dig_inB] dig_out and2
+            ELSE IF [logic_type] CONTAINS or2 THEN
+                .model or2 d_or
+                a_or [dig_inA dig_inB] dig_out or2
+            ELSE
+               <Dialog dimension="400x200" type="error" title="missing or wrong logic type '[logic_type]'">
+                    The logic type is either not defined, or [logic_type] does not have a processing description in the spice section. Please check your component library for model [model].
+                </Dialog>
+            ENDIF ENDIF
+            // -------- output: digital to analog ---------
+            .param rout = 1.0 //output resistance, when enabled
+            .model mdl_swpos sw  ron=1    roff=1E9  vt=0.5
+            .model mdl_swneg sw  ron=1E9  roff=1    vt=0.5
+                        
+            //        dig_in    out    model
+            A_dac_out [dig_out] [out1v] mdl_d_to_a
+            S_pos_qout vpos outpre out1v 0 mdl_swpos
+            S_neg_qout vneg outpre out1v 0 mdl_swneg
+            
+            R_out out outpre rout
+            .ends
+            // component
+            X_[individual] [IN0] [IN1] [vdd_logic_plus] [vss_logic_minus] [OUT] mdl_4081
+            
+        ENDIF
+    </Spice>
+</Component>

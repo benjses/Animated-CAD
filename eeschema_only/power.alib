@@ -1,0 +1,4248 @@
+// All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+//The following Power Flags create a global label on their connected node. Therefor they should be used only with caution,
+//especially if there is one or more subsheets in the schematic.
+//Also be aware that there are several types of flags that connect to ground. Even if these look different and have a different name, they are connected to each other on the ground node.
+// -> So for the users: It is a good style not to use different types of ground nodes, but instead stick to only one type of GND. There is also the pspice:0 which is defined in the standard library Components.alib
+
+
+// Ground flags:
+<Component>
+	<Description>
+        A Flag that connects the node to ground. ATTENTION: There is only one ground. So even if you use different types of ground symbols, they are always connected to each other via ground
+	</Description>
+	<eeschema_sch>
+		L power:Earth
+		ALIAS power:Earth_Clean power:Earth_Protective power:GND power:GNDA power:GNDD power:GNDPWR power:GNDREF power:GNDS
+		ALIAS power:GND1 power:GND2 power:GND3 
+	</eeschema_sch>
+	<Spice>
+        DEFINE [name] AS_INVISIBLE
+        DEFINE [value] AS_INVISIBLE
+        //Connect pin to ground. Pinnames defined in the cache-lib-file of eeschema are as second part of the model, at least for these components. So we do not need to use [model]EQUAL_TO power:some_model , but can directly use the pin-names:
+		0 connect IF[Earth]THEN[Earth]ELSEIF[Earth_Clean]THEN[Earth_Clean]ELSEIF[Earth_Protective]THEN[Earth_Protective]ELSEIF[GND]THEN[GND]ELSEIF[GNDA]THEN[GNDA]ELSEIF[GNDD]THEN[GNDD]ELSEIF[GNDPWR]THEN[GNDPWR]ELSEIF[GNDREF]THEN[GNDREF]ELSEIF[GNDS]THEN[GNDS]ELSE<Dialog type="error">Unknown pin name for ground flag model [model],used in component [name] at ([xpos] | [ypos])</Dialog> ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF 
+	</Spice>
+	<purchase>
+        <link>
+		    <url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Ferdungsbaender-6140350.html</url>
+			<title>IF [language] EQUAL_TO "de" THENUebersicht ErdungELSEOverview of earthingENDIF</title>
+			<detail>IF [language] EQUAL_TO "de" THENVerschiedene Massnahmen zur Erdung, wie Erdungsbaender oder Erdungsstangen bei Conrad ElectronicELSEVarious measures for grounding, such as flat bands or grounding rodsENDIF</detail>
+		</link>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fp%2Fflachband-erder-4571137-lapp-inhalt-1-st-603498.html</url>
+			<title>IF [language] EQUAL_TO "de" THENFlachband-ErderELSEflat band for groundingENDIF</title>
+			<detail>flat band at Vonrad Electronic</detail>
+		</link>
+	</purchase>
+    <eeschema_symbol>
+	   IF [model] ENDS_WITH GNDD THEN
+		DRAW
+			S -50 -60 50 -80 0 1 10 F
+			P 2 0 1 0 0 0 0 -60 N
+			X GND 1 0 0 0 D 50 50 1 1 W N
+		ENDDRAW
+       ELSE
+		IF [model] ENDS_WITH GND THEN // GND model = triangle 
+		   DRAW
+			P 6 0 1 0 0 0 0 -50 50 -50 0 -100 -50 -50 0 -50 N
+			X GND 1 0 0 0 D 50 50 1 1 W N
+			ENDDRAW
+		 ELSE // default ground/earth model = three horizontal lines
+		    (polyline
+      (pts
+        (xy -0.635 -1.905)
+        (xy 0.635 -1.905)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy -0.127 -2.54)
+        (xy 0.127 -2.54)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy 0 -1.27)
+        (xy 0 0)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy 1.27 -1.27)
+        (xy -1.27 -1.27)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+  
+
+    (pin power_in line (at 0 0 270) (length 0) hide
+      (name "GND" (effects (font (size 1.27 1.27))))
+      (number "1" (effects (font (size 1.27 1.27))))
+    )
+		 ENDIF		
+		ENDIF	
+    </eeschema_symbol>
+</Component>
+
+// Non-ground flags:
+<Component>
+    <Description>
+        A flag named +10V with exactly one pin named +10V which sets the connected node to the global flag named PLUS10V
+    </Description>
+    <eeschema_sch>
+        L power:+10V
+    </eeschema_sch>
+    <Spice>
+        [+10V] connect PLUS10V
+    </Spice>
+    <eeschema_symbol>
+
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+    
+
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+10V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +12C with exactly one pin named +12C which sets the connected node to the global flag named PLUS12C
+    </Description>
+    <eeschema_sch>
+        L power:+12C
+    </eeschema_sch>
+    <Spice>
+        [+12C] connect PLUS12C
+    </Spice>
+    <eeschema_symbol>
+          
+           
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+   
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+12C" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+ 
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +12L with exactly one pin named +12L which sets the connected node to the global flag named PLUS12L
+    </Description>
+    <eeschema_sch>
+        L power:+12L
+    </eeschema_sch>
+    <Spice>
+        [+12L] connect PLUS12L
+    </Spice>
+    <eeschema_symbol>
+     
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+    
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+12L" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+   
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +12LF with exactly one pin named +12LF which sets the connected node to the global flag named PLUS12LF
+    </Description>
+    <eeschema_sch>
+        L power:+12LF
+    </eeschema_sch>
+    <Spice>
+        [+12LF] connect PLUS12LF
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+12LF" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +12P with exactly one pin named +12P which sets the connected node to the global flag named PLUS12P
+    </Description>
+    <eeschema_sch>
+        L power:+12P
+    </eeschema_sch>
+    <Spice>
+        [+12P] connect PLUS12P
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+12P" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +12V with exactly one pin named +12V which sets the connected node to the global flag named PLUS12V
+    </Description>
+    <eeschema_sch>
+        L power:+12V
+    </eeschema_sch>
+    <Spice>
+        [+12V] connect PLUS12V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+12V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +12VA with exactly one pin named +12VA which sets the connected node to the global flag named PLUS12VA
+    </Description>
+    <eeschema_sch>
+        L power:+12VA
+    </eeschema_sch>
+    <Spice>
+        [+12VA] connect PLUS12VA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+12VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +15V with exactly one pin named +15V which sets the connected node to the global flag named PLUS15V
+    </Description>
+    <eeschema_sch>
+        L power:+15V
+    </eeschema_sch>
+    <Spice>
+        [+15V] connect PLUS15V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+15V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +1V0 with exactly one pin named +1V0 which sets the connected node to the global flag named PLUS1V0
+    </Description>
+    <eeschema_sch>
+        L power:+1V0
+    </eeschema_sch>
+    <Spice>
+        [+1V0] connect PLUS1V0
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+1V0" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +1V1 with exactly one pin named +1V1 which sets the connected node to the global flag named PLUS1V1
+    </Description>
+    <eeschema_sch>
+        L power:+1V1
+    </eeschema_sch>
+    <Spice>
+        [+1V1] connect PLUS1V1
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+1V1" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +1V2 with exactly one pin named +1V2 which sets the connected node to the global flag named PLUS1V2
+    </Description>
+    <eeschema_sch>
+        L power:+1V2
+    </eeschema_sch>
+    <Spice>
+        [+1V2] connect PLUS1V2
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+1V2" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +1V35 with exactly one pin named +1V35 which sets the connected node to the global flag named PLUS1V35
+    </Description>
+    <eeschema_sch>
+        L power:+1V35
+    </eeschema_sch>
+    <Spice>
+        [+1V35] connect PLUS1V35
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+1V35" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +1V5 with exactly one pin named +1V5 which sets the connected node to the global flag named PLUS1V5
+    </Description>
+    <eeschema_sch>
+        L power:+1V5
+    </eeschema_sch>
+    <Spice>
+        [+1V5] connect PLUS1V5
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+1V5" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +1V8 with exactly one pin named +1V8 which sets the connected node to the global flag named PLUS1V8
+    </Description>
+    <eeschema_sch>
+        L power:+1V8
+    </eeschema_sch>
+    <Spice>
+        [+1V8] connect PLUS1V8
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+1V8" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +24V with exactly one pin named +24V which sets the connected node to the global flag named PLUS24V
+    </Description>
+    <eeschema_sch>
+        L power:+24V
+    </eeschema_sch>
+    <Spice>
+        [+24V] connect PLUS24V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+24V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +28V with exactly one pin named +28V which sets the connected node to the global flag named PLUS28V
+    </Description>
+    <eeschema_sch>
+        L power:+28V
+    </eeschema_sch>
+    <Spice>
+        [+28V] connect PLUS28V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+28V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +2V5 with exactly one pin named +2V5 which sets the connected node to the global flag named PLUS2V5
+    </Description>
+    <eeschema_sch>
+        L power:+2V5
+    </eeschema_sch>
+    <Spice>
+        [+2V5] connect PLUS2V5
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+2V5" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +2V8 with exactly one pin named +2V8 which sets the connected node to the global flag named PLUS2V8
+    </Description>
+    <eeschema_sch>
+        L power:+2V8
+    </eeschema_sch>
+    <Spice>
+        [+2V8] connect PLUS2V8
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+2V8" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3.3V with exactly one pin named +3V3 which sets the connected node to the global flag named PLUS3V3
+    </Description>
+    <eeschema_sch>
+        L power:+3.3V
+    </eeschema_sch>
+    <Spice>
+        [+3V3] connect PLUS3V3
+    </Spice>
+    <eeschema_symbol>
+           
+          
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+       
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3.3V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3.3VA with exactly one pin named +3.3VA which sets the connected node to the global flag named PLUS3POINT3VA
+    </Description>
+    <eeschema_sch>
+        L power:+3.3VA
+    </eeschema_sch>
+    <Spice>
+        [+3.3VA] connect PLUS3POINT3VA
+    </Spice>
+    <eeschema_symbol>
+           
+        
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3.3VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3.3VADC with exactly one pin named +3.3VADC which sets the connected node to the global flag named PLUS3POINT3VADC
+    </Description>
+    <eeschema_sch>
+        L power:+3.3VADC
+    </eeschema_sch>
+    <Spice>
+        [+3.3VADC] connect PLUS3POINT3VADC
+    </Spice>
+    <eeschema_symbol>
+           
+       
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3.3VADC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+           
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3.3VDAC with exactly one pin named +3.3VDAC which sets the connected node to the global flag named PLUS3POINT3VDAC
+    </Description>
+    <eeschema_sch>
+        L power:+3.3VDAC
+    </eeschema_sch>
+    <Spice>
+        [+3.3VDAC] connect PLUS3POINT3VDAC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3.3VDAC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3.3VP with exactly one pin named +3.3VP which sets the connected node to the global flag named PLUS3POINT3VP
+    </Description>
+    <eeschema_sch>
+        L power:+3.3VP
+    </eeschema_sch>
+    <Spice>
+        [+3.3VP] connect PLUS3POINT3VP
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3.3VP" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +36V with exactly one pin named +36V which sets the connected node to the global flag named PLUS36V
+    </Description>
+    <eeschema_sch>
+        L power:+36V
+    </eeschema_sch>
+    <Spice>
+        [+36V] connect PLUS36V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+36V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3V0 with exactly one pin named +3V0 which sets the connected node to the global flag named PLUS3V0
+    </Description>
+    <eeschema_sch>
+        L power:+3V0
+    </eeschema_sch>
+    <Spice>
+        [+3V0] connect PLUS3V0
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3V0" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3V3 with exactly one pin named +3V3 which sets the connected node to the global flag named PLUS3V3
+    </Description>
+    <eeschema_sch>
+        L power:+3V3
+    </eeschema_sch>
+    <Spice>
+        [+3V3] connect PLUS3V3
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3V3" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +3V8 with exactly one pin named +3V8 which sets the connected node to the global flag named PLUS3V8
+    </Description>
+    <eeschema_sch>
+        L power:+3V8
+    </eeschema_sch>
+    <Spice>
+        [+3V8] connect PLUS3V8
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+3V8" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +48V with exactly one pin named +48V which sets the connected node to the global flag named PLUS48V
+    </Description>
+    <eeschema_sch>
+        L power:+48V
+    </eeschema_sch>
+    <Spice>
+        [+48V] connect PLUS48V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+48V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +4V with exactly one pin named +4V which sets the connected node to the global flag named PLUS4V
+    </Description>
+    <eeschema_sch>
+        L power:+4V
+    </eeschema_sch>
+    <Spice>
+        [+4V] connect PLUS4V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+4V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5C with exactly one pin named +5C which sets the connected node to the global flag named PLUS5C
+    </Description>
+    <eeschema_sch>
+        L power:+5C
+    </eeschema_sch>
+    <Spice>
+        [+5C] connect PLUS5C
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5C" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5F with exactly one pin named +5F which sets the connected node to the global flag named PLUS5F
+    </Description>
+    <eeschema_sch>
+        L power:+5F
+    </eeschema_sch>
+    <Spice>
+        [+5F] connect PLUS5F
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5F" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5P with exactly one pin named +5P which sets the connected node to the global flag named PLUS5P
+    </Description>
+    <eeschema_sch>
+        L power:+5P
+    </eeschema_sch>
+    <Spice>
+        [+5P] connect PLUS5P
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5P" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5V with exactly one pin named +5V which sets the connected node to the global flag named PLUS5V
+    </Description>
+    <eeschema_sch>
+        L power:+5V
+    </eeschema_sch>
+    <Spice>
+        [+5V] connect PLUS5V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5VA with exactly one pin named +5VA which sets the connected node to the global flag named PLUS5VA
+    </Description>
+    <eeschema_sch>
+        L power:+5VA
+    </eeschema_sch>
+    <Spice>
+        [+5VA] connect PLUS5VA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5VD with exactly one pin named +5VD which sets the connected node to the global flag named PLUS5VD
+    </Description>
+    <eeschema_sch>
+        L power:+5VD
+    </eeschema_sch>
+    <Spice>
+        [+5VD] connect PLUS5VD
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5VD" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5VL with exactly one pin named +5VL which sets the connected node to the global flag named PLUS5VL
+    </Description>
+    <eeschema_sch>
+        L power:+5VL
+    </eeschema_sch>
+    <Spice>
+        [+5VL] connect PLUS5VL
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5VL" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +5VP with exactly one pin named +5VP which sets the connected node to the global flag named PLUS5VP
+    </Description>
+    <eeschema_sch>
+        L power:+5VP
+    </eeschema_sch>
+    <Spice>
+        [+5VP] connect PLUS5VP
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+5VP" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +6V with exactly one pin named +6V which sets the connected node to the global flag named PLUS6V
+    </Description>
+    <eeschema_sch>
+        L power:+6V
+    </eeschema_sch>
+    <Spice>
+        [+6V] connect PLUS6V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+6V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +7.5V with exactly one pin named +7.5V which sets the connected node to the global flag named PLUS7POINT5V
+    </Description>
+    <eeschema_sch>
+        L power:+7.5V
+    </eeschema_sch>
+    <Spice>
+        [+7.5V] connect PLUS7POINT5V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+7.5V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +8V with exactly one pin named +8V which sets the connected node to the global flag named PLUS8V
+    </Description>
+    <eeschema_sch>
+        L power:+8V
+    </eeschema_sch>
+    <Spice>
+        [+8V] connect PLUS8V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+8V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +9V with exactly one pin named +9V which sets the connected node to the global flag named PLUS9V
+    </Description>
+    <eeschema_sch>
+        L power:+9V
+    </eeschema_sch>
+    <Spice>
+        [+9V] connect PLUS9V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+9V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +9VA with exactly one pin named +9VA which sets the connected node to the global flag named PLUS9VA
+    </Description>
+    <eeschema_sch>
+        L power:+9VA
+    </eeschema_sch>
+    <Spice>
+        [+9VA] connect PLUS9VA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+9VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +BATT with exactly one pin named +BATT which sets the connected node to the global flag named PLUSBATT
+    </Description>
+    <eeschema_sch>
+        L power:+BATT
+    </eeschema_sch>
+    <Spice>
+        [+BATT] connect PLUSBATT
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+BATT" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +VDC with exactly one pin named +VDC which sets the connected node to the global flag named PLUSVDC
+    </Description>
+    <eeschema_sch>
+        L power:+VDC
+    </eeschema_sch>
+    <Spice>
+        [+VDC] connect PLUSVDC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -1.143 3.175)
+          (xy 1.143 3.175)
+        )
+        (stroke (width 0.508) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.032)
+          (xy 0 4.318)
+        )
+        (stroke (width 0.508) (type default))
+        (fill (type none))
+      )
+      (circle (center 0 3.175) (radius 1.905)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+VDC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named +VSW with exactly one pin named +VSW which sets the connected node to the global flag named PLUSVSW
+    </Description>
+    <eeschema_sch>
+        L power:+VSW
+    </eeschema_sch>
+    <Spice>
+        [+VSW] connect PLUSVSW
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "+VSW" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -10V with exactly one pin named -10V which sets the connected node to the global flag named MINUS10V
+    </Description>
+    <eeschema_sch>
+        L power:-10V
+    </eeschema_sch>
+    <Spice>
+        [-10V] connect MINUS10V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-10V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -12V with exactly one pin named -12V which sets the connected node to the global flag named MINUS12V
+    </Description>
+    <eeschema_sch>
+        L power:-12V
+    </eeschema_sch>
+    <Spice>
+        [-12V] connect MINUS12V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-12V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -12VA with exactly one pin named -12VA which sets the connected node to the global flag named MINUS12VA
+    </Description>
+    <eeschema_sch>
+        L power:-12VA
+    </eeschema_sch>
+    <Spice>
+        [-12VA] connect MINUS12VA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-12VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -15V with exactly one pin named -15V which sets the connected node to the global flag named MINUS15V
+    </Description>
+    <eeschema_sch>
+        L power:-15V
+    </eeschema_sch>
+    <Spice>
+        [-15V] connect MINUS15V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-15V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -24V with exactly one pin named -24V which sets the connected node to the global flag named MINUS24V
+    </Description>
+    <eeschema_sch>
+        L power:-24V
+    </eeschema_sch>
+    <Spice>
+        [-24V] connect MINUS24V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-24V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -2V5 with exactly one pin named -2V5 which sets the connected node to the global flag named MINUS2V5
+    </Description>
+    <eeschema_sch>
+        L power:-2V5
+    </eeschema_sch>
+    <Spice>
+        [-2V5] connect MINUS2V5
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-2V5" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -36V with exactly one pin named -36V which sets the connected node to the global flag named MINUS36V
+    </Description>
+    <eeschema_sch>
+        L power:-36V
+    </eeschema_sch>
+    <Spice>
+        [-36V] connect MINUS36V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-36V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -3V3 with exactly one pin named -3V3 which sets the connected node to the global flag named MINUS3V3
+    </Description>
+    <eeschema_sch>
+        L power:-3V3
+    </eeschema_sch>
+    <Spice>
+        [-3V3] connect MINUS3V3
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-3V3" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -48V with exactly one pin named -48V which sets the connected node to the global flag named MINUS48V
+    </Description>
+    <eeschema_sch>
+        L power:-48V
+    </eeschema_sch>
+    <Spice>
+        [-48V] connect MINUS48V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-48V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -5V with exactly one pin named -5V which sets the connected node to the global flag named MINUS5V
+    </Description>
+    <eeschema_sch>
+        L power:-5V
+    </eeschema_sch>
+    <Spice>
+        [-5V] connect MINUS5V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-5V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -5VA with exactly one pin named -5VA which sets the connected node to the global flag named MINUS5VA
+    </Description>
+    <eeschema_sch>
+        L power:-5VA
+    </eeschema_sch>
+    <Spice>
+        [-5VA] connect MINUS5VA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-5VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -6V with exactly one pin named -6V which sets the connected node to the global flag named MINUS6V
+    </Description>
+    <eeschema_sch>
+        L power:-6V
+    </eeschema_sch>
+    <Spice>
+        [-6V] connect MINUS6V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-6V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -8V with exactly one pin named -8V which sets the connected node to the global flag named MINUS8V
+    </Description>
+    <eeschema_sch>
+        L power:-8V
+    </eeschema_sch>
+    <Spice>
+        [-8V] connect MINUS8V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-8V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -9V with exactly one pin named -9V which sets the connected node to the global flag named MINUS9V
+    </Description>
+    <eeschema_sch>
+        L power:-9V
+    </eeschema_sch>
+    <Spice>
+        [-9V] connect MINUS9V
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-9V" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -9VA with exactly one pin named -9VA which sets the connected node to the global flag named MINUS9VA
+    </Description>
+    <eeschema_sch>
+        L power:-9VA
+    </eeschema_sch>
+    <Spice>
+        [-9VA] connect MINUS9VA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-9VA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -BATT with exactly one pin named -BATT which sets the connected node to the global flag named MINUSBATT
+    </Description>
+    <eeschema_sch>
+        L power:-BATT
+    </eeschema_sch>
+    <Spice>
+        [-BATT] connect MINUSBATT
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-BATT" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -VDC with exactly one pin named -VDC which sets the connected node to the global flag named MINUSVDC
+    </Description>
+    <eeschema_sch>
+        L power:-VDC
+    </eeschema_sch>
+    <Spice>
+        [-VDC] connect MINUSVDC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -1.143 3.175)
+          (xy 1.143 3.175)
+        )
+        (stroke (width 0.508) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (circle (center 0 3.175) (radius 1.905)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-VDC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named -VSW with exactly one pin named -VSW which sets the connected node to the global flag named MINUSVSW
+    </Description>
+    <eeschema_sch>
+        L power:-VSW
+    </eeschema_sch>
+    <Spice>
+        [-VSW] connect MINUSVSW
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "-VSW" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+          (xy 0.762 1.27)
+          (xy 0 2.54)
+          (xy -0.762 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named AC with exactly one pin named AC which sets the connected node to the global flag named AC
+    </Description>
+    <eeschema_sch>
+        L power:AC
+    </eeschema_sch>
+    <Spice>
+        [AC] connect AC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (arc (start 0 3.175) (mid -0.635 3.8073) (end -1.27 3.175)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (arc (start 0 3.175) (mid 0.635 2.5427) (end 1.27 3.175)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (circle (center 0 3.175) (radius 1.905)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "AC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named HT with exactly one pin named HT which sets the connected node to the global flag named HT
+    </Description>
+    <eeschema_sch>
+        L power:HT
+    </eeschema_sch>
+    <Spice>
+        [HT] connect HT
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "HT" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.016)
+          (xy 0 1.016)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 1.016)
+          (xy 0.508 0.508)
+          (xy 0 1.778)
+          (xy -0.508 0.508)
+          (xy 0 1.016)
+          (xy 0 1.016)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named LINE with exactly one pin named LINE which sets the connected node to the global flag named LINE
+    </Description>
+    <eeschema_sch>
+        L power:LINE
+    </eeschema_sch>
+    <Spice>
+        [LINE] connect LINE
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "LINE" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named NEUT with exactly one pin named NEUT which sets the connected node to the global flag named NEUT
+    </Description>
+    <eeschema_sch>
+        L power:NEUT
+    </eeschema_sch>
+    <Spice>
+        [NEUT] connect NEUT
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "NEUT" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named PRI_HI with exactly one pin named PRI_HI which sets the connected node to the global flag named PRI_HI
+    </Description>
+    <eeschema_sch>
+        L power:PRI_HI
+    </eeschema_sch>
+    <Spice>
+        [PRI_HI] connect PRI_HI
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "PRI_HI" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named PRI_LO with exactly one pin named PRI_LO which sets the connected node to the global flag named PRI_LO
+    </Description>
+    <eeschema_sch>
+        L power:PRI_LO
+    </eeschema_sch>
+    <Spice>
+        [PRI_LO] connect PRI_LO
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "PRI_LO" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named PRI_MID with exactly one pin named PRI_MID which sets the connected node to the global flag named PRI_MID
+    </Description>
+    <eeschema_sch>
+        L power:PRI_MID
+    </eeschema_sch>
+    <Spice>
+        [PRI_MID] connect PRI_MID
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "PRI_MID" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VAA with exactly one pin named VAA which sets the connected node to the global flag named VAA
+    </Description>
+    <eeschema_sch>
+        L power:VAA
+    </eeschema_sch>
+    <Spice>
+        [VAA] connect VAA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VAA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VAC with exactly one pin named VAC which sets the connected node to the global flag named VAC
+    </Description>
+    <eeschema_sch>
+        L power:VAC
+    </eeschema_sch>
+    <Spice>
+        [VAC] connect VAC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (arc (start 0 3.175) (mid -0.635 3.8073) (end -1.27 3.175)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (arc (start 0 3.175) (mid 0.635 2.5427) (end 1.27 3.175)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+      (circle (center 0 3.175) (radius 1.905)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VAC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VBUS with exactly one pin named VBUS which sets the connected node to the global flag named VBUS
+    </Description>
+    <eeschema_sch>
+        L power:VBUS
+    </eeschema_sch>
+    <Spice>
+        [VBUS] connect VBUS
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VBUS" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VCC with exactly one pin named VCC which sets the connected node to the global flag named VCC
+    </Description>
+    <eeschema_sch>
+        L power:VCC
+    </eeschema_sch>
+    <Spice>
+        [VCC] connect VCC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VCC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VCCQ with exactly one pin named VCCQ which sets the connected node to the global flag named VCCQ
+    </Description>
+    <eeschema_sch>
+        L power:VCCQ
+    </eeschema_sch>
+    <Spice>
+        [VCCQ] connect VCCQ
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VCCQ" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VCOM with exactly one pin named VCOM which sets the connected node to the global flag named VCOM
+    </Description>
+    <eeschema_sch>
+        L power:VCOM
+    </eeschema_sch>
+    <Spice>
+        [VCOM] connect VCOM
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VCOM" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VD with exactly one pin named VD which sets the connected node to the global flag named VD
+    </Description>
+    <eeschema_sch>
+        L power:VD
+    </eeschema_sch>
+    <Spice>
+        [VD] connect VD
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VD" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VDC with exactly one pin named VDC which sets the connected node to the global flag named VDC
+    </Description>
+    <eeschema_sch>
+        L power:VDC
+    </eeschema_sch>
+    <Spice>
+        [VDC] connect VDC
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VDC" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VDD with exactly one pin named VDD which sets the connected node to the global flag named VDD
+    </Description>
+    <eeschema_sch>
+        L power:VDD
+    </eeschema_sch>
+    <Spice>
+        [VDD] connect VDD
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VDD" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VDDA with exactly one pin named VDDA which sets the connected node to the global flag named VDDA
+    </Description>
+    <eeschema_sch>
+        L power:VDDA
+    </eeschema_sch>
+    <Spice>
+        [VDDA] connect VDDA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VDDA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VDDF with exactly one pin named VDDF which sets the connected node to the global flag named VDDF
+    </Description>
+    <eeschema_sch>
+        L power:VDDF
+    </eeschema_sch>
+    <Spice>
+        [VDDF] connect VDDF
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VDDF" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VEE with exactly one pin named VEE which sets the connected node to the global flag named VEE
+    </Description>
+    <eeschema_sch>
+        L power:VEE
+    </eeschema_sch>
+    <Spice>
+        [VEE] connect VEE
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VEE" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VMEM with exactly one pin named VMEM which sets the connected node to the global flag named VMEM
+    </Description>
+    <eeschema_sch>
+        L power:VMEM
+    </eeschema_sch>
+    <Spice>
+        [VMEM] connect VMEM
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VMEM" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VPP with exactly one pin named VPP which sets the connected node to the global flag named VPP
+    </Description>
+    <eeschema_sch>
+        L power:VPP
+    </eeschema_sch>
+    <Spice>
+        [VPP] connect VPP
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VPP" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VS with exactly one pin named VS which sets the connected node to the global flag named VS
+    </Description>
+    <eeschema_sch>
+        L power:VS
+    </eeschema_sch>
+    <Spice>
+        [VS] connect VS
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VS" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VSS with exactly one pin named VSS which sets the connected node to the global flag named VSS
+    </Description>
+    <eeschema_sch>
+        L power:VSS
+    </eeschema_sch>
+    <Spice>
+        [VSS] connect VSS
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VSS" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named VSSA with exactly one pin named VSSA which sets the connected node to the global flag named VSSA
+    </Description>
+    <eeschema_sch>
+        L power:VSSA
+    </eeschema_sch>
+    <Spice>
+        [VSSA] connect VSSA
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.762 1.27)
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type outline))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "VSSA" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>
+
+<Component>
+    <Description>
+        A flag named Vdrive with exactly one pin named Vdrive which sets the connected node to the global flag named Vdrive
+    </Description>
+    <eeschema_sch>
+        L power:Vdrive
+    </eeschema_sch>
+    <Spice>
+        [Vdrive] connect Vdrive
+    </Spice>
+    <eeschema_symbol>
+           
+            
+      (polyline
+        (pts
+          (xy -0.762 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 0)
+          (xy 0 2.54)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 2.54)
+          (xy 0.762 1.27)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+
+            
+      (pin power_in line (at 0 0 90) (length 0) hide
+        (name "Vdrive" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+
+        
+
+
+    </eeschema_symbol>
+</Component>

@@ -1,0 +1,401 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+// Unless specified otherwise, the following texts for each component are public domain.
+
+
+<Component>
+    <Description>
+        An Amperemeter for dc currents. Simulated as a small resistance, as real amperemeters often also only have a small resistance, less than one Ohm. But if you give a numeric value as parameter, then takes that Resistance in Ohms.
+    </Description>
+    <eeschema_sch>
+        L Device:Amperemeter_DC
+        ALIAS Device:Ammeter_DC
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Galvanometer
+    </eeschema_sch>
+    <eeschema_symbol>
+    DEFINE [name] AS_INVISIBLE
+    DEFINE [value] AS_INVISIBLE
+    DRAW
+        C 0 0 100 0 1 10 N
+        //T 0 0 0 50 0 0 0 A
+        P 2 0 0 0 -125 -125 -75 -75 N
+        P 2 0 0 0 75 75 125 125 N
+        P 3 0 0 0 75 125 125 125 125 75 N
+        P 2 0 1 0 10 150 30 150 N
+        P 2 0 1 0 20 160 20 140 N
+        X - 1 0 -200 100 U 50 50 1 1 P
+        X + 2 0 200 100 D 50 50 1 1 P
+    ENDDRAW
+    </eeschema_symbol>
+    <animation>
+        DEFINE [curr] I[+] 
+        DEFINE [curr] AS_DECIMAL_FORMAT OF:[curr] FORM:##.##
+        T 0 0 0 50 0 0 [curr]A
+    </animation>
+    <Default_Values>
+        0.1 Ohm // ohmic value of a common amperemeter.
+    </Default_Values>
+    <Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        R_AmpMeas_DC_[individual] [+] [-] IF [ohm] THEN [ohm] ELSE 0.1 ENDIF
+    </Spice>
+    <purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Ff%2Fstromzange-1618849.html</url>
+			<title>Current clamps</title>
+			<detail>overview of current clamps at conrad electronic<detail>
+		</link><link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fmultimeter-1101010.html</url>
+			<title>multimeters</title>
+			<detail>overview of multimeters at conrad electronic</detail>
+		</link>
+    </purchase>
+</Component>
+    
+<Component>
+    <Description>
+       An Amperemeter for ac currents. Simulated as a small resistance, as real amperemeters often also only have a small resistance, less than one Ohm. But if you give a numeric value as parameter, then takes that Resistance in Ohms.
+    </Description>
+    <eeschema_sch>
+        L Device:Amperemeter_AC
+        ALIAS Device:Ammeter_AC
+    </eeschema_sch>
+    <eeschema_symbol>
+        DEFINE [name] AS_INVISIBLE
+        DEFINE [value] AS_INVISIBLE
+        DRAW
+        <Line 0 -100 0 200 #A0A0A0 2 1>
+        A -20 -54 21 -1633 -167 0 1 0 N -40 -60 0 -60
+        A 20 -65 21 140 1660 0 1 0 N 40 -60 0 -60
+        C 0 0 100 0 1 10 N
+        //T 0 0 25 100 0 0 0 A Normal 0 C C
+        P 2 0 0 0 -125 -125 -75 -75 N
+        IF ![animated] THEN 
+            P 2 0 0 0 -75 -75 75 75 N
+        ENDIF
+        P 2 0 0 0 75 75 125 125 N
+        P 3 0 0 0 75 125 125 125 125 75 N
+        X ~ 1 0 -200 100 U 50 50 1 1 P
+        X ~ 2 0 200 100 D 50 50 1 1 P
+        ENDDRAW
+    </eeschema_symbol>
+    <animation>
+        DEFINE [curr] I[pin1] 
+        DEFINE [curr] AS_MATH_ABS OF:[curr]
+        DEFINE [curr] AS_DECIMAL_FORMAT OF:[curr] FORM:##.##
+        T 0 0 25 70 0 0 [curr]A
+    </animation>
+    <Default_Values>
+    0.1 Ohm //default resistance of an ampere meter
+    </Default_Values>
+    <Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        R_AmpMeas_AC_[individual] [pin1] [pin2] IF [ohm] THEN [ohm] ELSE 0.1 ENDIF
+    </Spice>
+     <purchase>
+        www.conrad.com/search?search=Amperemeter&searchType=regular
+    </purchase>
+</Component>
+
+<Component>
+    <Description>
+        An oscilloscope or a Voltmeter for dc voltages. Simulated as a large resistance, as real voltmeters often also have a big resistance,
+        usually more than one MegaOhm. But if you give a numeric value as parameter, then takes that Resistance in Ohms.
+    </Description>
+    <eeschema_sch>
+        L Device:Oscilloscope
+    </eeschema_sch>
+    <eeschema_sch>
+        L Device:Voltmeter_DC
+    </eeschema_sch>
+    <eeschema_symbol>
+    DEFINE [name] AS_INVISIBLE
+    DEFINE [value] AS_INVISIBLE
+    DRAW
+    C 0 0 100 0 1 10 N
+    
+    P 2 0 0 0 -125 -125 -75 -75 N
+    IF ![animated] THEN
+        T 0 0 0 100 0 0 V
+    ENDIF
+    P 2 0 0 0 75 75 125 125 N
+    P 3 0 0 0 75 125 125 125 125 75 N
+    P 2 0 1 0 10 150 30 150 N
+    P 2 0 1 0 20 160 20 140 N
+    X - 1 0 -200 100 U 50 50 1 1 P
+    X + 2 0 200 100 D 50 50 1 1 P
+    ENDDRAW
+    </eeschema_symbol>
+    <animation>
+        DEFINE [diff] AS_MATH_SUB OF:V[+] AND:V[-]
+        DEFINE [diff] AS_DECIMAL_FORMAT OF:[diff] FORM:##.##
+        <Text 0 0 50 #0000FF 0 "[diff]V">
+    </animation>
+        <Default_Values>
+        1E9 Ohm// ohmic value of a common oscilloscope
+    </Default_Values>
+    <Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        R_VoltMeas_DC_[individual] [+] [-] IF [ohm] THEN [ohm] ELSE 1E9 ENDIF
+    </Spice>
+    
+    <purchase>
+        <link>
+            <url>www.conrad.com/search?search=Oscilloscopes&searchType=suggest&searchSuggest=category&categoryId=1113030</url>
+            <title>overview</title>
+            <detail>overview of oscilloscopes at conrad electronic</detail>
+        </link><link>
+            <url>www.conrad.com/search?search=voltmeter&searchType=regular</url>
+            <title>overview</title>
+            <detail>overview of voltmeters at conrad electronic</detail>
+        </link>
+    </purchase>
+</Component>
+    
+<Component>
+    <Description>
+        A Voltmeter for ac voltages. Simulated as a large resistance, as real voltmeters often also have a big resistance,
+        usually more than one MegaOhm. But if you give a numeric value as parameter, then takes that Resistance in Ohms.
+    </Description>
+    <eeschema_sch>
+        L Device:Voltmeter_AC
+    </eeschema_sch>
+     <eeschema_symbol>
+    DEFINE [name] AS_INVISIBLE
+    DEFINE [value] AS_INVISIBLE
+    DRAW
+    A -20 -54 21 -1633 -167 0 1 0 N -40 -60 0 -60
+    A 20 -65 21 140 1660 0 1 0 N 40 -60 0 -60
+    C 0 0 100 0 1 10 N
+    //T 0 0 25 100 0 0 0 A Normal 0 C C
+    P 2 0 0 0 -125 -125 -75 -75 N
+    IF ![animated] THEN
+         P 2 0 0 0 -75 -75 75 75 N
+    ENDIF
+    P 2 0 0 0 75 75 125 125 N
+    P 3 0 0 0 75 125 125 125 125 75 N
+    X ~ 1 0 -200 100 U 50 50 1 1 P
+    X ~ 2 0 200 100 D 50 50 1 1 P
+    ENDDRAW
+    </eeschema_symbol>
+    <animation>
+        DEFINE [diff] AS_MATH_SUB OF:V[pin1] AND:V[pin2]
+        DEFINE [diff] AS_MATH_ABS OF:[diff]
+        DEFINE [diff] AS_DECIMAL_FORMAT OF:[diff] FORM:##.##
+         T 0 0 25 70 0 0 [diff]V
+    </animation>
+    <Default_Values>
+        1E9 Ohm // ohmic value of a common voltmeter.
+    </Default_Values>
+    <Spice>
+        DEFINE [ohm] AS_NUMBER OF:[value]
+        R_VoltMeas_DC_[individual] [pin1] [pin2] IF [ohm] THEN [ohm] ELSE 1E9 ENDIF
+    </Spice>
+	<purchase>
+		<link>
+			<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fmultimeter-1101010.html</url>
+			<title>multimeters</title>
+			<detail>overview of multimeters at conrad electronic</detail>
+		</link>
+	</purchase>
+</Component>
+
+<Component>
+    <Description>
+        An Ohmmeter. Simulated as voltage source, as real ohmmeters usually test resistance by running a probe voltage.
+        Usually a voltage of the battery of the Ohmmeter, for example 9V as used here by default. But if you give a numeric value as parameter, then takes that Voltage in Volts
+    </Description>
+    <eeschema_sch>
+        L Device:Ohmmeter
+    </eeschema_sch>
+    <Default_Values>
+        9.0 // voltage value of 
+    </Default_Values>
+    <Spice>
+        DEFINE [volt_probe] AS_NUMBER OF:[value]
+        V_ohmMeas_[individual] [+] [-] IF [volt_probe] THEN [volt_probe] ELSE 9 ENDIF
+    </Spice>
+    <purchase>
+        <url>www.conrad.com/search?search=voltmeter&searchType=regular</url>
+        <title>overview</title>
+        <detail>overview of voltmeters at conrad electronic</detail>
+    </purchase>
+    <eeschema_symbol>
+    (symbol "Ohmmeter_0_0"
+      (polyline
+        (pts
+          (xy -3.175 -3.175)
+          (xy -1.905 -1.905)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.905 1.905)
+          (xy 3.175 3.175)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.905 3.175)
+          (xy 3.175 3.175)
+          (xy 3.175 1.905)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+      (text "Ohm" (at 0 0 0)
+        (effects (font (size 2.54 2.54)))
+      )
+    )
+(symbol "Ohmmeter_0_1"
+      (circle (center 0 0) (radius 2.54)
+        (stroke (width 0.254) (type default))
+        (fill (type none))
+      )
+    )
+(symbol "Ohmmeter_1_1"
+      (pin passive line (at 0 -5.08 90) (length 2.54)
+        (name "-" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin passive line (at 0 5.08 270) (length 2.54)
+        (name "+" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+    )
+
+    </eeschema_symbol>
+</Component>
+
+
+<Component>
+	<Description>
+		A power meter, also called wattmeter.
+		Consists of a voltmeter and an amperemeter, multiplies both to get P=UxI.
+		Gives out a "voltage" defining the power, where 1V equivalents 1W.
+		So, if this device has measured 12.34 Watt, then it gives out 12.34 Volt
+	</Description>
+	<eeschema_sch>
+		L anicad:PowerMeter
+	</eeschema_sch>
+	<eeschema_symbol>
+   
+    (rectangle (start -5.08 6.35) (end 5.08 -3.81)
+      (stroke (width 0) (type default))
+      (fill (type background))
+    )
+    (rectangle (start -4.572 5.842) (end 3.048 2.54)
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+	 (polyline
+      (pts
+        (xy -1.27 -3.81)
+        (xy -1.27 -1.27)
+        (xy 1.27 -1.27)
+        (xy 1.27 -3.81)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy -4.572 -1.27)
+        (xy -4.826 -0.762)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy 1.27 -0.508)
+        (xy 0.762 -0.762)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy -4.572 1.27)
+        (xy -4.572 -1.27)
+        (xy -4.318 -0.762)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (polyline
+      (pts
+        (xy -1.27 -0.508)
+        (xy 1.27 -0.508)
+        (xy 0.762 -0.254)
+      )
+      (stroke (width 0) (type default))
+      (fill (type none))
+    )
+    (text "i" (at 0 0.254 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (text "p" (at 4.318 1.27 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (text "u" (at -4.064 0.254 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (text "W" (at 4.064 4.318 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (pin input line (at -1.27 -6.35 90) (length 2.54)
+      (name "iA" (effects (font (size 1.27 1.27))))
+      (number "1" (effects (font (size 1.27 1.27))))
+    )
+    (pin input line (at 1.27 -6.35 90) (length 2.54)
+      (name "iB" (effects (font (size 1.27 1.27))))
+      (number "2" (effects (font (size 1.27 1.27))))
+    )
+    (pin input line (at -7.62 1.27 0) (length 2.54)
+      (name "uA" (effects (font (size 1.27 1.27))))
+      (number "3" (effects (font (size 1.27 1.27))))
+    )
+    (pin input line (at -7.62 -1.27 0) (length 2.54)
+      (name "uB" (effects (font (size 1.27 1.27))))
+      (number "4" (effects (font (size 1.27 1.27))))
+    )
+    (pin output line (at 7.62 1.27 180) (length 2.54)
+      (name "out" (effects (font (size 1.27 1.27))))
+      (number "5" (effects (font (size 1.27 1.27))))
+    )
+	</eeschema_symbol>
+	<animation>
+		DEFINE [watt] V[out]
+		DEFINE [watt] AS_DECIMAL_FORMAT OF:[watt] FORM:##.##
+			
+			(text "[watt]" (at -1.016 4.064 0)
+			  (effects (font (size 2 2)))
+			)
+	</animation> 
+	<Default_Values>
+        PowerMeter // no value needed. 
+    </Default_Values>
+    <Spice>
+        DEFINE [volt_probe] AS_NUMBER OF:[value]
+        .subckt powermeter_[individual] iA iB uA uB out
+			VmeasI iA iB DC 0
+			B_out 0 out V=i(VmeasI)*(v(uB)-v(uA)); 
+		.ends
+		X_powermeter_[individual] [iA] [iB] [uA] [uB] [out] powermeter_[individual]
+    </Spice>
+	
+	
+    <purchase>
+        <url>www.conrad.com/search?search=voltmeter&searchType=regular</url>
+        <title>overview</title>
+        <detail>overview of voltmeters at conrad electronic</detail>
+    </purchase>
+	
+	
+</Component>

@@ -1,0 +1,229 @@
+//All texts are presented AS IS and the provider of this library is not liable for any consequences resulting from using it in any way.
+
+// The following oscillator models have spice model, which is idealized. Please be aware of the fact that the real model 
+// might work in similar way in some circuits, but also will work differently in other circuits. For example:
+// - The circuits here have resistances between the positive and negative connection of ca.1MegaOhm, but in case of CMOS-Technology, the real components may have an even larger resistance. Therefor the current consumption may be even lower.
+// - The circuits here have an idealized rise and fall time, which means that the switch time between high and low voltage here is only the time step of the simulation. Real components often also have a small rise and fall time of just a few nanoseconds, but in some cases even this might be relevant, or some real components might have other rise and fall times. Also the real rise and fall curve might not be an ideal straight line as in the model, but may have the form of a loading curve or may have an overshoot.
+// -> So for the users: Please be aware of the differences between the real components and the idealized model
+// -> So for the jurists: this library is presented AS IS. We are not liable of any consequences resulting from it in any way
+// -> So for the helping hands: there is still a lot TODO in this library to make more realistic models:
+//      Someone who has a more realistic model, which also works well in ngspice is very welcome to add it to the library
+//      also you may of course contact us.
+
+<Component>
+    <Description>
+        A standard oscillator. Creates a rectangular voltage. Frequency in Herz as given in the parameter [value].
+        The HIGH-voltage is specified by the VCC-pin, the LOW-voltage is specified by the GND-pin (which may be, but does not have to be connected to ground node)
+    </Description>
+    <eeschema_sch>
+        L Oscillator:KT2520K-T
+        ALIAS Oscillator:ACO-xxxMHz Oscillator:DGOF5S3 Oscillator:GTXO-S14T Oscillator:TCXO-14
+		IF [model] CONTAINS KT2520K THEN 
+			DEFINE [datasheet] https://www.mouser.de/datasheet/2/909/kt2520_e-1388822.pdf
+		ENDIF
+    </eeschema_sch>
+	<eeschema_symbol>
+	  (rectangle (start -5.08 5.08) (end 5.08 -5.08)
+        (stroke (width 0.254) (type default) (color 0 0 0 0))
+        (fill (type background))
+      )
+      (polyline
+        (pts
+          (xy -4.572 -0.508)
+          (xy -3.81 -0.508)
+          (xy -3.81 0.762)
+          (xy -3.048 0.762)
+          (xy -3.048 -0.508)
+          (xy -2.286 -0.508)
+          (xy -2.286 0.762)
+          (xy -1.524 0.762)
+          (xy -1.524 -0.508)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+    
+	  (pin power_in line (at 0 -7.62 90) (length 2.54)
+        (name "GND" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin output line (at 7.62 0 180) (length 2.54)
+        (name "OUT" (effects (font (size 1.27 1.27))))
+        (number "4" (effects (font (size 1.27 1.27))))
+      )
+      (pin power_in line (at 0 7.62 270) (length 2.54)
+        (name "VCC" (effects (font (size 1.27 1.27))))
+        (number "6" (effects (font (size 1.27 1.27))))
+      )
+	</eeschema_symbol>
+		<purchase>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fquarz-oszillatoren-1207071.html</url>
+				<title>IF[language]EQUAL_TO de THENUebersicht Quarzoszillatoren ELSE Overview quartz oscillatorsENDIF</title>
+				<detail>IF[language]EQUAL_TO de THENAuswahl an Quarzoszillatoren bei Conrad Electronic. Darunter ein Ratgeber zu Quarzoszillatoren. ELSE A collection of quartz oscillators at conrad electronic.ENDIF</detail>
+			</link>
+			<link>
+				<url>https://www.mouser.de/ProductDetail/Kyocera-Electronic-Components/KT2520K26000CCW18ZUS?qs=BybUIy1AcUai248R4hRoxw%3D%3D</url>
+				<title>KT2520K-T Oscillator</title>
+				<detail>KT2520K-T Oscillator at Mouser Electronic </detail>
+			</link>
+	</purchase>
+    <Spice>
+        IF [value] IS_NUMBER THENELSE <WARNING>The oscillator component "[name]" at ([xpos]|[ypos]) does not have a numeric frequency value.</WARNING>ENDIF
+        .subckt oscillator_standard_[individual] pos neg out
+        .model switch_high sw vt=0.0 ron=1.0 roff=1E8
+        .model switch_low  sw vt=0.0 ron=1E8 roff=1.0
+        s_high pos out signal 0 switch_high
+        s_low  neg out signal 0 switch_low
+        V1 signal 0 SIN(0 1 [value])
+        .ends
+        //Component 
+        X_[individual] [VCC] [GND] [OUT] oscillator_standard_[individual]
+	</Spice>
+</Component>
+
+<Component>
+    <Description>
+        An oscillator with pre-defined frequency. Creates a rectangular voltage. 
+        The HIGH-voltage is specified by the VCC-pin, the LOW-voltage is specified by the GND-pin (which may be, but does not have to be connected to ground node)
+    </Description>
+    <eeschema_sch>
+        L Oscillator:MAX7375AXR805
+        ALIAS Oscillator:MAX7375AXR405 Oscillator:MAX7375AXR365 Oscillator:MAX7375AXR185 Oscillator:MAX7375AXR425 Oscillator:MAX7375AXR375 Oscillator:MAX7375AXR105
+    </eeschema_sch>
+	<eeschema_symbol>
+	 (rectangle (start -5.08 5.08) (end 7.62 -5.08)
+        (stroke (width 0.254) (type default) (color 0 0 0 0))
+        (fill (type background))
+      )
+      (polyline
+        (pts
+          (xy -3.175 -0.635)
+          (xy -2.54 -0.635)
+          (xy -2.54 0.635)
+          (xy -1.905 0.635)
+          (xy -1.905 -0.635)
+          (xy -1.27 -0.635)
+          (xy -1.27 0.635)
+          (xy -0.635 0.635)
+        )
+        (stroke (width 0) (type default) (color 0 0 0 0))
+        (fill (type none))
+      )
+    
+	(pin power_in line (at 0 7.62 270) (length 2.54)
+        (name "Vpos" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+    )
+      (pin output line (at 10.16 0 180) (length 2.54)
+        (name "OUT" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+      (pin power_in line (at 0 -7.62 90) (length 2.54)
+        (name "GND" (effects (font (size 1.27 1.27))))
+        (number "3" (effects (font (size 1.27 1.27))))
+      )
+    
+	</eeschema_symbol>
+		<purchase>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fquarz-oszillatoren-1207071.html</url>
+				<title>IF[language]EQUAL_TO de THENUebersicht Quarzoszillatoren ELSE Overview quartz oscillatorsENDIF</title>
+				<detail>IF[language]EQUAL_TO de THENAuswahl an Quarzoszillatoren bei Conrad Electronic. Darunter ein Ratgeber zu Quarzoszillatoren. ELSE A collection of quartz oscillators at conrad electronic.ENDIF</detail>
+			</link>
+	</purchase>
+    <Spice>
+        IF [value] IS_NUMBER THEN<WARNING>The oscillator component "[name]" at ([xpos]|[ypos]) has a pre-defined frequency value. So the given value [value] is ignored.</WARNING>ENDIF
+        .subckt oscillator_standard_[individual] pos neg out
+        .param frequency=IF[model]EQUAL_TO Oscillator:MAX7375AXR805 THEN 8Meg ELSEIF[model]EQUAL_TO Oscillator:MAX7375AXR405 THEN 4Meg ELSEIF[model]EQUAL_TO Oscillator:MAX7375AXR365 3.57Meg ELSEIF[model]EQUAL_TO Oscillator:MAX7375AXR185 THEN 1.84Meg ELSEIF[model]EQUAL_TO Oscillator:MAX7375AXR425 THEN 4.19Meg ELSEIF[model]EQUAL_TO Oscillator:MAX7375AXR375 THEN 3.69Meg ELSEIF [model]EQUAL_TO Oscillator:MAX7375AXR105 THEN 1Meg ELSE <ERROR>The frequency for oscillator model [model] is not defined. So the component [name] at ([xpos]|[ypos]) can not be simulated</ERROR>ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF
+        .model switch_high sw vt=0.0 ron=1.0 roff=1E8
+        .model switch_low  sw vt=0.0 ron=1E8 roff=1.0
+        s_high pos out signal 0 switch_high
+        s_low  neg out signal 0 switch_low
+        V1 signal 0 SIN(0 1 frequency)
+        .ends
+        //Component 
+        X_[individual] [Vpos] [GND] [OUT] oscillator_standard_[individual]
+    </Spice>
+</Component>
+<Component>
+    <Description>
+        An oscillator with an enable pin, called "EN" or "OE", which enables the output. The output is enabled, when the voltage at the enable pin is larger than vthresh+V_GND, where V_GND is the voltage at the GND-pin and vthresh is a parameter which can be set in parameter v_enable in the spice-section below.
+        
+        Creates a rectangular voltage at the output. Frequency in Herz as given in the parameter [value].
+        When disabled, then the output is high-ohmic, but does NOT stop creating the frequency.
+        (So the easiest way to define the behaviour of the output voltage when oscillator is disabled is to to use a pull-up or pull-down resistor at the output with a resistance smaller than the parameter "dis_rout".) 
+        
+        The HIGH-voltage is specified by the VCC-pin, the LOW-voltage is specified by the GND-pin (which may be, but does not have to be connected to ground node)
+    </Description>
+    <eeschema_sch>
+        L Oscillator:ASE-xxxMHz
+        ALIAS Oscillator:ASV-xxxMHz Oscillator:CXO_DIP8 Oscillator:CXO_DIP14 Oscillator:GTXO-14T Oscillator:TFT660 Oscillator:TFT680 Oscillator:TXC-7C Oscillator:XO32 Oscillator:XO53 Oscillator:XO91 
+        ALIAS Oscillator:SG-51 Oscillator:SG-210SCD Oscillator:SG-210SDD Oscillator:SG-210SED Oscillator:SG-531 Oscillator:SG-615 Oscillator:SG-8002CA Oscillator:SG-8002CE Oscillator:SG-8002DB Oscillator:SG-8002DC Oscillator:SG-8002JA Oscillator:SG-8002JC Oscillator:SG-8002LB
+    </eeschema_sch>
+		<purchase>
+			<link>
+				<url>https://cdn.retailads.net/tc.php?t=151241C1001130856T&deeplink=https%3A%2F%2Fwww.conrad.de%2Fde%2Fo%2Fquarz-oszillatoren-1207071.html</url>
+				<title>IF[language]EQUAL_TO de THENUebersicht Quarzoszillatoren ELSE Overview quartz oscillatorsENDIF</title>
+				<detail>IF[language]EQUAL_TO de THENAuswahl an Quarzoszillatoren bei Conrad Electronic. Darunter ein Ratgeber zu Quarzoszillatoren. ELSE A collection of quartz oscillators at conrad electronic.ENDIF</detail>
+			</link>
+	</purchase>
+    <Spice>
+        IF [value] IS_NUMBER THENELSE <WARNING>The oscillator component "[name]" at ([xpos]|[ypos]) does not have a numeric frequency value.</WARNING>ENDIF
+        .subckt oscillator_enable_[individual] enable pos neg out
+        .param v_enable=1.0 //voltage [V] to enable oscillator
+        .param dis_rout=1E9 //resistance [Ohm] of output when disabled
+        .model switch_high sw vt=0.0 ron=1.0 roff=1E8
+        .model switch_low  sw vt=0.0 ron=1E8 roff=1.0
+        .model switch_out csw it=0.0 ron=1.0 roff=dis_rout
+        s_high pos mid signal 0 switch_high
+        s_low  neg mid signal 0 switch_low
+        w_out  mid out Vmes switch_out
+        Vsig signal 0 SIN(0 1 [value])
+        Vmes enable rv DC 0
+        Rmes rv neg 1E9
+        .ends
+        //Component with different names for pins:
+        X_[individual] [EN] [Vdd] [GND] [OUT] oscillator_enable_[individual]
+    </Spice>
+    <eeschema_symbol>
+    
+      (rectangle (start -5.08 5.08) (end 5.08 -5.08)
+        (stroke (width 0.254) (type default))
+        (fill (type background))
+      )
+      (polyline
+        (pts
+          (xy -1.27 -0.762)
+          (xy -1.016 -0.762)
+          (xy -1.016 0.762)
+          (xy -0.508 0.762)
+          (xy -0.508 -0.762)
+          (xy 0 -0.762)
+          (xy 0 0.762)
+          (xy 0.508 0.762)
+          (xy 0.508 -0.762)
+          (xy 0.762 -0.762)
+        )
+        (stroke (width 0) (type default))
+        (fill (type none))
+      )
+  
+      (pin input line (at -7.62 0 0) (length 2.54)
+        (name "EN" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27))))
+      )
+      (pin power_in line (at 0 -7.62 90) (length 2.54)
+        (name "GND" (effects (font (size 1.27 1.27))))
+        (number "2" (effects (font (size 1.27 1.27))))
+      )
+      (pin output line (at 7.62 0 180) (length 2.54)
+        (name "OUT" (effects (font (size 1.27 1.27))))
+        (number "3" (effects (font (size 1.27 1.27))))
+      )
+      (pin power_in line (at 0 7.62 270) (length 2.54)
+        (name "Vdd" (effects (font (size 1.27 1.27))))
+        (number "4" (effects (font (size 1.27 1.27))))
+      )
+    </eeschema_symbol>
+</Component>
