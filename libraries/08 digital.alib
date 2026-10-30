@@ -1680,3 +1680,135 @@
 		ENDIF
 	</animation>
 </Component>
+// ---- Demultiplexers ----
+<Component>
+	<Description>
+		One-to-two demultiplexer. Select input S routes data input D to output Y0 when S is LOW
+		and to output Y1 when S is HIGH. The unselected output is driven to LOW.
+		Each input is interpreted as HIGH when its voltage is strictly above the threshold
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The outputs are driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay digital component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:DEMUX2
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW=0 Volt, so Vth=1.65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH=5 Volt, LOW=-5 Volt, so Vth=0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // modified output resistances between supply rails and outputs
+	</Default_Values>
+	<Spice>
+		// ---- supply and threshold parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		// ---- model ----
+		.subckt mdl_demux2_[individual] inD inS outY0 outY1
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			// Logic states: 1=HIGH, 0=LOW
+			B_logic0 logic0 0 V=((V(inD) > [vth]) && (V(inS) <= [vth]) ? 1 : 0)
+			B_logic1 logic1 0 V=((V(inD) > [vth]) && (V(inS) > [vth]) ? 1 : 0)
+			// Output switches connect each output to the positive or negative supply.
+			.model mdl_swpos0_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg0_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swpos1_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg1_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos0 pwr_pos outY0 logic0 0 mdl_swpos0_[individual]
+			S_neg0 pwr_neg outY0 logic0 0 mdl_swneg0_[individual]
+			S_pos1 pwr_pos outY1 logic1 0 mdl_swpos1_[individual]
+			S_neg1 pwr_neg outY1 logic1 0 mdl_swneg1_[individual]
+		.ends
+		// ---- component: pin order D, S, Y0, Y1 matches the subcircuit interface ----
+		X_[individual] [D] [S] [Y0] [Y1] mdl_demux2_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -8.89 6.35) (end 8.89 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// horizontal line creates a minus - symbol
+		(polyline (pts (xy -0.51 -5.08)(xy 0.51 -5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		// two lines create a plus + symbol
+		(polyline (pts (xy -0.51 5.08)(xy 0.51 5.08))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts (xy 0 4.57)(xy 0 5.59))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 1.27)
+			(name "D" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(text "D" (at -7.62 2.54 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -10.16 -2.54 0) (length 1.27)
+			(name "S" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "S" (at -7.62 -2.54 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 10.16 2.54 180) (length 1.27)
+			(name "Y0" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "Y0" (at 7.62 2.54 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 10.16 -2.54 180) (length 1.27)
+			(name "Y1" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "Y1" (at 7.62 -2.54 0) (effects (font (size 1.5 1.5))))
+		(text "DEMUX2" (at 0 0 0) (effects (font (size 2.54 2.54))))
+	</eeschema_symbol>
+	<animation>
+		// Output Y0: KiCad 6 +2.54 mm corresponds to -100 mils in KiCad 5 animation coordinates.
+		DEFINE [vout0] V[Y0]
+		DEFINE [vout0] AS_NUMBER OF: [vout0]
+		IF [vout0] THEN
+			IF [vout0] HIGHER_THAN [vth] THEN
+				<Line 250 -100 100 0 #FF0000 2 1 #FF0000 1 0>
+				<Line 350 -120 0 40 #FF0000 2 1 #FF0000 1 0>
+				<Line 330 -100 40 0 #FF0000 2 1 #FF0000 1 0>
+				<Ellipse 320 -130 60 60 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 250 -100 100 0 #0000FF 2 1 #0000FF 1 0>
+				<Line 330 -100 40 0 #0000FF 2 1 #0000FF 1 0>
+				<Ellipse 320 -130 60 60 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+		ENDIF
+		// Output Y1: KiCad 6 -2.54 mm corresponds to +100 mils in KiCad 5 animation coordinates.
+		DEFINE [vout1] V[Y1]
+		DEFINE [vout1] AS_NUMBER OF: [vout1]
+		IF [vout1] THEN
+			IF [vout1] HIGHER_THAN [vth] THEN
+				<Line 250 100 100 0 #FF0000 2 1 #FF0000 1 0>
+				<Line 350 80 0 40 #FF0000 2 1 #FF0000 1 0>
+				<Line 330 100 40 0 #FF0000 2 1 #FF0000 1 0>
+				<Ellipse 320 70 60 60 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 250 100 100 0 #0000FF 2 1 #0000FF 1 0>
+				<Line 330 100 40 0 #0000FF 2 1 #0000FF 1 0>
+				<Ellipse 320 70 60 60 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+		ENDIF
+	</animation>
+</Component>
