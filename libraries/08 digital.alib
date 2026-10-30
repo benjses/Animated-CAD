@@ -1781,8 +1781,158 @@
 		(text "DEMUX2" (at 0 0 0) (effects (font (size 2.0 2.0))))
 	</eeschema_symbol>
 	<animation>
-		// KiCad 6 output positions +3.81, +1.27, -1.27, -3.81 mm map to
-		// KiCad 5 animation coordinates -150, -50, +50, +150 mils (inverted y axis).
+		// Output Y0: KiCad 6 +2.54 mm corresponds to -100 mils in KiCad 5 animation coordinates for y axis.
+		DEFINE [vout0] V[Y0]
+		DEFINE [vout0] AS_NUMBER OF: [vout0]
+		DEFINE [vout1] V[Y1]
+		DEFINE [vout1] AS_NUMBER OF: [vout1]
+		DEFINE [vs] V[S]
+		DEFINE [vs] AS_NUMBER OF: [vs]
+		DEFINE [vd] V[D]
+		DEFINE [vd] AS_NUMBER OF: [vd]
+		IF [vs] && [vd] THEN
+			IF [vs] HIGHER_THAN [vth] THEN DEFINE [ydiff] 200
+			ELSE DEFINE [ydiff] 0
+			ENDIF
+			IF [vd] HIGHER_THAN [vth] THEN
+				DEFINE [color] #FF0000
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0>
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0>
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				DEFINE [color] #0000FF
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0>
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+			<Line -200 -100 400 [ydiff] [color] 2 1 [color] 1 0>
+		ELSE
+			DEFINE [vs] AS_NULL
+			DEFINE [vd] AS_NULL
+		ENDIF
+	</animation>
+</Component>
+
+
+// ---- Decoders ----
+<Component>
+	<Description>
+		Two-to-four decoder with active-HIGH outputs. Inputs A1 and A0 select one of
+		four outputs: 00 selects Y0, 01 selects Y1, 10 selects Y2, and 11 selects Y3.
+		Enable input EN must be HIGH for decoding. When EN is LOW, all outputs are LOW.
+		Each input is interpreted as HIGH when its voltage is strictly above the threshold
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The outputs are driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay digital component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:DECODER2
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW=0 Volt, so Vth=1.65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH=5 Volt, LOW=-5 Volt, so Vth=0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // modified output resistances between supply rails and outputs
+	</Default_Values>
+	<Spice>
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		.subckt mdl_decoder2_[individual] inA1 inA0 inEN outY0 outY1 outY2 outY3
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			B_logic0 logic0 0 V=((V(inEN) > [vth]) && (V(inA1) <= [vth]) && (V(inA0) <= [vth]) ? 1 : 0)
+			B_logic1 logic1 0 V=((V(inEN) > [vth]) && (V(inA1) <= [vth]) && (V(inA0) > [vth]) ? 1 : 0)
+			B_logic2 logic2 0 V=((V(inEN) > [vth]) && (V(inA1) > [vth]) && (V(inA0) <= [vth]) ? 1 : 0)
+			B_logic3 logic3 0 V=((V(inEN) > [vth]) && (V(inA1) > [vth]) && (V(inA0) > [vth]) ? 1 : 0)
+			.model mdl_swpos0_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg0_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swpos1_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg1_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swpos2_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg2_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swpos3_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swneg3_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_pos0 pwr_pos outY0 logic0 0 mdl_swpos0_[individual]
+			S_neg0 pwr_neg outY0 logic0 0 mdl_swneg0_[individual]
+			S_pos1 pwr_pos outY1 logic1 0 mdl_swpos1_[individual]
+			S_neg1 pwr_neg outY1 logic1 0 mdl_swneg1_[individual]
+			S_pos2 pwr_pos outY2 logic2 0 mdl_swpos2_[individual]
+			S_neg2 pwr_neg outY2 logic2 0 mdl_swneg2_[individual]
+			S_pos3 pwr_pos outY3 logic3 0 mdl_swpos3_[individual]
+			S_neg3 pwr_neg outY3 logic3 0 mdl_swneg3_[individual]
+		.ends
+		// Pin order A1, A0, EN, Y0, Y1, Y2, Y3 matches the subcircuit interface.
+		X_[individual] [A1] [A0] [EN] [Y0] [Y1] [Y2] [Y3] mdl_decoder2_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -10.16 7.62) (end 10.16 -7.62)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts (xy -0.51 -6.35)(xy 0.51 -6.35))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts (xy -0.51 6.35)(xy 0.51 6.35))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(polyline (pts (xy 0 5.84)(xy 0 6.86))
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -11.43 3.81 0) (length 1.27)
+			(name "A1" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(text "A1" (at -8.89 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -11.43 1.27 0) (length 1.27)
+			(name "A0" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "A0" (at -8.89 1.27 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -11.43 -3.81 0) (length 1.27)
+			(name "EN" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "EN" (at -8.89 -3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 3.81 180) (length 1.27)
+			(name "Y0" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "Y0" (at 8.89 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 1.27 180) (length 1.27)
+			(name "Y1" (effects (font (size 1.27 1.27))))
+			(number "5" (effects (font (size 1.27 1.27))))
+		)
+		(text "Y1" (at 8.89 1.27 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 -1.27 180) (length 1.27)
+			(name "Y2" (effects (font (size 1.27 1.27))))
+			(number "6" (effects (font (size 1.27 1.27))))
+		)
+		(text "Y2" (at 8.89 -1.27 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 -3.81 180) (length 1.27)
+			(name "Y3" (effects (font (size 1.27 1.27))))
+			(number "7" (effects (font (size 1.27 1.27))))
+		)
+		(text "Y3" (at 8.89 -3.81 0) (effects (font (size 1.5 1.5))))
+		(text "DECODER2" (at 0 0 0) (effects (font (size 2.0 2.0))))
+	</eeschema_symbol>
+	<animation>
+		// KiCad 6 output positions +3.81, +1.27, -1.27, -3.81 mm map to -150, -50, +50, +150 mils.
 		DEFINE [a1] V[A1]
 		DEFINE [a1] AS_NUMBER OF: [a1]
 		DEFINE [a0] V[A0]
@@ -1806,7 +1956,7 @@
 					ELSE DEFINE [yco] 150
 					ENDIF
 				ENDIF
-				// Highlight the selected output path. The selected output is HIGH (red).
+				// Highlight the selected output path; the selected output is HIGH (red).
 				<Line 0 0 300 [yco] #FF0000 2 1 #FF0000 1 0>
 			ENDIF
 		ENDIF
