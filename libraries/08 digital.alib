@@ -1781,39 +1781,34 @@
 		(text "DEMUX2" (at 0 0 0) (effects (font (size 2.0 2.0))))
 	</eeschema_symbol>
 	<animation>
-		// Output Y0: KiCad 6 +2.54 mm corresponds to -100 mils in KiCad 5 animation coordinates for y axis.
-		DEFINE [vout0] V[Y0]
-		DEFINE [vout0] AS_NUMBER OF: [vout0]
-		DEFINE [vout1] V[Y1]
-		DEFINE [vout1] AS_NUMBER OF: [vout1]
-		DEFINE [vs] V[S]
-		DEFINE [vs] AS_NUMBER OF: [vs]
-		DEFINE [vd] V[D]
-		DEFINE [vd] AS_NUMBER OF: [vd]
-		
-		IF [vs] && [vd] THEN 
-			IF [vs] HIGHER_THAN [vth] THEN DEFINE [ydiff] 200 // mils = -2.54mm = diff from D=-100mil to Y1=+100 mil 
-			ELSE                           DEFINE [ydiff] 0  // D and Y0 are on same height, diff=0
+		// KiCad 6 output positions +3.81, +1.27, -1.27, -3.81 mm map to
+		// KiCad 5 animation coordinates -150, -50, +50, +150 mils (inverted y axis).
+		DEFINE [a1] V[A1]
+		DEFINE [a1] AS_NUMBER OF: [a1]
+		DEFINE [a0] V[A0]
+		DEFINE [a0] AS_NUMBER OF: [a0]
+		DEFINE [en] V[EN]
+		DEFINE [en] AS_NUMBER OF: [en]
+		IF [a1] && [a0] && [en] THEN
+			IF [en] HIGHER_THAN [vth] THEN
+				IF [a1] HIGHER_THAN [vth] THEN DEFINE [bit1] 1
+				ELSE DEFINE [bit1] 0
+				ENDIF
+				IF [a0] HIGHER_THAN [vth] THEN DEFINE [bit0] 1
+				ELSE DEFINE [bit0] 0
+				ENDIF
+				IF [bit1] EQUAL_TO 0 THEN
+					IF [bit0] EQUAL_TO 0 THEN DEFINE [yco] -150
+					ELSE DEFINE [yco] -50
+					ENDIF
+				ELSE
+					IF [bit0] EQUAL_TO 0 THEN DEFINE [yco] 50
+					ELSE DEFINE [yco] 150
+					ENDIF
+				ENDIF
+				// Highlight the selected output path. The selected output is HIGH (red).
+				<Line 0 0 300 [yco] #FF0000 2 1 #FF0000 1 0>
 			ENDIF
-			IF [vd] HIGHER_THAN [vth] THEN
-				DEFINE [color] #FF0000 // red for +
-				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
-				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
-				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
-			ELSE
-				DEFINE [color] #0000FF // blue for -
-				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
-				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
-			ENDIF
-			
-			// draw line from D to Y0 or Y1
-			<Line -200 -100 400 [ydiff] [color] 2 1 [color] 1 0> 
-		ELSE
-			DEFINE [vs] AS_NULL
-			DEFINE [vd] AS_NULL
 		ENDIF
-		
-		
-		
 	</animation>
 </Component>
