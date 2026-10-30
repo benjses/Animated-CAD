@@ -1680,6 +1680,7 @@
 		ENDIF
 	</animation>
 </Component>
+
 // ---- Demultiplexers ----
 <Component>
 	<Description>
@@ -1777,38 +1778,42 @@
 			(number "4" (effects (font (size 1.27 1.27))))
 		)
 		(text "Y1" (at 7.62 -2.54 0) (effects (font (size 1.5 1.5))))
-		(text "DEMUX2" (at 0 0 0) (effects (font (size 2.54 2.54))))
+		(text "DEMUX2" (at 0 0 0) (effects (font (size 2.0 2.0))))
 	</eeschema_symbol>
 	<animation>
-		// Output Y0: KiCad 6 +2.54 mm corresponds to -100 mils in KiCad 5 animation coordinates.
+		// Output Y0: KiCad 6 +2.54 mm corresponds to -100 mils in KiCad 5 animation coordinates for y axis.
 		DEFINE [vout0] V[Y0]
 		DEFINE [vout0] AS_NUMBER OF: [vout0]
-		IF [vout0] THEN
-			IF [vout0] HIGHER_THAN [vth] THEN
-				<Line 250 -100 100 0 #FF0000 2 1 #FF0000 1 0>
-				<Line 350 -120 0 40 #FF0000 2 1 #FF0000 1 0>
-				<Line 330 -100 40 0 #FF0000 2 1 #FF0000 1 0>
-				<Ellipse 320 -130 60 60 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 250 -100 100 0 #0000FF 2 1 #0000FF 1 0>
-				<Line 330 -100 40 0 #0000FF 2 1 #0000FF 1 0>
-				<Ellipse 320 -130 60 60 #0000FF 2 1 #0000FF 1 0>
-			ENDIF
-		ENDIF
-		// Output Y1: KiCad 6 -2.54 mm corresponds to +100 mils in KiCad 5 animation coordinates.
 		DEFINE [vout1] V[Y1]
 		DEFINE [vout1] AS_NUMBER OF: [vout1]
-		IF [vout1] THEN
-			IF [vout1] HIGHER_THAN [vth] THEN
-				<Line 250 100 100 0 #FF0000 2 1 #FF0000 1 0>
-				<Line 350 80 0 40 #FF0000 2 1 #FF0000 1 0>
-				<Line 330 100 40 0 #FF0000 2 1 #FF0000 1 0>
-				<Ellipse 320 70 60 60 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 250 100 100 0 #0000FF 2 1 #0000FF 1 0>
-				<Line 330 100 40 0 #0000FF 2 1 #0000FF 1 0>
-				<Ellipse 320 70 60 60 #0000FF 2 1 #0000FF 1 0>
+		DEFINE [vs] V[S]
+		DEFINE [vs] AS_NUMBER OF: [vs]
+		DEFINE [vd] V[D]
+		DEFINE [vd] AS_NUMBER OF: [vd]
+		
+		IF [vs] && [vd] THEN 
+			IF [vs] HIGHER_THAN [vth] THEN DEFINE [ydiff] 200 // mils = -2.54mm = diff from D=-100mil to Y1=+100 mil 
+			ELSE                           DEFINE [ydiff] 0  // D and Y0 are on same height, diff=0
 			ENDIF
+			IF [vd] HIGHER_THAN [vth] THEN
+				DEFINE [color] #FF0000 // red for +
+				<Line 0 -220 0 40 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Line -20 -200 40 0 #FF0000 2 1 #FF0000 1 0> // red plus symbol
+				<Ellipse -30 -230 60 60 #FF0000 2 1 #FF0000 1 0> // red circle around plus symbol
+			ELSE
+				DEFINE [color] #0000FF // blue for -
+				<Line -20 200 40 0 #0000FF 2 1 #0000FF 1 0> // blue minus symbol
+				<Ellipse -30 170 60 60 #0000FF 2 1 #0000FF 1 0> // blue circle around minus symbol
+			ENDIF
+			
+			// draw line from D to Y0 or Y1
+			<Line -200 -100 400 [ydiff] [color] 2 1 [color] 1 0> 
+		ELSE
+			DEFINE [vs] AS_NULL
+			DEFINE [vd] AS_NULL
 		ENDIF
+		
+		
+		
 	</animation>
 </Component>
