@@ -2117,3 +2117,213 @@
 		ENDIF
 	</animation>
 </Component>
+
+// ---- Adders ----
+<Component>
+	<Description>
+		Half adder. Adds the two binary inputs A and B.
+		SUM is HIGH when exactly one input is HIGH (A XOR B).
+		CARRY is HIGH when both inputs are HIGH (A AND B).
+		Each input is interpreted as HIGH when its voltage is strictly above the threshold
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The outputs are driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay digital component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:HALFADDER
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW=0 Volt, so Vth=1.65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH=5 Volt, LOW=-5 Volt, so Vth=0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // modified output resistances between supply rails and outputs
+	</Default_Values>
+	<Spice>
+		// ---- supply and threshold parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		// ---- model ----
+		.subckt mdl_halfadder_[individual] inA inB outSUM outCARRY
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			B_logicSUM logicSUM 0 V=((V(inA) > [vth]) != (V(inB) > [vth]) ? 1 : 0)
+			B_logicCARRY logicCARRY 0 V=((V(inA) > [vth]) && (V(inB) > [vth]) ? 1 : 0)
+			.model mdl_swposSUM_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegSUM_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swposCARRY_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegCARRY_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_posSUM pwr_pos outSUM logicSUM 0 mdl_swposSUM_[individual]
+			S_negSUM pwr_neg outSUM logicSUM 0 mdl_swnegSUM_[individual]
+			S_posCARRY pwr_pos outCARRY logicCARRY 0 mdl_swposCARRY_[individual]
+			S_negCARRY pwr_neg outCARRY logicCARRY 0 mdl_swnegCARRY_[individual]
+		.ends
+		// Pin order A, B, SUM, CARRY matches the subcircuit interface.
+		X_[individual] [A] [B] [SUM] [CARRY] mdl_halfadder_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -8.89 6.35) (end 8.89 -6.35)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 2.54 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(text "A" (at -7.62 2.54 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -10.16 -2.54 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "B" (at -7.62 -2.54 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 10.16 2.54 180) (length 1.27)
+			(name "SUM" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "SUM" (at 7.62 2.54 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 10.16 -2.54 180) (length 1.27)
+			(name "CARRY" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "CARRY" (at 6.35 -2.54 0) (effects (font (size 1.3 1.3))))
+		(text "HALFADDER" (at 0 0 0) (effects (font (size 2.0 2.0))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [sum] V[SUM]
+		DEFINE [sum] AS_NUMBER OF: [sum]
+		DEFINE [carry] V[CARRY]
+		DEFINE [carry] AS_NUMBER OF: [carry]
+		IF [sum] HIGHER_THAN [vth] THEN
+			<Line 0 -100 300 0 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 -100 300 0 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+		IF [carry] HIGHER_THAN [vth] THEN
+			<Line 0 100 300 0 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 100 300 0 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+	</animation>
+</Component>
+
+<Component>
+	<Description>
+		Full adder. Adds the binary inputs A and B and the carry input CARRY_IN.
+		SUM is the least significant result bit; CARRY_OUT is the carry to the next bit.
+		SUM = A XOR B XOR CARRY_IN.
+		CARRY_OUT = (A AND B) OR (CARRY_IN AND (A XOR B)).
+		Each input is interpreted as HIGH when its voltage is strictly above the threshold
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The outputs are driven to vpos for HIGH and vneg for LOW.
+		Enter optional supply levels in the value field, for example: vpos=5.0 vneg=0.0.
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay digital component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:FULLADDER
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // default voltages: HIGH=5 Volt, LOW=0 Volt, so Vth=2.5 Volt
+		vpos=3.3 vneg=0.0 // HIGH=3.3 Volt, LOW=0 Volt, so Vth=1.65 Volt
+		vpos=5.0 vneg=-5.0 // HIGH=5 Volt, LOW=-5 Volt, so Vth=0 Volt
+		vpos=5.0 vneg=0.0 ron=5.0 roff=50k // modified output resistances between supply rails and outputs
+	</Default_Values>
+	<Spice>
+		// ---- supply and threshold parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+		// ---- model ----
+		.subckt mdl_fulladder_[individual] inA inB inCARRYIN outSUM outCARRYOUT
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+			// Full-adder equations: SUM = A XOR B XOR CIN; COUT = AB + CIN(A XOR B).
+			B_logicSUM logicSUM 0 V=((V(inA) > [vth]) != (V(inB) > [vth]) != (V(inCARRYIN) > [vth]) ? 1 : 0)
+			B_logicCARRY logicCARRY 0 V=(((V(inA) > [vth]) && (V(inB) > [vth])) || ((V(inCARRYIN) > [vth]) && ((V(inA) > [vth]) != (V(inB) > [vth]))) ? 1 : 0)
+			.model mdl_swposSUM_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegSUM_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swposCARRYOUT_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegCARRYOUT_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			S_posSUM pwr_pos outSUM logicSUM 0 mdl_swposSUM_[individual]
+			S_negSUM pwr_neg outSUM logicSUM 0 mdl_swnegSUM_[individual]
+			S_posCARRYOUT pwr_pos outCARRYOUT logicCARRY 0 mdl_swposCARRYOUT_[individual]
+			S_negCARRYOUT pwr_neg outCARRYOUT logicCARRY 0 mdl_swnegCARRYOUT_[individual]
+		.ends
+		// Pin order A, B, CARRY_IN, SUM, CARRY_OUT matches the subcircuit interface.
+		X_[individual] [A] [B] [CARRY_IN] [SUM] [CARRY_OUT] mdl_fulladder_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -8.89 7.62) (end 8.89 -7.62)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -10.16 3.81 0) (length 1.27)
+			(name "A" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(text "A" (at -7.62 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -10.16 0 0) (length 1.27)
+			(name "B" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "B" (at -7.62 0 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -10.16 -3.81 0) (length 1.27)
+			(name "CARRY_IN" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "CIN" (at -7.62 -3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 10.16 2.54 180) (length 1.27)
+			(name "SUM" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "SUM" (at 7.62 2.54 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 10.16 -2.54 180) (length 1.27)
+			(name "CARRY_OUT" (effects (font (size 1.27 1.27))))
+			(number "5" (effects (font (size 1.27 1.27))))
+		)
+		(text "COUT" (at 7.62 -2.54 0) (effects (font (size 1.5 1.5))))
+		(text "FULLADDER" (at 0 0 0) (effects (font (size 2.0 2.0))))
+	</eeschema_symbol>
+	<animation>
+		DEFINE [sum] V[SUM]
+		DEFINE [sum] AS_NUMBER OF: [sum]
+		DEFINE [carry] V[CARRY_OUT]
+		DEFINE [carry] AS_NUMBER OF: [carry]
+		IF [sum] HIGHER_THAN [vth] THEN
+			<Line 0 -100 300 0 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 -100 300 0 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+		IF [carry] HIGHER_THAN [vth] THEN
+			<Line 0 100 300 0 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 100 300 0 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+	</animation>
+</Component>
