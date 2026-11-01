@@ -2983,7 +2983,7 @@
 			// Slave latch is transparent while CLK is HIGH.
 			// Each internal state node has a finite response time (R*C = 1 us).
 			// Weak bias resistors establish the initial state Q=LOW, Q_NOT=HIGH.
-			B_masterQ masterQ 0 I=(V(masterQ) - ((V(inCLK) > [vth]) ? (V(masterQ) > 0.5 ? 1 : 0) : (((V(inJ) > [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) <= [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0)))/1k
+			B_masterQ masterQ 0       I=(V(masterQ) - ((V(inCLK) > [vth])    ? (V(masterQ) > 0.5 ? 1 : 0)     : (((V(inJ) > [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) <= [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0)))/1k
 			B_masterQNOT masterQNOT 0 I=(V(masterQNOT) - ((V(inCLK) > [vth]) ? (V(masterQNOT) > 0.5 ? 1 : 0) : (((V(inJ) <= [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) > [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0)))/1k
 			C_masterQ masterQ 0 1n IC=0
 			C_masterQNOT masterQNOT 0 1n IC=1
@@ -3016,6 +3016,7 @@
 			(stroke (width 0) (type default))
 			(fill (type none))
 		)
+		(text "JK-FF" (at 0 5.08 0) (effects (font (size 2.54 2.54))))
 		(pin input line (at -11.43 5.08 0) (length 1.27)
 			(name "J" (effects (font (size 1.27 1.27))))
 			(number "1" (effects (font (size 1.27 1.27))))
@@ -3045,7 +3046,7 @@
 			(number "5" (effects (font (size 1.27 1.27))))
 		)
 		(text "nQ" (at 8.89 -3.81 0) (effects (font (size 1.5 1.5))))
-		(text "JK FF" (at 0 0 0) (effects (font (size 2.0 2.0))))
+		
 	</eeschema_symbol>
 	<animation>
 		// Show output states: red=HIGH, blue=LOW.
