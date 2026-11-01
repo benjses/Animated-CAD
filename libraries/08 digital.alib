@@ -2299,9 +2299,6 @@
 		(text "FULLADDER" (at 0 0 0) (effects (font (size 2.0 2.0))))
 	</eeschema_symbol>
 </Component>
-
-
-// ---- 4-bit Adders ----
 <Component>
 	<Description>
 		Four-bit ripple-carry adder. Adds the two 4-bit binary inputs A3..A0 and B3..B0,
@@ -2442,28 +2439,28 @@
 			(name "SUM0" (effects (font (size 1.27 1.27))))
 			(number "10" (effects (font (size 1.27 1.27))))
 		)
-		(text "SUM0" (at 11.43 7.62 0) (effects (font (size 1.5 1.5))))
+		(text "SUM0" (at 10.16 7.62 0) (effects (font (size 1.5 1.5))))
 		(pin output line (at 13.97 3.81 180) (length 1.27)
 			(name "SUM1" (effects (font (size 1.27 1.27))))
 			(number "11" (effects (font (size 1.27 1.27))))
 		)
-		(text "SUM1" (at 11.43 3.81 0) (effects (font (size 1.5 1.5))))
+		(text "SUM1" (at 10.16 3.81 0) (effects (font (size 1.5 1.5))))
 		(pin output line (at 13.97 0 180) (length 1.27)
 			(name "SUM2" (effects (font (size 1.27 1.27))))
 			(number "12" (effects (font (size 1.27 1.27))))
 		)
-		(text "SUM2" (at 11.43 0 0) (effects (font (size 1.5 1.5))))
+		(text "SUM2" (at 10.16 0 0) (effects (font (size 1.5 1.5))))
 		(pin output line (at 13.97 -3.81 180) (length 1.27)
 			(name "SUM3" (effects (font (size 1.27 1.27))))
 			(number "13" (effects (font (size 1.27 1.27))))
 		)
-		(text "SUM3" (at 11.43 -3.81 0) (effects (font (size 1.5 1.5))))
+		(text "SUM3" (at 10.16 -3.81 0) (effects (font (size 1.5 1.5))))
 		(pin output line (at 13.97 -7.62 180) (length 1.27)
 			(name "CARRY_OUT" (effects (font (size 1.27 1.27))))
 			(number "14" (effects (font (size 1.27 1.27))))
 		)
-		(text "COUT" (at 11.43 -7.62 0) (effects (font (size 1.5 1.5))))
-		(text "ADDER4" (at 0 0 0) (effects (font (size 2.54 2.54))))
+		(text "COUT" (at 10.16 -7.62 0) (effects (font (size 1.5 1.5))))
+		(text "ADDER4" (at 0 8.89 0) (effects (font (size 2.54 2.54))))
 	</eeschema_symbol>
 	<animation>
 		// Calculate decimal values of the two 4-bit inputs.
@@ -2472,12 +2469,14 @@
 		IF V[A1] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:2 ENDIF
 		IF V[A2] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:4 ENDIF
 		IF V[A3] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:8 ENDIF
+		DEFINE [A] AS_MATH_ROUND OF:[A]
 
 		DEFINE [B] 0
 		IF V[B0] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:1 ENDIF
 		IF V[B1] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:2 ENDIF
 		IF V[B2] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:4 ENDIF
 		IF V[B3] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:8 ENDIF
+		DEFINE [B] AS_MATH_ROUND OF:[B]
 
 		// Calculate the four-bit sum. Carry-out is displayed separately.
 		DEFINE [SUM] 0
@@ -2485,21 +2484,19 @@
 		IF V[SUM1] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:2 ENDIF
 		IF V[SUM2] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:4 ENDIF
 		IF V[SUM3] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:8 ENDIF
+		DEFINE [SUM] AS_MATH_ROUND OF:[SUM]
 
 		// Display input and output values.
-		<Text -450 220 60 #000080 0 "A=[A]">
-		<Text -450 -180 60 #000080 0 "B=[B]">
-		<Text 400 220 60 #000080 0 "SUM=[SUM]">
+		<Text -200 -100 60 #00F000 0 "A=[A]">
+		<Text -200 100 60 #00F000 0 "B=[B]">
+		<Text 0 0 60 #00F000 0 "SUM=[SUM]">
 
-		IF V[CARRY_IN] HIGHER_THAN [vth] THEN
-			<Text 400 -180 60 #000080 0 "C=1">
-		ELSE
-			<Text 400 -180 60 #000080 0 "C=0">
+		IF V[CARRY_IN] HIGHER_THAN [vth] THEN <Text -200 400 60 #00F000 0 "C=1">
+		ELSE 			                      <Text -200 400 60 #00F000 0 "C=0">
 		ENDIF
-
-		IF V[CARRY_OUT] HIGHER_THAN [vth] THEN
-			<Text 400 -320 60 #000080 0 "COUT=1">
-		ELSE
-			<Text 400 -320 60 #000080 0 "COUT=0">
+		
+		IF V[CARRY_OUT] HIGHER_THAN [vth] THEN <Text 100 300 60 #00F000 0 "COUT=1">
+		ELSE 			                       <Text 100 300 60 #00F000 0 "COUT=0">
 		ENDIF
-	</animation></Component>
+	</animation>
+</Component>
