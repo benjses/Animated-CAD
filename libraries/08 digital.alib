@@ -2563,10 +2563,15 @@
 			Vneg pwr_neg 0 [vneg]
 
 			// Active-HIGH Set and Reset; cross-coupled NOR feedback.
-			// With neither input active, the feedback retains the previous state.
-			// With both inputs active, dom selects the dominant input, if configured.
-			B_logicQ logicQ 0 V=(([dom_s] > 0.5 && (V(inS) > [vth]) && (V(inR) > [vth])) ? 1 : ((V(inR) > [vth]) || (V(outQNOT) > [vth]) ? 0 : 1))
-			B_logicQNOT logicQNOT 0 V=(([dom_r] > 0.5 && (V(inS) > [vth]) && (V(inR) > [vth])) ? 1 : ((V(inS) > [vth]) || (V(outQ) > [vth]) ? 0 : 1))
+			// The internal logic nodes have a finite response time (R*C = 1 us).
+			// Weak bias resistors select Q=LOW, Q_NOT=HIGH as the startup state.
+			// They only resolve the otherwise undefined power-up state.
+			B_logicQ logicQ 0 I=(V(logicQ) - (([dom_s] > 0.5 && (V(inS) > [vth]) && (V(inR) > [vth])) ? 1 : ((V(inR) > [vth]) || (V(logicQNOT) > 0.5) ? 0 : 1)))/1k
+			B_logicQNOT logicQNOT 0 I=(V(logicQNOT) - (([dom_r] > 0.5 && (V(inS) > [vth]) && (V(inR) > [vth])) ? 1 : ((V(inS) > [vth]) || (V(logicQ) > 0.5) ? 0 : 1)))/1k
+			C_logicQ logicQ 0 1n IC=0
+			C_logicQNOT logicQNOT 0 1n IC=1
+			R_initQ logicQ 0 1G
+			R_initQNOT pwr_pos logicQNOT 1G
 
 			.model mdl_swposQ_[individual] sw ron=[ron] roff=[roff] vt=0.5
 			.model mdl_swnegQ_[individual] sw ron=[roff] roff=[ron] vt=0.5
