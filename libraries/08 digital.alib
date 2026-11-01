@@ -2347,7 +2347,7 @@
 			// Ripple-carry equations, from least significant bit to most significant bit.
 			B_prop0 prop0 0 V=((V(inA0) > [vth]) != (V(inB0) > [vth]) ? 1 : 0)
 			B_gen0 gen0 0 V=((V(inA0) > [vth]) && (V(inB0) > [vth]) ? 1 : 0)
-			B_carry1 carry1 0 V=(V(gen0) || (V(prop0) && (V(inCARRYIN) > 0.5)) ? 1 : 0)
+			B_carry1 carry1 0 V=(V(gen0) || (V(prop0) && (V(inCARRYIN) > [vth])) ? 1 : 0)
 			B_sum0 logicSUM0 0 V=(V(prop0) != (V(inCARRYIN) > 0.5) ? 1 : 0)
 			B_prop1 prop1 0 V=((V(inA1) > [vth]) != (V(inB1) > [vth]) ? 1 : 0)
 			B_gen1 gen1 0 V=((V(inA1) > [vth]) && (V(inB1) > [vth]) ? 1 : 0)
@@ -2477,17 +2477,40 @@
 		DEFINE [s3] AS_NUMBER OF: [s3]
 		DEFINE [co] V[CARRY_OUT]
 		DEFINE [co] AS_NUMBER OF: [co]
-		IF [s0] && [s1] && [s2] && [s3] && [co] THEN
-			IF [s0] HIGHER_THAN [vth] THEN <Line 0 0 300 -300 #FF0000 2 1 #FF0000 1 0>
-			ELSE <Line 0 0 300 -300 #0000FF 2 1 #0000FF 1 0> ENDIF
-			IF [s1] HIGHER_THAN [vth] THEN <Line 0 0 300 -150 #FF0000 2 1 #FF0000 1 0>
-			ELSE <Line 0 0 300 -150 #0000FF 2 1 #0000FF 1 0> ENDIF
-			IF [s2] HIGHER_THAN [vth] THEN <Line 0 0 300 0 #FF0000 2 1 #FF0000 1 0>
-			ELSE <Line 0 0 300 0 #0000FF 2 1 #0000FF 1 0> ENDIF
-			IF [s3] HIGHER_THAN [vth] THEN <Line 0 0 300 150 #FF0000 2 1 #FF0000 1 0>
-			ELSE <Line 0 0 300 150 #0000FF 2 1 #0000FF 1 0> ENDIF
-			IF [co] HIGHER_THAN [vth] THEN <Line 0 0 300 300 #FF0000 2 1 #FF0000 1 0>
-			ELSE <Line 0 0 300 300 #0000FF 2 1 #0000FF 1 0> ENDIF
+		IF [s0] THEN
+			IF [s0] HIGHER_THAN [vth] THEN
+				<Line 0 0 300 -300 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 0 0 300 -300 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+		ENDIF
+		IF [s1] THEN
+			IF [s1] HIGHER_THAN [vth] THEN
+				<Line 0 0 300 -150 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 0 0 300 -150 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+		ENDIF
+		IF [s2] THEN
+			IF [s2] HIGHER_THAN [vth] THEN
+				<Line 0 0 300 0 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 0 0 300 0 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+		ENDIF
+		IF [s3] THEN
+			IF [s3] HIGHER_THAN [vth] THEN
+				<Line 0 0 300 150 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 0 0 300 150 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
+		ENDIF
+		IF [co] THEN
+			IF [co] HIGHER_THAN [vth] THEN
+				<Line 0 0 300 300 #FF0000 2 1 #FF0000 1 0>
+			ELSE
+				<Line 0 0 300 300 #0000FF 2 1 #0000FF 1 0>
+			ENDIF
 		ENDIF
 	</animation>
 </Component>
