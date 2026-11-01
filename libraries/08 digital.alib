@@ -3062,3 +3062,148 @@
 		ENDIF
 	</animation>
 </Component>
+
+// ---- 7-segment LED display ----
+<Component>
+	<Description>
+		IF [language] EQUAL_TO de THEN
+			Einstellige 7-Segment-LED-Anzeige mit zusaetzlichem Dezimalpunkt.
+			Die acht LEDs koennen einzeln ueber die Anschluesse A bis G und DP angesteuert werden.
+			Der gemeinsame Anschluss heisst COM. Mit com=c wird eine gemeinsame Kathode gewaehlt,
+			mit com=a eine gemeinsame Anode. Ohne Angabe gilt com=c.
+			Die Anzeige verwendet rote LEDs mit einem Nennstrom von 10 mA.
+			Fuer die Helligkeitsdarstellung wird der Betrag des jeweiligen LED-Stroms verwendet.
+		ELSE
+			Single-digit seven-segment LED display with an additional decimal point.
+			The eight LEDs can be controlled individually through pins A to G and DP.
+			The common connection is named COM. Set com=c for common cathode or com=a
+			for common anode. The default is com=c.
+			The display uses red LEDs with a nominal current of 10 mA.
+			The brightness animation is based on the absolute value of each LED current.
+		ENDIF
+	</Description>
+	<eeschema_sch>
+		L anicad:7SEG
+	</eeschema_sch>
+	<Default_Values>
+		com=c // common cathode
+		com=a // common anode
+	</Default_Values>
+	<Spice>
+		// ---- common connection configuration ----
+		DEFINE [com] AS_WORD_RIGHT OF:com IN:[value]
+		DEFINE [com] AS_LOWERCASE OF:[com]
+		IF ![com] THEN DEFINE [com] c ENDIF
+
+		// ---- red LED model ----
+		// Typical red LED parameters; nominal current is 10 mA.
+		.model mdl_7seg_led_[individual] D (is=1e-18 n=2 rs=10)
+
+		// ---- eight LEDs ----
+		.subckt mdl_7seg_[individual] inA inB inC inD inE inF inG inDP inCOM
+			IF [com] EQUAL_TO a THEN
+				// Common anode: COM is connected to the anodes.
+				D_A inCOM inA mdl_7seg_led_[individual]
+				D_B inCOM inB mdl_7seg_led_[individual]
+				D_C inCOM inC mdl_7seg_led_[individual]
+				D_D inCOM inD mdl_7seg_led_[individual]
+				D_E inCOM inE mdl_7seg_led_[individual]
+				D_F inCOM inF mdl_7seg_led_[individual]
+				D_G inCOM inG mdl_7seg_led_[individual]
+				D_DP inCOM inDP mdl_7seg_led_[individual]
+			ELSE
+				// Common cathode: COM is connected to the cathodes.
+				D_A inA inCOM mdl_7seg_led_[individual]
+				D_B inB inCOM mdl_7seg_led_[individual]
+				D_C inC inCOM mdl_7seg_led_[individual]
+				D_D inD inCOM mdl_7seg_led_[individual]
+				D_E inE inCOM mdl_7seg_led_[individual]
+				D_F inF inCOM mdl_7seg_led_[individual]
+				D_G inG inCOM mdl_7seg_led_[individual]
+				D_DP inDP inCOM mdl_7seg_led_[individual]
+			ENDIF
+		.ends
+
+		// Pin order A, B, C, D, E, F, G, DP, COM.
+		X_[individual] [A] [B] [C] [D] [E] [F] [G] [DP] [COM] mdl_7seg_[individual]
+	</Spice>
+	<animation>
+		// Segment opacity is proportional to LED current:
+		// 10 mA corresponds to full opacity. Absolute current supports both COM modes.
+		DEFINE [curr_sec_a] I[A]
+		DEFINE [curr_sec_a] AS_MATH_ABS OF:[curr_sec_a]
+		DEFINE [opacity_sec_a] AS_MATH_MUL OF:[curr_sec_a] AND:100
+		DEFINE [opacity_sec_a] AS_MATH_MIN OF:[opacity_sec_a] AND:1.0
+
+		DEFINE [curr_sec_b] I[B]
+		DEFINE [curr_sec_b] AS_MATH_ABS OF:[curr_sec_b]
+		DEFINE [opacity_sec_b] AS_MATH_MUL OF:[curr_sec_b] AND:100
+		DEFINE [opacity_sec_b] AS_MATH_MIN OF:[opacity_sec_b] AND:1.0
+
+		DEFINE [curr_sec_c] I[C]
+		DEFINE [curr_sec_c] AS_MATH_ABS OF:[curr_sec_c]
+		DEFINE [opacity_sec_c] AS_MATH_MUL OF:[curr_sec_c] AND:100
+		DEFINE [opacity_sec_c] AS_MATH_MIN OF:[opacity_sec_c] AND:1.0
+
+		DEFINE [curr_sec_d] I[D]
+		DEFINE [curr_sec_d] AS_MATH_ABS OF:[curr_sec_d]
+		DEFINE [opacity_sec_d] AS_MATH_MUL OF:[curr_sec_d] AND:100
+		DEFINE [opacity_sec_d] AS_MATH_MIN OF:[opacity_sec_d] AND:1.0
+
+		DEFINE [curr_sec_e] I[E]
+		DEFINE [curr_sec_e] AS_MATH_ABS OF:[curr_sec_e]
+		DEFINE [opacity_sec_e] AS_MATH_MUL OF:[curr_sec_e] AND:100
+		DEFINE [opacity_sec_e] AS_MATH_MIN OF:[opacity_sec_e] AND:1.0
+
+		DEFINE [curr_sec_f] I[F]
+		DEFINE [curr_sec_f] AS_MATH_ABS OF:[curr_sec_f]
+		DEFINE [opacity_sec_f] AS_MATH_MUL OF:[curr_sec_f] AND:100
+		DEFINE [opacity_sec_f] AS_MATH_MIN OF:[opacity_sec_f] AND:1.0
+
+		DEFINE [curr_sec_g] I[G]
+		DEFINE [curr_sec_g] AS_MATH_ABS OF:[curr_sec_g]
+		DEFINE [opacity_sec_g] AS_MATH_MUL OF:[curr_sec_g] AND:100
+		DEFINE [opacity_sec_g] AS_MATH_MIN OF:[opacity_sec_g] AND:1.0
+
+		DEFINE [curr_sec_dp] I[DP]
+		DEFINE [curr_sec_dp] AS_MATH_ABS OF:[curr_sec_dp]
+		DEFINE [opacity_sec_dp] AS_MATH_MUL OF:[curr_sec_dp] AND:100
+		DEFINE [opacity_sec_dp] AS_MATH_MIN OF:[opacity_sec_dp] AND:1.0
+
+		// The rectangles are positioned over the corresponding display segments.
+		<Rectangle -150 250 300 50 #808080 1 1 #808080 1 [opacity_sec_a]>
+		<Rectangle 150 25 50 225 #808080 1 1 #808080 1 [opacity_sec_b]>
+		<Rectangle 150 -250 50 225 #808080 1 1 #808080 1 [opacity_sec_c]>
+		<Rectangle -150 -300 300 50 #808080 1 1 #808080 1 [opacity_sec_d]>
+		<Rectangle -200 -250 50 225 #808080 1 1 #808080 1 [opacity_sec_e]>
+		<Rectangle -200 25 50 225 #808080 1 1 #808080 1 [opacity_sec_f]>
+		<Rectangle -150 -25 300 50 #808080 1 1 #808080 1 [opacity_sec_g]>
+		<Rectangle 225 -325 50 50 #808080 1 1 #808080 1 [opacity_sec_dp]>
+	</animation>
+	<eeschema_symbol>
+		DRAW
+		// Display outline.
+		S -250 -350 300 350 0 1 10 N
+		// Seven rectangular segments and decimal point.
+		S -150 -300 150 -250 0 1 10 F
+		S 150 -250 200 -25 0 1 10 F
+		S 150 25 200 250 0 1 10 F
+		S -150 250 150 300 0 1 10 F
+		S -200 25 -150 250 0 1 10 F
+		S -200 -250 -150 -25 0 1 10 F
+		S -150 -25 150 25 0 1 10 F
+		S 225 275 275 325 0 1 10 F
+
+		// Segment pins.
+		X A 1 0 -450 100 D 50 50 1 1 P
+		X B 2 350 -200 100 L 50 50 1 1 P
+		X C 3 350 200 100 L 50 50 1 1 P
+		X D 4 150 450 100 U 50 50 1 1 P
+		X E 5 -350 200 100 R 50 50 1 1 P
+		X F 6 -350 -200 100 R 50 50 1 1 P
+		X G 7 -350 0 100 R 50 50 1 1 P
+		X DP 8 350 325 100 L 50 50 1 1 P
+		X COM 9 -150 450 100 U 50 50 1 1 P
+		ENDDRAW
+	</eeschema_symbol>
+</Component>
