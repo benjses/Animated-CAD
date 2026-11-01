@@ -2983,8 +2983,8 @@
 			// Slave latch is transparent while CLK is HIGH.
 			// Each internal state node has a finite response time (R*C = 1 us).
 			// Weak bias resistors establish the initial state Q=LOW, Q_NOT=HIGH.
-			B_masterQ masterQ 0 I=(V(masterQ) - (((V(inJ) > [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) <= [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0))/1k
-			B_masterQNOT masterQNOT 0 I=(V(masterQNOT) - (((V(inJ) <= [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) > [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0))/1k
+			B_masterQ masterQ 0 I=(V(masterQ) - ((V(inCLK) > [vth]) ? (V(masterQ) > 0.5 ? 1 : 0) : (((V(inJ) > [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) <= [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0)))/1k
+			B_masterQNOT masterQNOT 0 I=(V(masterQNOT) - ((V(inCLK) > [vth]) ? (V(masterQNOT) > 0.5 ? 1 : 0) : (((V(inJ) <= [vth]) && (V(slaveQ) <= 0.5)) || ((V(inK) > [vth]) && (V(slaveQ) > 0.5)) ? 1 : 0)))/1k
 			C_masterQ masterQ 0 1n IC=0
 			C_masterQNOT masterQNOT 0 1n IC=1
 			R_initMasterQ masterQ 0 1G
