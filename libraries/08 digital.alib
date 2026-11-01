@@ -2500,3 +2500,126 @@
 		ENDIF
 	</animation>
 </Component>
+
+// ---- Sequential logic ----
+<Component>
+	<Description>
+		NOR-based SR latch with active-HIGH Set and Reset inputs.
+		When S=1 and R=0, the latch is set (Q=1, Q_NOT=0).
+		When S=0 and R=1, the latch is reset (Q=0, Q_NOT=1).
+		When S=0 and R=0, the previous state is retained.
+		When S=1 and R=1, both outputs are LOW in the standard NOR latch.
+		This simultaneous Set/Reset condition is normally invalid. After both inputs
+		return LOW, the resulting state is not defined by the standard latch model.
+		An optional dom parameter can define a dominant input:
+		dom=s makes Set dominant; dom=r makes Reset dominant.
+		Each input is interpreted as HIGH when its voltage is strictly above
+		Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+		The outputs are driven to vpos for HIGH and vneg for LOW.
+		Enter optional parameters in the value field, for example:
+		vpos=5.0 vneg=0.0 dom=s
+		If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+		This is an ideal, zero-delay logic component, not a transistor-level model.
+	</Description>
+	<eeschema_sch>
+		L anicad:SRLATCH
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0
+		vpos=5.0 vneg=0.0 dom=s
+		vpos=5.0 vneg=0.0 dom=r
+	</Default_Values>
+	<Spice>
+		// ---- supply, threshold and optional dominance parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		DEFINE [dom] AS_WORD_RIGHT OF:dom IN:[value]
+		DEFINE [dom_s] 0
+		DEFINE [dom_r] 0
+		IF [dom] EQUAL_TO s THEN DEFINE [dom_s] 1 ENDIF
+		IF [dom] EQUAL_TO r THEN DEFINE [dom_r] 1 ENDIF
+
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- NOR latch model ----
+		.subckt mdl_srlatch_[individual] inS inR outQ outQNOT
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Active-HIGH Set and Reset; cross-coupled NOR feedback.
+			// With neither input active, the feedback retains the previous state.
+			// With both inputs active, dom selects the dominant input, if configured.
+			B_logicQ logicQ 0 V=(([dom_s] > 0.5 && (V(inS) > [vth]) && (V(inR) > [vth])) ? 1 : ((V(inR) > [vth]) || (V(outQNOT) > [vth]) ? 0 : 1))
+			B_logicQNOT logicQNOT 0 V=(([dom_r] > 0.5 && (V(inS) > [vth]) && (V(inR) > [vth])) ? 1 : ((V(inS) > [vth]) || (V(outQ) > [vth]) ? 0 : 1))
+
+			.model mdl_swposQ_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegQ_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swposQNOT_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegQNOT_[individual] sw ron=[roff] roff=[ron] vt=0.5
+
+			S_posQ pwr_pos outQ logicQ 0 mdl_swposQ_[individual]
+			S_negQ pwr_neg outQ logicQ 0 mdl_swnegQ_[individual]
+			S_posQNOT pwr_pos outQNOT logicQNOT 0 mdl_swposQNOT_[individual]
+			S_negQNOT pwr_neg outQNOT logicQNOT 0 mdl_swnegQNOT_[individual]
+		.ends
+
+		// Pin order S, R, Q, Q_NOT.
+		X_[individual] [S] [R] [Q] [Q_NOT] mdl_srlatch_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -10.16 7.62) (end 10.16 -7.62)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -11.43 3.81 0) (length 1.27)
+			(name "S" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(text "S" (at -8.89 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -11.43 -3.81 0) (length 1.27)
+			(name "R" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "R" (at -8.89 -3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 3.81 180) (length 1.27)
+			(name "Q" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "Q" (at 8.89 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 -3.81 180) (length 1.27)
+			(name "Q_NOT" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "Q̅" (at 8.89 -3.81 0) (effects (font (size 1.5 1.5))))
+		(text "SR LATCH" (at 0 0 0) (effects (font (size 2.0 2.0))))
+	</eeschema_symbol>
+	<animation>
+		// Show output states: red=HIGH, blue=LOW.
+		IF V[Q] HIGHER_THAN [vth] THEN
+			<Line 0 0 250 -100 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 0 250 -100 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+		IF V[Q_NOT] HIGHER_THAN [vth] THEN
+			<Line 0 0 250 100 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 0 250 100 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+	</animation>
+</Component>
