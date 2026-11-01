@@ -2466,51 +2466,40 @@
 		(text "ADDER4" (at 0 0 0) (effects (font (size 2.54 2.54))))
 	</eeschema_symbol>
 	<animation>
-		// Output paths: red=HIGH, blue=LOW. Coordinates follow the symbol pins.
-		DEFINE [s0] V[SUM0]
-		DEFINE [s0] AS_NUMBER OF: [s0]
-		DEFINE [s1] V[SUM1]
-		DEFINE [s1] AS_NUMBER OF: [s1]
-		DEFINE [s2] V[SUM2]
-		DEFINE [s2] AS_NUMBER OF: [s2]
-		DEFINE [s3] V[SUM3]
-		DEFINE [s3] AS_NUMBER OF: [s3]
-		DEFINE [co] V[CARRY_OUT]
-		DEFINE [co] AS_NUMBER OF: [co]
-		IF [s0] THEN
-			IF [s0] HIGHER_THAN [vth] THEN
-				<Line 0 0 300 -300 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 0 0 300 -300 #0000FF 2 1 #0000FF 1 0>
-			ENDIF
+		// Calculate decimal values of the two 4-bit inputs.
+		DEFINE [A] 0
+		IF V[A0] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:1 ENDIF
+		IF V[A1] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:2 ENDIF
+		IF V[A2] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:4 ENDIF
+		IF V[A3] HIGHER_THAN [vth] THEN DEFINE [A] AS_MATH_ADD OF:[A] AND:8 ENDIF
+
+		DEFINE [B] 0
+		IF V[B0] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:1 ENDIF
+		IF V[B1] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:2 ENDIF
+		IF V[B2] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:4 ENDIF
+		IF V[B3] HIGHER_THAN [vth] THEN DEFINE [B] AS_MATH_ADD OF:[B] AND:8 ENDIF
+
+		// Calculate the four-bit sum. Carry-out is displayed separately.
+		DEFINE [SUM] 0
+		IF V[SUM0] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:1 ENDIF
+		IF V[SUM1] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:2 ENDIF
+		IF V[SUM2] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:4 ENDIF
+		IF V[SUM3] HIGHER_THAN [vth] THEN DEFINE [SUM] AS_MATH_ADD OF:[SUM] AND:8 ENDIF
+
+		// Display input and output values.
+		<Text -450 220 60 #000080 0 "A=[A]">
+		<Text -450 -180 60 #000080 0 "B=[B]">
+		<Text 400 220 60 #000080 0 "SUM=[SUM]">
+
+		IF V[CARRY_IN] HIGHER_THAN [vth] THEN
+			<Text 400 -180 60 #000080 0 "C=1">
+		ELSE
+			<Text 400 -180 60 #000080 0 "C=0">
 		ENDIF
-		IF [s1] THEN
-			IF [s1] HIGHER_THAN [vth] THEN
-				<Line 0 0 300 -150 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 0 0 300 -150 #0000FF 2 1 #0000FF 1 0>
-			ENDIF
+
+		IF V[CARRY_OUT] HIGHER_THAN [vth] THEN
+			<Text 400 -320 60 #000080 0 "COUT=1">
+		ELSE
+			<Text 400 -320 60 #000080 0 "COUT=0">
 		ENDIF
-		IF [s2] THEN
-			IF [s2] HIGHER_THAN [vth] THEN
-				<Line 0 0 300 0 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 0 0 300 0 #0000FF 2 1 #0000FF 1 0>
-			ENDIF
-		ENDIF
-		IF [s3] THEN
-			IF [s3] HIGHER_THAN [vth] THEN
-				<Line 0 0 300 150 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 0 0 300 150 #0000FF 2 1 #0000FF 1 0>
-			ENDIF
-		ENDIF
-		IF [co] THEN
-			IF [co] HIGHER_THAN [vth] THEN
-				<Line 0 0 300 300 #FF0000 2 1 #FF0000 1 0>
-			ELSE
-				<Line 0 0 300 300 #0000FF 2 1 #0000FF 1 0>
-			ENDIF
-		ENDIF
-	</animation>
-</Component>
+	</animation></Component>
