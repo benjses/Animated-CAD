@@ -3083,18 +3083,16 @@
 		ENDIF
 	</Description>
 	<eeschema_sch>
-		L anicad:7SEG
+		L anicad:7segmentDisplay
 	</eeschema_sch>
 	<Default_Values>
 		com=c // common cathode
 		com=a // common anode
+		com=c color=blue // common cathode, led color set to blue (available colors are blue, red, green, yellow)
+		com=c color=#92a300 //common cathode, led color set to an individual #RrGgBb value.
 	</Default_Values>
 	<Spice>
-		// ---- common connection configuration ----
-		DEFINE [com] AS_WORD_RIGHT OF:com IN:[value]
-		DEFINE [com] AS_LOWERCASE OF:[com]
-		IF ![com] THEN DEFINE [com] c ENDIF
-
+		
 		// ---- red LED model ----
 		// Typical red LED parameters; nominal current is 10 mA.
 		.model mdl_7seg_led_[individual] D (is=1e-18 n=2 rs=10)
@@ -3171,63 +3169,85 @@
 		DEFINE [opacity_sec_dp] AS_MATH_MIN OF:[opacity_sec_dp] AND:1.0
 
 		// The rectangles are positioned over the corresponding display segments.
-		<Rectangle -150 250 300 50 #808080 1 1 #808080 1 [opacity_sec_a]>
-		<Rectangle 150 25 50 225 #808080 1 1 #808080 1 [opacity_sec_b]>
-		<Rectangle 150 -250 50 225 #808080 1 1 #808080 1 [opacity_sec_c]>
-		<Rectangle -150 -300 300 50 #808080 1 1 #808080 1 [opacity_sec_d]>
-		<Rectangle -200 -250 50 225 #808080 1 1 #808080 1 [opacity_sec_e]>
-		<Rectangle -200 25 50 225 #808080 1 1 #808080 1 [opacity_sec_f]>
-		<Rectangle -150 -25 300 50 #808080 1 1 #808080 1 [opacity_sec_g]>
-		<Rectangle 225 -325 50 50 #808080 1 1 #808080 1 [opacity_sec_dp]>
+		
+		<Rectangle -150 250 300 50  [color] 0 0 #000000 1 [opacity_sec_a]>
+		<Rectangle 150  25 50 225   [color] 0 0 #000000 1 [opacity_sec_b]>
+		<Rectangle 150 -250 50 225  [color] 0 0 #000000 1 [opacity_sec_c]>
+		<Rectangle -150 -300 300 50 [color] 0 0 #000000 1 [opacity_sec_d]>
+		<Rectangle -200 -250 50 225 [color] 0 0 #000000 1 [opacity_sec_e]>
+		<Rectangle -200 25 50 225   [color] 0 0 #000000 1 [opacity_sec_f]>
+		<Rectangle -150 -25 300 50  [color] 0 0 #000000 1 [opacity_sec_g]>
+		<Rectangle 225 275 50 50    [color] 0 0 #000000 1 [opacity_sec_dp]>
 	</animation>
 	<eeschema_symbol>
-		// Default XML-style symbol format.
-		// The Y coordinates are mirrored so the decimal point appears at the lower right.
-		<Rectangle -250 -350 550 700 #808080 1 1 #000000 1 0> // outer form
-		<Rectangle -150 -300 300 50 #808080 1 1 #808080 1 1> // segment a
-		<Rectangle 150 -250 50 225 #808080 1 1 #808080 1 1> // segment b
-		<Rectangle 150 25 50 225 #808080 1 1 #808080 1 1> // segment c
-		<Rectangle -150 250 300 50 #808080 1 1 #808080 1 1> // segment d
-		<Rectangle -200 25 50 225 #808080 1 1 #808080 1 1> // segment e
-		<Rectangle -200 -250 50 225 #808080 1 1 #808080 1 1> // segment f
-		<Rectangle -150 -25 300 50 #808080 1 1 #808080 1 1> // segment g
-		<Rectangle 225 275 50 50 #808080 1 1 #808080 1 1> // segment dp (dot)
+	// ---- common connection configuration ----
+		DEFINE [com] AS_WORD_RIGHT OF:com IN:[value]
+		DEFINE [com] AS_LOWERCASE OF:[com]
+		IF [com] STARTS_WITH a THEN DEFINE [com] a ELSE DEFINE [com] c ENDIF
+		
+		DEFINE [color] AS_WORD_RIGHT OF:color IN:[value]
+		DEFINE [color] AS_LOWERCASE OF:[color]
+		IF [color] THEN 
+			//IF [color] STARTS_WITH # THEN ENDIF // #RrGgBb value - keep it.
+			IF [color] STARTS_WITH r THEN DEFINE [color] #FF0000 ENDIF //r=red
+			IF [color] STARTS_WITH g THEN DEFINE [color] #00FF00 ENDIF //g=green
+			IF [color] STARTS_WITH b THEN DEFINE [color] #0000FF ENDIF //b=blue			
+			IF [color] STARTS_WITH y THEN DEFINE [color] #888800 ENDIF //y=yellow
+		ENDIF
+		IF ![color] STARTS_WITH # THEN DEFINE [color] #FF0000 ENDIF // default=red
+
+		<Rectangle -250 -400 550 800 #808080 1 1 #000000 1 0> // outer form
+		<Rectangle -150 -300 300 50  #808080 1 1 #808080 1 1> // segment a
+		<Rectangle 150 -250 50 225   #808080 1 1 #808080 1 1> // segment b
+		<Rectangle 150 25 50 225     #808080 1 1 #808080 1 1> // segment c
+		<Rectangle -150 250 300 50   #808080 1 1 #808080 1 1> // segment d
+		<Rectangle -200 25 50 225    #808080 1 1 #808080 1 1> // segment e
+		<Rectangle -200 -250 50 225  #808080 1 1 #808080 1 1> // segment f
+		<Rectangle -150 -25 300 50   #808080 1 1 #808080 1 1> // segment g
+		<Rectangle 225 275 50 50     #808080 1 1 #808080 1 1> // segment dp (dot)
 
 		// Segment input pins, arranged vertically on the left.
-		<.PortSym -450 -300 [A] 0>
-		<Line -450 -300 200 0 #000080 2 1>
-		<Text -250 -300 50 #000080 0 "A">
-		<.PortSym -450 -210 [B] 0>
-		<Line -450 -210 200 0 #000080 2 1>
-		<Text -250 -210 50 #000080 0 "B">
-		<.PortSym -450 -120 [C] 0>
-		<Line -450 -120 200 0 #000080 2 1>
-		<Text -250 -120 50 #000080 0 "C">
-		<.PortSym -450 -30 [D] 0>
-		<Line -450 -30 200 0 #000080 2 1>
-		<Text -250 -30 50 #000080 0 "D">
-		<.PortSym -450 60 [E] 0>
-		<Line -450 60 200 0 #000080 2 1>
-		<Text -250 60 50 #000080 0 "E">
+		<.PortSym -450 -350 [A] 0>
+		<Line     -450 -350 200 0 #000080 2 1>
+		<Text     -250 -350 50 #000080 0 "A">
+		
+		<.PortSym -450 -250 [B] 0>
+		<Line     -450 -250 200 0 #000080 2 1>
+		<Text      -250 -250 50 #000080 0 "B">
+		
+		<.PortSym -450 -150 [C] 0>
+		<Line     -450 -150 200 0 #000080 2 1>
+		<Text     -250 -150 50 #000080 0 "C">
+		
+		<.PortSym -450 -50 [D] 0>
+		<Line     -450 -50 200 0 #000080 2 1>
+		<Text     -250 -50 50 #000080 0 "D">
+		
+		<.PortSym -450 50 [E] 0>
+		<Line     -450 50 200 0 #000080 2 1>
+		<Text     -250 50 50 #000080 0 "E">
+		
 		<.PortSym -450 150 [F] 0>
-		<Line -450 150 200 0 #000080 2 1>
-		<Text -250 150 50 #000080 0 "F">
-		<.PortSym -450 240 [G] 0>
-		<Line -450 240 200 0 #000080 2 1>
-		<Text -250 240 50 #000080 0 "G">
-		<.PortSym -450 330 [DP] 0>
-		<Line -450 330 200 0 #000080 2 1>
-		<Text -250 330 50 #000080 0 "DP">
+		<Line     -450 150 200 0 #000080 2 1>
+		<Text     -250 150 50 #000080 0 "F">
+		
+		<.PortSym -450 250 [G] 0>
+		<Line     -450 250 200 0 #000080 2 1>
+		<Text     -250 250 50 #000080 0 "G">
+		
+		<.PortSym -450 350 [DP] 0>
+		<Line     -450 350 200 0 #000080 2 1>
+		<Text     -250 350 50 #000080 0 "DP">
 
 		// COM position depends on the selected common connection.
 		IF [com] EQUAL_TO a THEN
 			<.PortSym 0 -450 [COM] 270>
-			<Line 0 -450 0 100 #000080 2 1>
-			<Text 0 -350 50 #000080 0 "COM">
+			<Line 0 -450 0 50 #000080 2 1>
+			<Text 0 -360 50 #000080 0 "COM">
 		ELSE
 			<.PortSym 0 450 [COM] 90>
-			<Line 0 450 0 -100 #000080 2 1>
-			<Text 0 350 50 #000080 0 "COM">
+			<Line 0 450 0 -50 #000080 2 1>
+			<Text 0 360 50 #000080 0 "COM">
 		ENDIF
 	</eeschema_symbol>
 </Component>
