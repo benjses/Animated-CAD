@@ -3181,27 +3181,53 @@
 		<Rectangle 225 -325 50 50 #808080 1 1 #808080 1 [opacity_sec_dp]>
 	</animation>
 	<eeschema_symbol>
-		// Default XML-style symbol format, matching the animation geometry.
-		<Rectangle -250 -350 550 700 #808080 1 1 #000000 1 0>
-		// Seven grey segments and decimal point.
-		<Rectangle -150 250 300 50 #808080 1 1 #808080 1 1>
-		<Rectangle 150 25 50 225 #808080 1 1 #808080 1 1>
-		<Rectangle 150 -250 50 225 #808080 1 1 #808080 1 1>
-		<Rectangle -150 -300 300 50 #808080 1 1 #808080 1 1>
-		<Rectangle -200 -250 50 225 #808080 1 1 #808080 1 1>
-		<Rectangle -200 25 50 225 #808080 1 1 #808080 1 1>
-		<Rectangle -150 -25 300 50 #808080 1 1 #808080 1 1>
-		<Rectangle 225 -325 50 50 #808080 1 1 #808080 1 1>
+		// Default XML-style symbol format.
+		// The Y coordinates are mirrored so the decimal point appears at the lower right.
+		<Rectangle -250 -350 550 700 #808080 1 1 #000000 1 0> // outer form
+		<Rectangle -150 -300 300 50 #808080 1 1 #808080 1 1> // segment a
+		<Rectangle 150 -250 50 225 #808080 1 1 #808080 1 1> // segment b
+		<Rectangle 150 25 50 225 #808080 1 1 #808080 1 1> // segment c
+		<Rectangle -150 250 300 50 #808080 1 1 #808080 1 1> // segment d
+		<Rectangle -200 25 50 225 #808080 1 1 #808080 1 1> // segment e
+		<Rectangle -200 -250 50 225 #808080 1 1 #808080 1 1> // segment f
+		<Rectangle -150 -25 300 50 #808080 1 1 #808080 1 1> // segment g
+		<Rectangle 225 275 50 50 #808080 1 1 #808080 1 1> // segment dp (dot)
 
-		// Segment pins.
-		<.PortSym 0 -450 [A]>
-		<.PortSym 350 -200 [B]>
-		<.PortSym 350 200 [C]>
-		<.PortSym 150 450 [D]>
-		<.PortSym -350 200 [E]>
-		<.PortSym -350 -200 [F]>
-		<.PortSym -350 0 [G]>
-		<.PortSym 350 325 [DP]>
-		<.PortSym -150 450 [COM]>
+		// Segment input pins, arranged vertically on the left.
+		<.PortSym -450 -300 [A] 0>
+		<Line -450 -300 200 0 #000080 2 1>
+		<Text -250 -300 50 #000080 0 "A">
+		<.PortSym -450 -210 [B] 0>
+		<Line -450 -210 200 0 #000080 2 1>
+		<Text -250 -210 50 #000080 0 "B">
+		<.PortSym -450 -120 [C] 0>
+		<Line -450 -120 200 0 #000080 2 1>
+		<Text -250 -120 50 #000080 0 "C">
+		<.PortSym -450 -30 [D] 0>
+		<Line -450 -30 200 0 #000080 2 1>
+		<Text -250 -30 50 #000080 0 "D">
+		<.PortSym -450 60 [E] 0>
+		<Line -450 60 200 0 #000080 2 1>
+		<Text -250 60 50 #000080 0 "E">
+		<.PortSym -450 150 [F] 0>
+		<Line -450 150 200 0 #000080 2 1>
+		<Text -250 150 50 #000080 0 "F">
+		<.PortSym -450 240 [G] 0>
+		<Line -450 240 200 0 #000080 2 1>
+		<Text -250 240 50 #000080 0 "G">
+		<.PortSym -450 330 [DP] 0>
+		<Line -450 330 200 0 #000080 2 1>
+		<Text -250 330 50 #000080 0 "DP">
+
+		// COM position depends on the selected common connection.
+		IF [com] EQUAL_TO a THEN
+			<.PortSym 0 -450 [COM] 270>
+			<Line 0 -450 0 100 #000080 2 1>
+			<Text 0 -350 50 #000080 0 "COM">
+		ELSE
+			<.PortSym 0 450 [COM] 90>
+			<Line 0 450 0 -100 #000080 2 1>
+			<Text 0 350 50 #000080 0 "COM">
+		ENDIF
 	</eeschema_symbol>
 </Component>
