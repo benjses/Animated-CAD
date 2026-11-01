@@ -2264,7 +2264,7 @@
 			Vpos pwr_pos 0 [vpos]
 			Vneg pwr_neg 0 [vneg]
 			// Full-adder equations: SUM = A XOR B XOR CIN; COUT = AB + CIN(A XOR B).
-			B_logicSUM logicSUM 0 V=((V(inA) > [vth]) != (V(inB) > [vth]) != (V(inCARRYIN) > [vth]) ? 1 : 0)
+			B_logicSUM logicSUM 0 V=(((V(inA) > [vth]) != (V(inB) > [vth])) != (V(inCARRYIN) > [vth]) ? 1 : 0)
 			B_logicCARRY logicCARRY 0 V=(((V(inA) > [vth]) && (V(inB) > [vth])) || ((V(inCARRYIN) > [vth]) && ((V(inA) > [vth]) != (V(inB) > [vth]))) ? 1 : 0)
 			.model mdl_swposSUM_[individual] sw ron=[ron] roff=[roff] vt=0.5
 			.model mdl_swnegSUM_[individual] sw ron=[roff] roff=[ron] vt=0.5
