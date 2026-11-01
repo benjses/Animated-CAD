@@ -3181,29 +3181,27 @@
 		<Rectangle 225 -325 50 50 #808080 1 1 #808080 1 [opacity_sec_dp]>
 	</animation>
 	<eeschema_symbol>
-		DRAW
-		// Display outline.
-		S -250 -350 300 350 0 1 10 N
-		// Seven rectangular segments and decimal point.
-		S -150 -300 150 -250 0 1 10 F
-		S 150 -250 200 -25 0 1 10 F
-		S 150 25 200 250 0 1 10 F
-		S -150 250 150 300 0 1 10 F
-		S -200 25 -150 250 0 1 10 F
-		S -200 -250 -150 -25 0 1 10 F
-		S -150 -25 150 25 0 1 10 F
-		S 225 275 275 325 0 1 10 F
+		// Default XML-style symbol format, matching the animation geometry.
+		<Rectangle -250 -350 550 700 #808080 1 1 #000000 1 0>
+		// Seven grey segments and decimal point.
+		<Rectangle -150 250 300 50 #808080 1 1 #808080 1 1>
+		<Rectangle 150 25 50 225 #808080 1 1 #808080 1 1>
+		<Rectangle 150 -250 50 225 #808080 1 1 #808080 1 1>
+		<Rectangle -150 -300 300 50 #808080 1 1 #808080 1 1>
+		<Rectangle -200 -250 50 225 #808080 1 1 #808080 1 1>
+		<Rectangle -200 25 50 225 #808080 1 1 #808080 1 1>
+		<Rectangle -150 -25 300 50 #808080 1 1 #808080 1 1>
+		<Rectangle 225 -325 50 50 #808080 1 1 #808080 1 1>
 
 		// Segment pins.
-		X A 1 0 -450 100 D 50 50 1 1 P
-		X B 2 350 -200 100 L 50 50 1 1 P
-		X C 3 350 200 100 L 50 50 1 1 P
-		X D 4 150 450 100 U 50 50 1 1 P
-		X E 5 -350 200 100 R 50 50 1 1 P
-		X F 6 -350 -200 100 R 50 50 1 1 P
-		X G 7 -350 0 100 R 50 50 1 1 P
-		X DP 8 350 325 100 L 50 50 1 1 P
-		X COM 9 -150 450 100 U 50 50 1 1 P
-		ENDDRAW
+		<.PortSym 0 -450 [A]>
+		<.PortSym 350 -200 [B]>
+		<.PortSym 350 200 [C]>
+		<.PortSym 150 450 [D]>
+		<.PortSym -350 200 [E]>
+		<.PortSym -350 -200 [F]>
+		<.PortSym -350 0 [G]>
+		<.PortSym 350 325 [DP]>
+		<.PortSym -150 450 [COM]>
 	</eeschema_symbol>
 </Component>
