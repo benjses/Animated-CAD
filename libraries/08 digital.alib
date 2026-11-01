@@ -2646,3 +2646,128 @@
 		ENDIF
 	</animation>
 </Component>
+
+// ---- D latch ----
+<Component>
+	<Description>
+		IF [language] EQUAL_TO de THEN
+			D-Latch mit Enable-Eingang. Solange EN=1 ist, folgt der Ausgang Q dem Dateneingang D.
+			Wenn EN=0 wird, behaelt das Latch den zuletzt uebernommenen Zustand bei.
+			Q_NOT ist der invertierte Ausgang von Q.
+			Ein Eingang wird als HIGH interpretiert, wenn seine Spannung strikt ueber
+			Vth = (vpos + vneg) / 2 liegt; andernfalls wird er als LOW interpretiert.
+			Die Ausgaenge werden bei HIGH auf vpos und bei LOW auf vneg angesteuert.
+			Optionale Versorgungsspannungen koennen im Wertefeld angegeben werden, z. B.:
+			vpos=5.0 vneg=0.0
+			Ohne Angabe gelten vpos=5.0 V und vneg=0.0 V.
+			Dies ist ein ideales Logikmodell mit endlicher interner Reaktionszeit, kein Transistormodell.
+		ELSE
+			D latch with an Enable input. While EN=1, output Q follows data input D.
+			When EN=0, the latch retains the last state captured.
+			Q_NOT is the inverted output of Q.
+			An input is interpreted as HIGH when its voltage is strictly above
+			Vth = (vpos + vneg) / 2; otherwise it is interpreted as LOW.
+			The outputs are driven to vpos for HIGH and vneg for LOW.
+			Optional supply levels can be entered in the value field, for example:
+			vpos=5.0 vneg=0.0
+			If omitted, vpos defaults to 5.0 V and vneg defaults to 0.0 V.
+			This is an ideal logic model with a finite internal response time, not a transistor-level model.
+		ENDIF
+	</Description>
+	<eeschema_sch>
+		L anicad:DLATCH
+	</eeschema_sch>
+	<Default_Values>
+		vpos=5.0 vneg=0.0 // power supply values
+	</Default_Values>
+	<Spice>
+		// ---- supply and threshold parameters ----
+		DEFINE [vpos] AS_WORD_RIGHT OF:vpos IN:[value]
+		IF [vpos] THEN DEFINE [vpos] AS_NUMBER OF:[vpos] ENDIF
+		IF ![vpos] THEN DEFINE [vpos] 5.0 ENDIF
+
+		DEFINE [vneg] AS_WORD_RIGHT OF:vneg IN:[value]
+		IF [vneg] THEN DEFINE [vneg] AS_NUMBER OF:[vneg] ENDIF
+		IF ![vneg] THEN DEFINE [vneg] 0.0 ENDIF
+
+		DEFINE [vth] AS_MATH_ADD OF:[vpos] AND:[vneg]
+		DEFINE [vth] AS_MATH_DIV OF:[vth] AND:2.0
+
+		// ---- output resistance parameters ----
+		DEFINE [ron] AS_WORD_RIGHT OF:ron IN:[value]
+		IF [ron] THEN DEFINE [ron] AS_NUMBER OF:[ron] ENDIF
+		IF ![ron] THEN DEFINE [ron] 1.0 ENDIF
+
+		DEFINE [roff] AS_WORD_RIGHT OF:roff IN:[value]
+		IF [roff] THEN DEFINE [roff] AS_NUMBER OF:[roff] ENDIF
+		IF ![roff] THEN DEFINE [roff] 1E9 ENDIF
+
+		// ---- D latch model ----
+		.subckt mdl_dlatch_[individual] inD inEN outQ outQNOT
+			Vpos pwr_pos 0 [vpos]
+			Vneg pwr_neg 0 [vneg]
+
+			// Internal logic nodes have a finite response time (R*C = 1 us).
+			// Weak bias resistors establish the initial state Q=LOW, Q_NOT=HIGH.
+			B_logicQ logicQ 0 I=(V(logicQ) - ((V(inEN) > [vth]) ? (V(inD) > [vth] ? 1 : 0) : (V(logicQNOT) > 0.5 ? 0 : 1)))/1k
+			B_logicQNOT logicQNOT 0 I=(V(logicQNOT) - ((V(inEN) > [vth]) ? (V(inD) > [vth] ? 0 : 1) : (V(logicQ) > 0.5 ? 0 : 1)))/1k
+			C_logicQ logicQ 0 1n IC=0
+			C_logicQNOT logicQNOT 0 1n IC=1
+			R_initQ logicQ 0 1G
+			R_initQNOT pwr_pos logicQNOT 1G
+
+			.model mdl_swposQ_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegQ_[individual] sw ron=[roff] roff=[ron] vt=0.5
+			.model mdl_swposQNOT_[individual] sw ron=[ron] roff=[roff] vt=0.5
+			.model mdl_swnegQNOT_[individual] sw ron=[roff] roff=[ron] vt=0.5
+
+			S_posQ pwr_pos outQ logicQ 0 mdl_swposQ_[individual]
+			S_negQ pwr_neg outQ logicQ 0 mdl_swnegQ_[individual]
+			S_posQNOT pwr_pos outQNOT logicQNOT 0 mdl_swposQNOT_[individual]
+			S_negQNOT pwr_neg outQNOT logicQNOT 0 mdl_swnegQNOT_[individual]
+		.ends
+
+		// Pin order D, EN, Q, nQ.
+		X_[individual] [D] [EN] [Q] [nQ] mdl_dlatch_[individual]
+	</Spice>
+	<eeschema_symbol>
+		(rectangle (start -10.16 7.62) (end 10.16 -7.62)
+			(stroke (width 0) (type default))
+			(fill (type none))
+		)
+		(pin input line (at -11.43 3.81 0) (length 1.27)
+			(name "D" (effects (font (size 1.27 1.27))))
+			(number "1" (effects (font (size 1.27 1.27))))
+		)
+		(text "D" (at -8.89 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin input line (at -11.43 -3.81 0) (length 1.27)
+			(name "EN" (effects (font (size 1.27 1.27))))
+			(number "2" (effects (font (size 1.27 1.27))))
+		)
+		(text "EN" (at -8.89 -3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 3.81 180) (length 1.27)
+			(name "Q" (effects (font (size 1.27 1.27))))
+			(number "3" (effects (font (size 1.27 1.27))))
+		)
+		(text "Q" (at 8.89 3.81 0) (effects (font (size 1.5 1.5))))
+		(pin output line (at 11.43 -3.81 180) (length 1.27)
+			(name "nQ" (effects (font (size 1.27 1.27))))
+			(number "4" (effects (font (size 1.27 1.27))))
+		)
+		(text "nQ" (at 8.89 -3.81 0) (effects (font (size 1.5 1.5))))
+		(text "D LATCH" (at 0 0 0) (effects (font (size 2.0 2.0))))
+	</eeschema_symbol>
+	<animation>
+		// Show output states: red=HIGH, blue=LOW.
+		IF V[Q] HIGHER_THAN [vth] THEN
+			<Line 0 0 250 -100 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 0 250 -100 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+		IF V[nQ] HIGHER_THAN [vth] THEN
+			<Line 0 0 250 100 #FF0000 2 1 #FF0000 1 0>
+		ELSE
+			<Line 0 0 250 100 #0000FF 2 1 #0000FF 1 0>
+		ENDIF
+	</animation>
+</Component>
